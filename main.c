@@ -1,100 +1,109 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/11 18:39:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/11 20:00:35 by aklein           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <so_long.h>
 
-// -----------------------------------------------------------------------------
-// Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
-// See README in the root project for more information.
-// -----------------------------------------------------------------------------
+#define WIDTH 1280
+#define HEIGHT 1024
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <MLX42/MLX42.h>
+#define	CHAR_SIZE 256
 
-#define WIDTH 512
-#define HEIGHT 512
+#define TILE_SIZE 384
 
-static mlx_image_t* image;
+#define BPP sizeof(int32_t)
 
-// -----------------------------------------------------------------------------
-
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+static void error(void)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	puts(mlx_strerror(mlx_errno));
+	exit(EXIT_FAILURE);
 }
 
-void ft_randomize(void* param)
+t_character	*load_character(mlx_t *mlx)
 {
-	(void)param;
-	for (uint32_t i = 0; i < image->width; ++i)
-	{
-		for (uint32_t y = 0; y < image->height; ++y)
-		{
-			uint32_t color = ft_pixel(
-				rand() % 0xFF, // R
-				rand() % 0xFF, // G
-				rand() % 0xFF, // B
-				rand() % 0xFF  // A
-			);
-			mlx_put_pixel(image, i, y, color);
-		}
+	t_character		*joey;
+	mlx_texture_t	*texture;
+	int				i;
+	char			*path_start;
+	char			*path;
+	char			*nr;
+
+	joey = malloc(sizeof(t_character));
+	joey->idle = malloc(sizeof(mlx_image_t *) * 6);
+	joey->idle_frame = malloc(sizeof(int) * 6);
+	joey->accum = 0;
+	joey->frame_speed = 100;
+	i = 0;
+	while (i < 6)
+	{	
+		nr = ft_itoa(i);
+		path_start = ft_strjoin("./assets/idle_", nr);
+		path = ft_strjoin(path_start, ".png");
+		texture = mlx_load_png(path);
+		joey->idle[i] = mlx_texture_to_image(mlx, texture);
+		joey->idle_frame[i] = mlx_image_to_window(mlx, joey->idle[i], 0, 0);
+		joey->idle[i]->instances[joey->idle_frame[i]].enabled = false;
+		mlx_resize_image(joey->idle[i], CHAR_SIZE, CHAR_SIZE);
+		free(path);
+		free(path_start);
+		mlx_delete_texture(texture);
+		i++;
 	}
+	joey->mlx = mlx;
+	return (joey);
 }
 
-void ft_hook(void* param)
-{
-	mlx_t* mlx = param;
-
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-		image->instances[0].y -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		image->instances[0].y += 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		image->instances[0].x += 5;
+int update_animation(t_character * a) {
+  if (a) 
+  {
+    a->accum += a->mlx->delta_time * 1000;
+    if (a->accum > a->frame_speed)
+	{
+      a->accum -= a->frame_speed;
+	  return (1);
+    }
+  }
+  return (0);
 }
 
-// -----------------------------------------------------------------------------
-
-int32_t main(void)
+void	character_idle_animation(void *character)
 {
-	mlx_t* mlx;
+	static int		i = 0;
+	t_character *joey;
+	static int		fps;
 
-	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (!(image = mlx_new_image(mlx, 128, 128)))
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
+	joey = character;
+	fps = 1000 * joey->mlx->delta_time;
+ 	printf("\e[1;1H\e[2Jfps [%d]\n", fps);
 	
-	mlx_loop_hook(mlx, ft_randomize, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	if (update_animation(joey))
+	{
+		joey->idle[i]->instances[joey->idle_frame[i]].enabled = false;
+		i++;
+		if (i == 6)
+			i = 0;
+		joey->idle[i]->instances[joey->idle_frame[i]].enabled = true;
+	}
 
+}
+
+int32_t	main(void)
+{
+	mlx_t			*mlx;
+	t_character		*joey;
+	mlx_image_t		*background;
+	// Start mlx
+	mlx = mlx_init(WIDTH, HEIGHT, "Test", true);
+	if (!mlx)
+        error();
+
+	//add white backgroud
+	background = mlx_new_image(mlx, WIDTH, HEIGHT);
+	if (!background)
+		error();
+	mlx_image_to_window(mlx, background, 0, 0);
+	ft_memset(background->pixels, 0xFFFFFFFF, WIDTH * HEIGHT * BPP);
+
+	joey = load_character(mlx);
+	mlx_loop_hook(mlx, character_idle_animation, joey);
 	mlx_loop(mlx);
+
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }

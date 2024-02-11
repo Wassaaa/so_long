@@ -12,6 +12,9 @@
 		"regex": "c",
 		"chrono": "c",
 		"variant": "c",
-		"__locale": "c"
+		"__locale": "c",
+		"mlx42.h": "c",
+		"stdlib.h": "c",
+		"queue": "c"
 	}
 }
