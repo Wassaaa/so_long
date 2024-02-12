@@ -6,13 +6,14 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/11 19:41:37 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/12 20:34:07 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 INCLUDES		=	./include
 
-SRCS			=	
+SRCS			=	ft_lstget.c\
+					
 
 B_SRCS			=	
 
