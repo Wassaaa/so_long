@@ -1,117 +1,183 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
+/*   Updated: 2024/02/13 01:51:54 by aklein           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <so_long.h>
 
 #define WIDTH 1280
 #define HEIGHT 1024
 
 #define	CHAR_SIZE 512
-
 #define TILE_SIZE 384
 
-#define BPP sizeof(int32_t)
-
-static void error(void)
+void	image_forward(void *image)
 {
-	puts(mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
+	mlx_image_t *img;
+
+	img = (mlx_image_t *)image;
+	img->instances[0].x += 7;
 }
 
-mlx_image_t	*get_img(t_game *game, char *path, int i)
+void	image_backwards(void *image)
 {
-	char			*path_start;
-	char			*nr;
-	char			*full_path;
-	mlx_texture_t	*texture;
-	mlx_image_t		*new_frame;
+	mlx_image_t *img;
 
-	nr = ft_itoa(i);
-	path_start = ft_strjoin(path, nr);
-	if (!path_start)
-		error();
-	full_path = ft_strjoin(path_start, ".png");
-	if (!full_path)
-		error();
-	texture = mlx_load_png(full_path);
-	if (!texture)
-		error();
-	new_frame = mlx_texture_to_image(game->mlx, texture);
-	if (!new_frame)
-		error();
-	free(path_start);
-	free(full_path);
-	free(nr);
-	mlx_delete_texture(texture);
-	return (new_frame);	
+	img = (mlx_image_t *)image;
+	img->instances[0].x -= 7; 
 }
 
-void	anim_to_window(mlx_t *mlx, t_list *frames)
+void	move_forward(t_game *game)
 {
-	mlx_image_t	*frame;
+	ft_lstiter(game->char_move->frames, image_forward);
+	ft_lstiter(game->char_idle->frames, image_forward);
+	ft_lstiter(game->char_roll->frames, image_forward);
+}
 
-	while (frames != NULL)
+void	move_backwards(t_game *game)
+{
+	ft_lstiter(game->char_move->frames, image_backwards);
+	ft_lstiter(game->char_idle->frames, image_backwards);
+	ft_lstiter(game->char_roll->frames, image_backwards);
+
+}
+
+int	update_animation(t_anim *a, double dt)
+{
+	if (a)
 	{
-		frame = (mlx_image_t *)frames->content;
-		mlx_image_to_window(mlx, frame, 0, 0);
-		frame->instances[0].enabled = false;
-		frames = frames->next;
+		a->accum += dt * 1000;
+		if (a->accum > a->frame_speed)
+		{
+			a->accum -= a->frame_speed;
+			a->cur_f++;
+			a->cur_f %= ft_lstsize(a->frames);
+			return (1);
+		}
 	}
-}
-
-t_anim	*load_animation(t_game *game, t_sprite sprite)
-{
-	t_anim			*anim;
-	int				i;
-	t_list			*new_frame;
-	mlx_image_t		*new_img;
-
-	anim = ft_calloc(1, sizeof(t_anim));
-	if (!anim)
-		error();
-	anim->frame_speed = sprite.frame_speed;
-	i = 0;
-	while (i < sprite.frame_count)
-	{	
-		new_img = get_img(game, sprite.f_path, i);
-		new_frame = ft_lstnew(new_img);
-		if (!new_frame)
-			error();
-		if (!mlx_resize_image(new_img, sprite.size, sprite.size))
-			error();
-		ft_lstadd_back(&anim->frames, new_frame);
-		i++;
-	}
-	anim_to_window(game->mlx, anim->frames);
-	return (anim);
-}
-
-int update_animation(t_anim *a, double dt) {
-  if (a) 
-  {
-    a->accum += dt * 1000;
-    if (a->accum > a->frame_speed)
-	{
-		a->accum -= a->frame_speed;
-		a->current_frame_num++;
-		a->current_frame_num %= ft_lstsize(a->frames);
-	  return (1);
-    }
-  }
-  return (0);
+	return (0);
 }
 
 void	character_idle_animation(void *my_game)
 {
-	static int				fps;
-	mlx_image_t				*img;
-	t_game					*game;
+	static int			fps;
+	mlx_image_t			*img;
+	t_game				*game;
+	t_anim				*anim;
+	t_list				*frames;
 
 	game = (t_game *)my_game;
+	anim = game->char_idle;
+	frames = anim->frames;
 	fps = 1000 / game->mlx->delta_time;
  	printf("\e[1;1H\e[2Jfps [%d]\n", fps);
-	img = (mlx_image_t *)ft_lstget(game->char_idle->frames, game->char_idle->current_frame_num)->content;
+	img = (mlx_image_t *)ft_lstget(frames, anim->cur_f)->content;
 	img->instances[0].enabled = false;
-	update_animation((t_anim *)game->char_idle, game->mlx->delta_time);
-	img = (mlx_image_t *)ft_lstget(game->char_idle->frames, game->char_idle->current_frame_num)->content;
-	img->instances[0].enabled = true;
+	if (anim->is_active)
+	{
+		update_animation((t_anim *)anim, game->mlx->delta_time);
+		img = (mlx_image_t *)ft_lstget(frames, anim->cur_f)->content;
+		img->instances[0].enabled = true;
+	}
+}
+
+void	character_move_animation(void *my_game)
+{
+	mlx_image_t			*img;
+	t_game				*game;
+	t_anim				*anim;
+	t_list				*frames;
+
+	game = (t_game *)my_game;
+	anim = game->char_move;
+	frames = anim->frames;
+	img = (mlx_image_t *)ft_lstget(frames, anim->cur_f)->content;
+	img->instances[0].enabled = false;
+	if (anim->is_active)
+	{
+		update_animation((t_anim *)anim, game->mlx->delta_time);
+		img = (mlx_image_t *)ft_lstget(frames, anim->cur_f)->content;
+		img->instances[0].enabled = true;
+	}
+}
+
+void	character_roll_animation(void *my_game)
+{
+	mlx_image_t			*img;
+	t_game				*game;
+	t_anim				*anim;
+	t_list				*frames;
+
+	game = (t_game *)my_game;
+	anim = game->char_roll;
+	frames = anim->frames;
+	img = (mlx_image_t *)ft_lstget(frames, anim->cur_f)->content;
+	img->instances[0].enabled = false;
+	if (anim->is_active)
+	{
+		if (update_animation((t_anim *)anim, game->mlx->delta_time))
+		{
+			if (anim->cur_f == 0)
+			{
+				anim->is_active = false;
+				return ;
+			}			
+		}
+		img = (mlx_image_t *)ft_lstget(frames, anim->cur_f)->content;
+		img->instances[0].enabled = true;
+	}
+}
+
+void	character_move(void *my_game)
+{
+	t_game	*game;
+
+	game = (t_game *)my_game;
+	if (game->char_roll->is_active)
+	{
+		character_roll_animation(game);
+		move_forward(game);
+		return ;
+	}
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+	{
+		game->char_idle->is_active = false;
+		game->char_move->is_active = true;
+		move_forward(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+		{
+			game->char_idle->is_active = false;
+			game->char_move->is_active = false;
+			game->char_roll->is_active = true;
+		}
+	}	
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+	{
+		game->char_idle->is_active = false;
+		game->char_move->is_active = true;
+		move_backwards(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+		{
+			game->char_idle->is_active = false;
+			game->char_move->is_active = false;
+			game->char_roll->is_active = true;
+		}
+	}
+	else
+	{
+		game->char_idle->is_active = true;
+		game->char_move->is_active = false;
+	}
+	character_move_animation(game);
+
+
 }
 
 t_game *init_game(mlx_t *mlx)
@@ -120,27 +186,8 @@ t_game *init_game(mlx_t *mlx)
 
 	game = ft_calloc(1, sizeof(t_game));
 	game->mlx = mlx;
-	game->char_size = 256;
+	game->char_size = CHAR_SIZE;
 	return (game);
-}
-
-t_sprite	new_sprite(char *path, int f_cnt, int f_spd, uint32_t size)
-{
-	t_sprite	sprite;
-
-	sprite.f_path = path;
-	sprite.frame_count = f_cnt;
-	sprite.frame_speed = f_spd;
-	sprite.size = size;
-	return (sprite);
-}
-
-void	get_animations(t_game *game)
-{
-	t_sprite	char_idle;
-
-	char_idle = new_sprite("./assets/idle_", 6, 100, game->char_size);
-	game->char_idle = load_animation(game, char_idle);
 }
 
 int32_t	main(void)
@@ -161,7 +208,8 @@ int32_t	main(void)
 		error();
 	ft_memset(background->pixels, 0xFFFFFFFF, WIDTH * HEIGHT * BPP);
 	get_animations(game);
-	mlx_loop_hook(mlx, character_idle_animation, (void *)game);
+	mlx_loop_hook(mlx, character_idle_animation, game);
+	mlx_loop_hook(mlx, character_move, game);
 	mlx_loop(mlx);
 
 	mlx_terminate(mlx);

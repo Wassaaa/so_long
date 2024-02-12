@@ -6,13 +6,16 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/12 20:34:07 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/13 01:35:30 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 INCLUDES		=	./include
 
 SRCS			=	ft_lstget.c\
+					anim_load.c\
+					error.c\
+					pixels.c\
 					
 
 B_SRCS			=	
