@@ -15,6 +15,7 @@
 		"__locale": "c",
 		"mlx42.h": "c",
 		"stdlib.h": "c",
-		"queue": "c"
+		"queue": "c",
+		"so_long.h": "c"
 	}
 }

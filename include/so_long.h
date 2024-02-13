@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 19:50:32 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/13 23:09:49 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,14 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define BPP sizeof(int32_t)
+# define WIDTH 1280
+# define HEIGHT 1024
+
+# define CHAR_SIZE 512
+# define TILE_SIZE 384
+
+# define BPP sizeof(int32_t)
+# define SPEED 10;
 
 typedef struct s_anim
 {
@@ -30,6 +37,7 @@ typedef struct s_anim
 	long int	frame_count;
 	bool		is_active;
 	bool		one_cycle;
+	bool		going_up;
 }				t_anim;
 
 typedef struct s_game
@@ -74,6 +82,7 @@ t_list	*ft_lstget(t_list *l, int n);
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 void	get_mirrored(mlx_image_t *dst, mlx_image_t *src);
 void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y);
+void	color_from_src(mlx_image_t *dst, mlx_image_t *src);
 
 //img moves
 void	image_right(void *image);

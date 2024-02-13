@@ -6,17 +6,11 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 21:07:22 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/13 23:11:17 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
-
-#define WIDTH 1280
-#define HEIGHT 1024
-
-#define	CHAR_SIZE 512
-#define TILE_SIZE 384
 
 void	iterate_frames(t_list *lst, int x, int y)
 {
@@ -113,13 +107,19 @@ void	character_move(void *my_game)
 	if (game->char_roll_right->is_active)
 	{
 		animate_character(game->char_roll_right, game->mlx->delta_time);
-		move_right(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+			move_down(game);
+		else
+			move_right(game);
 		return ;
 	}
 	if (game->char_roll_left->is_active)
 	{
 		animate_character(game->char_roll_left, game->mlx->delta_time);
-		move_left(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+			move_up(game);
+		else
+			move_left(game);
 		return ;
 	}
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_D))
@@ -140,11 +140,15 @@ void	character_move(void *my_game)
 	{
 		toggle_states(game, game->char_down);
 		move_down(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+			toggle_states(game, game->char_roll_right);
 	}
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 	{
 		toggle_states(game, game->char_up);
-		//move_up(game);
+		move_up(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+			toggle_states(game, game->char_roll_left);
 	}
 	else
 		toggle_states(game, game->char_idle);

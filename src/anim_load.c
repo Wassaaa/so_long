@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 19:51:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/13 22:57:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,24 @@ void	add_to_anim_frames(t_list *dest, t_list *src)
 		src = src->next;
 	}
 }
+//void (*f)(void *)
+void	color_anim(t_list *dest, t_list *src)
+{
+	mlx_image_t	*destination;
+	mlx_image_t	*source;
+
+	if (ft_lstsize(dest) != ft_lstsize(src))
+		return ;
+	while (dest)
+	{
+		destination = (mlx_image_t *)dest->content;
+		source = (mlx_image_t *)src->content;
+		color_from_src(destination, source);
+		dest = dest->next;
+		src = src->next;
+	}
+	
+}
 
 void	load_char_up(t_game *game)
 {
@@ -136,8 +154,9 @@ void	load_char_up(t_game *game)
 	game->char_up = load_animation(game, walk);
 	game->head = load_animation(game, head);
 	game->hair = load_animation(game, hair);
+	color_anim(game->hair->frames, game->char_up->frames);
 	add_to_anim_frames(game->char_up->frames, game->head->frames);
-	add_to_anim_frames(game->char_up->frames, game->hair->frames);
+	add_to_anim_frames(game->char_up->frames, game->hair->frames); 
 }
 
 void	get_animations(t_game *game)
@@ -146,7 +165,7 @@ void	get_animations(t_game *game)
 	t_sprite	char_walk;
 	t_sprite	char_roll;
 
-	char_idle = new_sprite("./assets/full/idle_", 6, 120, 0);
+	char_idle = new_sprite("./assets/full/idle_", 6, 140, 0);
 	game->char_idle = load_animation(game, char_idle);
 	char_walk = new_sprite("./assets/full/walk_", 8, 100, 0);
 	game->char_right = load_animation(game, char_walk);
