@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 01:51:54 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/13 02:30:16 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ void	character_move(void *my_game)
 		game->char_move->is_active = false;
 	}
 	character_move_animation(game);
+	character_idle_animation(game);
 
 
 }
@@ -208,7 +209,6 @@ int32_t	main(void)
 		error();
 	ft_memset(background->pixels, 0xFFFFFFFF, WIDTH * HEIGHT * BPP);
 	get_animations(game);
-	mlx_loop_hook(mlx, character_idle_animation, game);
 	mlx_loop_hook(mlx, character_move, game);
 	mlx_loop(mlx);
 
