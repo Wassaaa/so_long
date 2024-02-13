@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 01:51:16 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/13 02:46:58 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,10 @@ void	get_animations(t_game *game)
 	t_sprite	char_walk;
 	t_sprite	char_roll;
 
-	char_idle = new_sprite("./assets/idle_", 6, 100, game->char_size);
+	char_idle = new_sprite("./assets/full/idle_", 6, 100, game->char_size);
 	game->char_idle = load_animation(game, char_idle);
-	char_walk = new_sprite("./assets/walk_", 8, 100, game->char_size);
+	char_walk = new_sprite("./assets/full/walk_", 8, 100, game->char_size);
 	game->char_move = load_animation(game, char_walk);
-	char_roll = new_sprite("./assets/roll_", 5, 100, game->char_size);
+	char_roll = new_sprite("./assets/full/roll_", 5, 100, game->char_size);
 	game->char_roll = load_animation(game, char_roll);
 }
