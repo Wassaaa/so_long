@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 01:43:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/13 21:13:18 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,16 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	return (color);	
 }
 
+int	not_transparent(uint32_t color)
+{
+	return (color != 0x00000000);
+}
+
 void	get_mirrored(mlx_image_t *dst, mlx_image_t *src)
 {
 	uint32_t	i;
 	uint32_t	j;
-	int32_t		color;
+	uint32_t	color;
 
 	i = 0;
 	while (i < src->width)
@@ -65,11 +70,50 @@ void	get_mirrored(mlx_image_t *dst, mlx_image_t *src)
 	}
 }
 
+//
+t_list	*get_recolor_list(void)
+{
+	t_recolor	*recolor;
+	t_list		*recolors;
+
+	recolors = NULL;
+	recolor = ft_calloc(1, sizeof(t_recolor));
+	recolor->remove = 0xEFEEEFFF;
+	recolor->replace = 0x5C62E6FF;
+	ft_lstadd_back(&recolors, ft_lstnew(recolor));
+	recolor = ft_calloc(1, sizeof(t_recolor));
+	recolor->remove = 0xA7A8A7FF;
+	recolor->replace = 0x4045A0FF;
+	ft_lstadd_back(&recolors, ft_lstnew(recolor));
+	recolor = ft_calloc(1, sizeof(t_recolor));
+	recolor->remove = 0x00FF00FF;
+	recolor->replace = 0x00000000;
+	ft_lstadd_back(&recolors, ft_lstnew(recolor));
+	return (recolors);
+}
+
+
+uint32_t	check_recolor(uint32_t color)
+{
+	t_recolor	*recolor;
+	t_list		*swaps;
+
+	swaps = get_recolor_list();
+	while (swaps)
+	{
+		recolor = (t_recolor *)swaps->content;
+		if (color == recolor->remove)
+			return (recolor->replace);
+		swaps = swaps->next;
+	}
+	return (color);
+}
+
 void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y)
 {
 	uint32_t	i;
 	uint32_t	j;
-	int32_t		color;
+	uint32_t	color;
 
 	i = 0;
 	while (i < src->width)
@@ -78,7 +122,8 @@ void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y)
 		while (j < src->height)
 		{
 			color = get_pixel_color(src, i, j);
-			if (valid_pixel_spot(dst, x + i, y + j))
+			color = check_recolor(color);
+			if (valid_pixel_spot(dst, x + i, y + j) && not_transparent(color))
 				mlx_put_pixel(dst, x + i, y + j, color);
 			j++;
 		}
