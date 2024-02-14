@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 23:09:49 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/14 17:50:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_game
 	mlx_image_t	*tile;
 	mlx_image_t	*rock;
 	mlx_image_t *item;
+	t_list		*char_anims;
 	t_anim		*char_idle;
 	t_anim		*char_right;
 	t_anim		*char_left;
@@ -96,7 +97,7 @@ void	move_left(t_game *game);
 void	move_up(t_game *game);
 void	move_down(t_game *game);
 
-void	sync_char_frames(t_game *game);
+void	sync_anim_frames(mlx_image_t *base, t_list *anims);
 
 void error(void);
 

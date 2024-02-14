@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 22:57:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/14 17:10:31 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ void	frames_to_window(mlx_t *mlx, t_list *frames)
 	}
 }
 
-t_anim	*load_animation(t_game *game, t_sprite sprite)
+t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base)
 {
 	t_anim			*anim;
 	int				i;
 	t_list			*new_frame;
 	mlx_image_t		*new_img;
+	t_list			*new_anim;
 
 	anim = ft_calloc(1, sizeof(t_anim));
 	if (!anim)
@@ -98,12 +99,16 @@ t_anim	*load_animation(t_game *game, t_sprite sprite)
 	while (i < sprite.frame_count)
 	{
 		new_img = get_img(game, sprite.f_path, i++, sprite.mirrored);
+		new_frame = ft_lstnew(new_img);
 		if (!new_frame)
 			error();
-		new_frame = ft_lstnew(new_img);
 		ft_lstadd_back(&anim->frames, new_frame);
 	}
 	frames_to_window(game->mlx, anim->frames);
+	new_anim = ft_lstnew(anim);
+	if (!new_anim)
+		error();
+	ft_lstadd_back(anim_base, new_anim);
 	return (anim);
 }
 
@@ -151,12 +156,12 @@ void	load_char_up(t_game *game)
 	walk = new_sprite("./assets/full/walk_", 8, 100, 1);
 	head = new_sprite("./assets/head/walk_", 8, 100, 1);
 	hair = new_sprite("./assets/hair/walk_", 8, 100, 1);
-	game->char_up = load_animation(game, walk);
-	game->head = load_animation(game, head);
-	game->hair = load_animation(game, hair);
+	game->char_up = load_animation(game, walk, &game->char_anims);
+	game->head = load_animation(game, head, &game->char_anims);
+	game->hair = load_animation(game, hair, &game->char_anims);
 	color_anim(game->hair->frames, game->char_up->frames);
 	add_to_anim_frames(game->char_up->frames, game->head->frames);
-	add_to_anim_frames(game->char_up->frames, game->hair->frames); 
+	add_to_anim_frames(game->char_up->frames, game->hair->frames);
 }
 
 void	get_animations(t_game *game)
@@ -166,16 +171,16 @@ void	get_animations(t_game *game)
 	t_sprite	char_roll;
 
 	char_idle = new_sprite("./assets/full/idle_", 6, 140, 0);
-	game->char_idle = load_animation(game, char_idle);
+	game->char_idle = load_animation(game, char_idle, &game->char_anims);
 	char_walk = new_sprite("./assets/full/walk_", 8, 100, 0);
-	game->char_right = load_animation(game, char_walk);
-	game->char_down = load_animation(game, char_walk);
+	game->char_right = load_animation(game, char_walk, &game->char_anims);
+	game->char_down = load_animation(game, char_walk, &game->char_anims);
 	char_walk.mirrored = 1;
-	game->char_left = load_animation(game, char_walk);
+	game->char_left = load_animation(game, char_walk, &game->char_anims);
 	char_roll = new_sprite("./assets/full/roll_", 5, 100, 0);
-	game->char_roll_right = load_animation(game, char_roll);
+	game->char_roll_right = load_animation(game, char_roll, &game->char_anims);
 	char_roll.mirrored = 1;
-	game->char_roll_left = load_animation(game, char_roll);
+	game->char_roll_left = load_animation(game, char_roll, &game->char_anims);
 	game->char_roll_right->one_cycle = true;
 	game->char_roll_left->one_cycle = true;
 	load_char_up(game);

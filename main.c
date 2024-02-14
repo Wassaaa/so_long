@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 23:11:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/14 17:48:31 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,20 @@ void	iterate_frames(t_list *lst, int x, int y)
 	}
 }
 
-void	sync_char_frames(t_game *game)
+void	sync_anim_frames(mlx_image_t *base, t_list *anims)
 {
-	int	x;
-	int	y;
-	mlx_image_t	*base_img;
+	int		x;
+	int		y;
+	t_anim	*anim;
 
-	base_img = (mlx_image_t *)game->char_idle->frames->content;
-	x = base_img->instances[0].x;
-	y = base_img->instances[0].y;
-	iterate_frames(game->char_idle->frames, x, y);
-	iterate_frames(game->char_right->frames, x, y);
-	iterate_frames(game->char_left->frames, x, y);
-	iterate_frames(game->char_up->frames, x, y);
-	iterate_frames(game->char_down->frames, x, y);
-	iterate_frames(game->char_roll_right->frames, x, y);
-	iterate_frames(game->char_roll_left->frames, x, y);
+	x = base->instances[0].x;
+	y = base->instances[0].y;
+	while (anims != NULL)
+	{
+		anim = (t_anim *)anims->content;
+		iterate_frames(anim->frames, x, y);
+		anims = anims->next;
+	}
 }
 
 int	update_animation(t_anim *a, double dt)
@@ -82,14 +80,21 @@ void	animate_character(t_anim *anim, double dt)
 
 void	turn_others_off(t_game *game, t_anim *current)
 {
-	game->char_idle->is_active = false;
-	game->char_right->is_active = false;
-	game->char_left->is_active = false;
-	game->char_up->is_active = false;
-	game->char_down->is_active = false;
-	game->char_roll_right->is_active = false;
-	game->char_roll_left->is_active = false;
-	current->is_active = true;
+	t_list	*temp_anims;
+	t_anim	*iter;
+
+	temp_anims = game->char_anims;
+	while (temp_anims != NULL)
+	{
+		iter = (t_anim *)temp_anims->content;
+		if (iter == current)
+			iter->is_active = true;
+		else
+			iter->is_active = false;
+		temp_anims = temp_anims->next;
+	}
+
+
 }
 
 
