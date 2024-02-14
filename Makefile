@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/13 18:55:37 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/14 21:22:01 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ MLX42_DIR		= ./MLX42
 ################################################################################
 LIBFT			=	./libft/libft.a
 LIBFT_DIR		=	./libft
-LIBFT_INCLUDES	=	./libft
+LIBFT_INCLUDES	=	./libft/include
 
 ################################################################################
 # MANDATORY
@@ -87,7 +87,7 @@ $(M_ARCHIVE): $(OBJECTS)
 					mkdir -p $(@D)
 					ar rcs $(M_ARCHIVE) $(OBJECTS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(M_HEADER)
 					mkdir -p $(@D)
 					$(CC_FULL) -c $< -o $@
 

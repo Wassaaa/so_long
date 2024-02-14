@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 18:13:33 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/14 21:34:38 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	update_animation(t_anim *a, double dt)
 		{
 			a->accum -= a->frame_speed;
 			a->cur_f++;
-			a->cur_f %= ft_lstsize(a->frames);
+			a->cur_f %= a->frame_count;
 			return (1);
 		}
 	}
@@ -172,7 +172,7 @@ void	character_move(void *my_game)
 	animation_loop(game->char_anims, game->mlx->delta_time);
 	static int fps;
 	fps = 1000 * game->mlx->delta_time;
-	printf("\e[1;1H\e[2Jfps [%d]\n", fps);
+	ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
 }
 
 t_game *init_game(mlx_t *mlx)
@@ -201,7 +201,7 @@ int32_t	main(void)
 		error();
 	if (mlx_image_to_window(mlx, background, 0, 0) < 0)
 		error();
-	ft_memset(background->pixels, 0xFFFFFFFF, WIDTH * HEIGHT * BPP);
+	ft_memset(background->pixels, 0x00000000, WIDTH * HEIGHT * BPP);
 	get_animations(game);
 	mlx_loop_hook(mlx, character_move, game);
 	mlx_loop(mlx);

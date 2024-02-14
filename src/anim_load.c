@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 18:50:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/14 19:26:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,16 @@ void	frames_to_window(mlx_t *mlx, t_list *frames)
 	}
 }
 
+t_list *safe_frame(void *content)
+{
+	t_list *frame;
+
+	frame = ft_lstnew(content);
+	if (!frame)
+		error();
+	return (frame);
+}
+
 t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base)
 {
 	t_anim			*anim;
@@ -95,19 +105,16 @@ t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base)
 	if (!anim)
 		error();
 	anim->frame_speed = sprite.frame_speed;
+	anim->frame_count = sprite.frame_count;
 	i = 0;
 	while (i < sprite.frame_count)
 	{
 		new_img = get_img(game, sprite.f_path, i++, sprite.mirrored);
-		new_frame = ft_lstnew(new_img);
-		if (!new_frame)
-			error();
+		new_frame = safe_frame(new_img);
 		ft_lstadd_back(&anim->frames, new_frame);
 	}
 	frames_to_window(game->mlx, anim->frames);
-	new_anim = ft_lstnew(anim);
-	if (!new_anim)
-		error();
+	new_anim = safe_frame(anim);
 	ft_lstadd_back(anim_base, new_anim);
 	return (anim);
 }

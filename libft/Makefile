@@ -6,14 +6,9 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/29 16:17:19 by aklein            #+#    #+#              #
-#    Updated: 2024/01/30 00:33:20 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/14 21:18:10 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-NAME 		=	libft.a
-OBJ_DIR		=	./obj
-
-CC_DEBUG	=	-g # -fsanitize=leak
 
 SRCS 		=	ft_isalpha.c \
 				ft_isdigit.c \
@@ -59,18 +54,70 @@ SRCS 		=	ft_isalpha.c \
 				ft_lstiter.c\
 				ft_lstmap.c\
 
-OBJECTS 	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+FT_PF_SRC	=	ft_printf.c \
+				ft_safe_putnbr_base_ul_fd.c \
+				ft_safe_putnbr_ul_fd.c \
+				ft_safe_putnbr_fd.c \
+				ft_safe_putchar_fd.c \
+				ft_safe_putstr_fd.c \
+				prf_print_c.c \
+				prf_print_s.c \
+				prf_print_p.c \
+				prf_print_d.c \
+				prf_print_u.c \
+				prf_print_x.c \
+				prf_parse_spec.c \
+				prf_init_print.c \
+				count_digits.c \
 
-CFLAGS 		+= -Wall -Wextra -Werror
+GNL_SRC		=	get_next_line.c\
+				get_next_line_utils.c
+
+################################################################################
+# GENERAL
+################################################################################
+OBJ_DIR		=	./obj
+INCLUDES	=	./include
+
+################################################################################
+# COMPILATION
+################################################################################
+CC				=	gcc
+CC_STRICT		=	-Wall -Wextra -Werror
+CC_DEBUG		=	-g #-fsanitize=leak
+HEADERS			=	-I $(INCLUDES)
+CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
+
+################################################################################
+# LIBFT
+################################################################################
+NAME 		=	libft.a
+LIBFT_DIR	=	./src
+OBJECTS		=	$(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
+
+################################################################################
+# FT_PRINTF
+################################################################################
+FT_PF_DIR	=	./ft_printf
+FT_PF_OBJ	=	$(addprefix $(OBJ_DIR)/, $(FT_PF_SRC:%.c=%.o))
+
+################################################################################
+# GNL
+################################################################################
+GNL_DIR		=	./ft_get_next_line
+GNL_OBJ		=	$(addprefix $(OBJ_DIR)/, $(GNL_SRC:%.c=%.o))
+
+# vpath for finding source files
+vpath %.c $(LIBFT_DIR) $(FT_PF_DIR) $(GNL_DIR)
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
+$(NAME): $(OBJECTS) $(FT_PF_OBJ) $(GNL_OBJ)
 		ar -rcs $@ $^
 
 $(OBJ_DIR)/%.o: %.c
 		@mkdir -p $(@D)
-		gcc $(CC_DEBUG) -I . -c $< -o $@
+		$(CC_FULL) -c $< -o $@
 
 clean:
 		rm -rf $(OBJ_DIR)
