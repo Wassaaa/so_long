@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 17:48:31 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/14 18:13:33 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,18 @@ void	animate_character(t_anim *anim, double dt)
 			}
 		img = ft_lstget(anim->frames, anim->cur_f)->content;
 		img->instances[0].enabled = true;
+	}
+}
+
+void	animation_loop(t_list *anims, double dt)
+{
+	t_anim	*anim;
+
+	while (anims != NULL)
+	{
+		anim = (t_anim *)anims->content;
+		animate_character(anim, dt);
+		anims = anims->next;
 	}
 }
 
@@ -157,13 +169,10 @@ void	character_move(void *my_game)
 	}
 	else
 		toggle_states(game, game->char_idle);
-	animate_character(game->char_idle, game->mlx->delta_time);
-	animate_character(game->char_right, game->mlx->delta_time);
-	animate_character(game->char_left, game->mlx->delta_time);
-	animate_character(game->char_up, game->mlx->delta_time);
-	animate_character(game->char_down, game->mlx->delta_time);
-	animate_character(game->char_idle, game->mlx->delta_time);
-
+	animation_loop(game->char_anims, game->mlx->delta_time);
+	static int fps;
+	fps = 1000 * game->mlx->delta_time;
+	printf("\e[1;1H\e[2Jfps [%d]\n", fps);
 }
 
 t_game *init_game(mlx_t *mlx)
@@ -192,7 +201,7 @@ int32_t	main(void)
 		error();
 	if (mlx_image_to_window(mlx, background, 0, 0) < 0)
 		error();
-	ft_memset(background->pixels, 0x00000000, WIDTH * HEIGHT * BPP);
+	ft_memset(background->pixels, 0xFFFFFFFF, WIDTH * HEIGHT * BPP);
 	get_animations(game);
 	mlx_loop_hook(mlx, character_move, game);
 	mlx_loop(mlx);
