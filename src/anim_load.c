@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 19:26:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 01:20:50 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	frames_to_window(mlx_t *mlx, t_list *frames)
 	}
 }
 
-t_list *safe_frame(void *content)
+t_list *safe_lstnew(void *content)
 {
 	t_list *frame;
 
@@ -97,9 +97,7 @@ t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base)
 {
 	t_anim			*anim;
 	int				i;
-	t_list			*new_frame;
 	mlx_image_t		*new_img;
-	t_list			*new_anim;
 
 	anim = ft_calloc(1, sizeof(t_anim));
 	if (!anim)
@@ -110,12 +108,10 @@ t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base)
 	while (i < sprite.frame_count)
 	{
 		new_img = get_img(game, sprite.f_path, i++, sprite.mirrored);
-		new_frame = safe_frame(new_img);
-		ft_lstadd_back(&anim->frames, new_frame);
+		ft_lstadd_back(&anim->frames, safe_lstnew(new_img));
 	}
 	frames_to_window(game->mlx, anim->frames);
-	new_anim = safe_frame(anim);
-	ft_lstadd_back(anim_base, new_anim);
+	ft_lstadd_back(anim_base, safe_lstnew(anim));
 	return (anim);
 }
 
@@ -135,7 +131,7 @@ void	add_to_anim_frames(t_list *dest, t_list *src)
 		src = src->next;
 	}
 }
-//void (*f)(void *)
+
 void	color_anim(t_list *dest, t_list *src)
 {
 	mlx_image_t	*destination;
@@ -191,4 +187,17 @@ void	get_animations(t_game *game)
 	game->char_roll_right->one_cycle = true;
 	game->char_roll_left->one_cycle = true;
 	load_char_up(game);
+}
+
+void	load_map_textures(t_game *game)
+{
+	game->free = get_img(game, "./assets/ground_", 2, 0);
+	game->wall = get_img(game, "./assets/rock_", 3, 0);
+	game->coll = get_img(game, "./assets/donut_", 0, 0);
+	game->exit = get_img(game, "./assets/frog_", 0, 0);
+	if (!mlx_resize_image(game->free, game->tile_size, game->tile_size) ||\
+	!mlx_resize_image(game->exit, game->tile_size, game->tile_size) ||\
+	!mlx_resize_image(game->wall, game->tile_size, game->tile_size) ||\
+	!mlx_resize_image(game->coll, game->coll_size, game->coll_size))
+		error();
 }

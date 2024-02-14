@@ -16,6 +16,27 @@
 		},
 		"detail": "compiler: /usr/bin/gcc"
 	  },
+	  {
+		"type": "cppbuild",
+		"label": "single_file",
+		"command": "/usr/bin/gcc",
+		"args": [
+			"-fdiagnostics-color=always",
+			"-g",
+			"${file}",
+			"libft/libft.a",
+			"-o",
+			"../src/a.out",
+			"-I../include"
+		],
+		"options": {"cwd": "${workspaceFolder}"},
+		"problemMatcher": ["$gcc"],
+		"group": {
+			"kind": "build",
+			"isDefault": false
+		},
+		"detail": "singlefile"
+	}
 	],
 	"inputs": [
 		{

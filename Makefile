@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/14 21:22:01 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/14 22:18:05 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ SRCS			=	ft_lstget.c\
 					pixels.c\
 					img_moves.c\
 					char_moves.c\
+					map.c\
+					
 					
 
 B_SRCS			=	

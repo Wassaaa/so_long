@@ -17,6 +17,9 @@
 		"stdlib.h": "c",
 		"queue": "c",
 		"so_long.h": "c",
-		"get_next_line.h": "c"
-	}
+		"get_next_line.h": "c",
+		"*.tcc": "c",
+		"istream": "c"
+	},
+	"cmake.configureOnOpen": false
 }

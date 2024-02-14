@@ -6,27 +6,34 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 21:37:40 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 01:25:47 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-#include <libft.h>
-#include <MLX42/MLX42.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
+# include <MLX42/MLX42.h>
+# include <libft.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 # define WIDTH 1280
 # define HEIGHT 1024
 
-# define CHAR_SIZE 512
-# define TILE_SIZE 384
+# define CHAR_SIZE 250
+# define TILE_SIZE 98
+# define COLL_SIZE 80
 
 # define BPP sizeof(int32_t)
-# define SPEED 10;
+# define SPEED 3;
+
+# define EMPTY 0
+# define WALL 1
+# define COLL 2
+# define EXIT 3
+# define PLAYER 4
 
 typedef struct s_anim
 {
@@ -40,12 +47,29 @@ typedef struct s_anim
 	bool		going_up;
 }				t_anim;
 
+typedef struct s_map_element
+{
+	int			type;
+	int			x;
+	int			y;
+	int			instance;
+	t_anim		*anim;
+	mlx_image_t	*img;
+}				t_map_element;
+
+typedef struct s_map
+{
+	t_list		*elements;
+}				t_map;
+
 typedef struct s_game
 {
 	mlx_t		*mlx;
-	mlx_image_t	*tile;
-	mlx_image_t	*rock;
-	mlx_image_t *item;
+	mlx_image_t	*free;
+	mlx_image_t	*wall;
+	mlx_image_t	*coll;
+	mlx_image_t	*exit;
+	t_map		*map;
 	t_list		*char_anims;
 	t_anim		*char_idle;
 	t_anim		*char_right;
@@ -59,7 +83,7 @@ typedef struct s_game
 	int			game_status;
 	uint32_t	char_size;
 	uint32_t	tile_size;
-	uint32_t	item_size;
+	uint32_t	coll_size;
 }				t_game;
 
 typedef struct s_sprite
@@ -67,38 +91,39 @@ typedef struct s_sprite
 	char		*f_path;
 	int			frame_count;
 	int			frame_speed;
-	int			mirrored;			
+	int			mirrored;
 }				t_sprite;
 
-typedef struct s_recolor
-{
-	uint32_t	remove;
-	uint32_t	replace;
-}				t_recolor;
+void			get_animations(t_game *game);
+t_list			*ft_lstget(t_list *l, int n);
+t_list			*safe_lstnew(void *content);
 
-void	get_animations(t_game *game);
-t_list	*ft_lstget(t_list *l, int n);
+// pixels
+int32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+void			get_mirrored(mlx_image_t *dst, mlx_image_t *src);
+void			img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y);
+void			color_from_src(mlx_image_t *dst, mlx_image_t *src);
 
-//pixels
-int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
-void	get_mirrored(mlx_image_t *dst, mlx_image_t *src);
-void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y);
-void	color_from_src(mlx_image_t *dst, mlx_image_t *src);
+// img moves
+void			image_right(void *image);
+void			image_left(void *image);
+void			image_up(void *image);
+void			image_down(void *image);
 
-//img moves
-void	image_right(void *image);
-void	image_left(void *image);
-void	image_up(void *image);
-void	image_down(void *image);
+// char moves
+void			move_right(t_game *game);
+void			move_left(t_game *game);
+void			move_up(t_game *game);
+void			move_down(t_game *game);
 
-//char moves
-void	move_right(t_game *game);
-void	move_left(t_game *game);
-void	move_up(t_game *game);
-void	move_down(t_game *game);
+void			sync_anim_frames(mlx_image_t *base, t_list *anims);
 
-void	sync_anim_frames(mlx_image_t *base, t_list *anims);
+void			error(void);
 
-void error(void);
+void			read_map(t_game *game, char *map_file);
+
+// new map stuff
+void			fill_elements(t_game *game, char *line, int y);
+void			load_map_textures(t_game *game);
 
 #endif

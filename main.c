@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 21:34:38 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 01:21:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	update_animation(t_anim *a, double dt)
 	if (a)
 	{
 		a->accum += dt * 1000;
+		if (a->accum > a->frame_speed * 2)
+			a->accum = a->frame_speed + 1;
 		if (a->accum > a->frame_speed)
 		{
 			a->accum -= a->frame_speed;
@@ -108,8 +110,6 @@ void	turn_others_off(t_game *game, t_anim *current)
 
 
 }
-
-
 
 void	toggle_states(t_game *game, t_anim *current)
 {
@@ -182,7 +182,24 @@ t_game *init_game(mlx_t *mlx)
 	game = ft_calloc(1, sizeof(t_game));
 	game->mlx = mlx;
 	game->char_size = CHAR_SIZE;
+	game->tile_size = TILE_SIZE;
+	game->coll_size = COLL_SIZE;
+	game->map = ft_calloc(1, sizeof(t_map));
 	return (game);
+}
+
+void	draw_map(t_game *game)
+{
+	t_map_element	*el;
+	t_list			*tile;
+
+	tile = game->map->elements;
+	while (tile)
+	{
+		el = (t_map_element *)tile->content;
+		el->instance = mlx_image_to_window(game->mlx, el->img, el->x * TILE_SIZE, el->y * TILE_SIZE);
+		tile = tile->next;
+	}
 }
 
 int32_t	main(void)
@@ -195,13 +212,16 @@ int32_t	main(void)
 	mlx = mlx_init(WIDTH, HEIGHT, "Test", true);
 	if (!mlx)
         error();
-	game = init_game(mlx);	
 	background = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!background)
 		error();
 	if (mlx_image_to_window(mlx, background, 0, 0) < 0)
 		error();
 	ft_memset(background->pixels, 0x00000000, WIDTH * HEIGHT * BPP);
+	game = init_game(mlx);
+	load_map_textures(game);
+	read_map(game, "./maps/map.ber");
+	draw_map(game);
 	get_animations(game);
 	mlx_loop_hook(mlx, character_move, game);
 	mlx_loop(mlx);
