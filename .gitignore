@@ -3,3 +3,4 @@ archives/
 libft/libft.a
 MLX42/build/
 so_long
+*.dSYM/

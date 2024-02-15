@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 01:25:47 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 18:16:01 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@
 # define WIDTH 1280
 # define HEIGHT 1024
 
-# define CHAR_SIZE 250
+# define CHAR_SIZE 512
 # define TILE_SIZE 98
 # define COLL_SIZE 80
 
 # define BPP sizeof(int32_t)
-# define SPEED 3;
+# define SPEED 5;
 
 # define EMPTY 0
 # define WALL 1

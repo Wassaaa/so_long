@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 16:03:47 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 18:09:41 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	iterate_frames(t_list *lst, int x, int y)
 	{
 		img = (mlx_image_t *)lst->content;
 		img->instances[0].x = x;
-		img->instances[0].y = y;		
+		img->instances[0].y = y;
 		lst = lst->next;
 	}
 }
@@ -145,7 +145,7 @@ void	character_move(void *my_game)
 		move_right(game);
 		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
 			toggle_states(game, game->char_roll_right);
-	}	
+	}
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
 	{
 		toggle_states(game, game->char_left);
@@ -170,10 +170,10 @@ void	character_move(void *my_game)
 	else
 		toggle_states(game, game->char_idle);
 	animation_loop(game->char_anims, game->mlx->delta_time);
-	// static int fps;
-	// fps = 1000 * game->mlx->delta_time;
-	// ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
-	ft_printf("random: [%d]\n", rand() % 100);
+	static int fps;
+	fps = 1000 * game->mlx->delta_time;
+	ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
+	// ft_printf("random: [%d]\n", rand() % 100);
 }
 
 t_game *init_game(mlx_t *mlx)

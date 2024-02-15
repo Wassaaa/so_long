@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/14 22:18:05 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/15 18:08:27 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,8 @@ SRCS			=	ft_lstget.c\
 					img_moves.c\
 					char_moves.c\
 					map.c\
-					
-					
 
-B_SRCS			=	
+B_SRCS			=
 
 
 ################################################################################
@@ -37,7 +35,9 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
 ################################################################################
 # MLX
 ################################################################################
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+
 MLX42_DIR		= ./MLX42
 
 ################################################################################
@@ -85,7 +85,7 @@ $(NAME): $(LIBFT) $(M_ARCHIVE) $(M_MAIN)
 $(LIBFT):
 					make -C $(LIBFT_DIR)
 
-$(M_ARCHIVE): $(OBJECTS) 
+$(M_ARCHIVE): $(OBJECTS)
 					mkdir -p $(@D)
 					ar rcs $(M_ARCHIVE) $(OBJECTS)
 
@@ -160,10 +160,10 @@ vglog_clean: fclean
 ################################################################################
 # NORM
 ################################################################################
-norm: 
+norm:
 	norminette $(SRC_DIR) $(B_DIR) $(INCLUDES) $(LIBFT_DIR) | grep -v "OK!" || true
 
-norm2: 
+norm2:
 	norminette $(SRC_DIR) $(B_DIR) $(INCLUDES) $(LIBFT_DIR)
 
 ################################################################################
