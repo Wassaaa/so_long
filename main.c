@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 01:21:34 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 15:51:30 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,7 @@ void	character_move(void *my_game)
 	static int fps;
 	fps = 1000 * game->mlx->delta_time;
 	ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
+	ft_printf("random: [%d]\n", rand() % 3);
 }
 
 t_game *init_game(mlx_t *mlx)
@@ -197,6 +198,7 @@ void	draw_map(t_game *game)
 	while (tile)
 	{
 		el = (t_map_element *)tile->content;
+		mlx_image_to_window(game->mlx, game->free, el->x * TILE_SIZE, el->y * TILE_SIZE);
 		el->instance = mlx_image_to_window(game->mlx, el->img, el->x * TILE_SIZE, el->y * TILE_SIZE);
 		tile = tile->next;
 	}
@@ -223,9 +225,9 @@ int32_t	main(void)
 	read_map(game, "./maps/map.ber");
 	draw_map(game);
 	get_animations(game);
+	srand(mlx_get_time());
 	mlx_loop_hook(mlx, character_move, game);
 	mlx_loop(mlx);
-
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
 }
