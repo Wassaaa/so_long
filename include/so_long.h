@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 19:14:37 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 23:20:05 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@
 # define CHAR_SIZE 512
 # define TILE_SIZE 98
 # define COLL_SIZE 80
+
+# define WALL_C 3
+# define EXIT_C 1
+# define FREE_C 3
+# define COLL_C 1
 
 # define BPP sizeof(int32_t)
 # define SPEED 5;
@@ -52,8 +57,9 @@ typedef struct s_map_element
 	int			x;
 	int			y;
 	int			instance;
+	int			img_count;
 	t_anim		*anim;
-	mlx_image_t	*img;
+	t_list		*images;
 }				t_map_element;
 
 typedef struct s_map
@@ -64,12 +70,12 @@ typedef struct s_map
 typedef struct s_game
 {
 	mlx_t		*mlx;
-	mlx_image_t	*free;
-	mlx_image_t	*wall;
-	mlx_image_t	*coll;
-	mlx_image_t	*exit;
 	t_map		*map;
 	t_list		*char_anims;
+	t_list		*free_imgs;
+	t_list		*wall_imgs;
+	t_list		*coll_imgs;
+	t_list		*exit_imgs;
 	t_anim		*char_idle;
 	t_anim		*char_right;
 	t_anim		*char_left;

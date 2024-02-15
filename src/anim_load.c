@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 01:20:50 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 23:24:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void	color_anim(t_list *dest, t_list *src)
 		dest = dest->next;
 		src = src->next;
 	}
-	
+
 }
 
 void	load_char_up(t_game *game)
@@ -189,15 +189,29 @@ void	get_animations(t_game *game)
 	load_char_up(game);
 }
 
+void	load_tiles(t_game *game, t_list **type, char *path, int img_count)
+{
+	t_list		*list;
+	mlx_image_t	*img;
+	int			i;
+
+	i = 0;
+	while (i < img_count)
+	{
+		img = get_img(game, path, i, 0);
+		if (!mlx_resize_image(img, game->tile_size, game->tile_size))
+			error();
+		list = safe_lstnew(img);
+		ft_lstadd_back(type, list);
+		i++;
+	}
+}
+
 void	load_map_textures(t_game *game)
 {
-	game->free = get_img(game, "./assets/ground_", 2, 0);
-	game->wall = get_img(game, "./assets/rock_", 3, 0);
-	game->coll = get_img(game, "./assets/donut_", 0, 0);
-	game->exit = get_img(game, "./assets/frog_", 0, 0);
-	if (!mlx_resize_image(game->free, game->tile_size, game->tile_size) ||\
-	!mlx_resize_image(game->exit, game->tile_size, game->tile_size) ||\
-	!mlx_resize_image(game->wall, game->tile_size, game->tile_size) ||\
-	!mlx_resize_image(game->coll, game->coll_size, game->coll_size))
-		error();
+	load_tiles(game, &game->wall_imgs, "./assets/wall/", WALL_C);
+	load_tiles(game, &game->free_imgs, "./assets/free/", FREE_C);
+	load_tiles(game, &game->exit_imgs, "./assets/exit/", EXIT_C);
+	load_tiles(game, &game->coll_imgs, "./assets/coll/", COLL_C);
+
 }

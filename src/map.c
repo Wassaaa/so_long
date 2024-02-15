@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 01:13:33 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 22:51:01 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ int	get_el_type(char c)
 	return (-1);
 }
 
-mlx_image_t	*get_el_img(t_game *game, char c)
+t_list	*get_el_imgs(t_game *game, char c)
 {
 	if (c == '0')
-		return (game->free);
+		return (game->free_imgs);
 	if (c == '1')
-		return (game->wall);
+		return (game->wall_imgs);
 	if (c == 'C')
-		return (game->coll);
+		return (game->coll_imgs);
 	if (c == 'E')
-		return (game->exit);
+		return (game->exit_imgs);
 	if (c == 'P')
-		return (game->free);
+		return (game->free_imgs);
 	return (NULL);
 }
 
@@ -72,10 +72,10 @@ void	fill_elements(t_game *game, char *line, int y)
 			break ;
 		el = ft_calloc(1, sizeof(t_map_element));
 		el->type = get_el_type(*line);
-		el->img = get_el_img(game, *line);
+		el->images = get_el_imgs(game, *line);
 		el->x = x++;
 		el->y = y;
 		ft_lstadd_back(&game->map->elements, safe_lstnew(el));
 		line++;
-	} 
+	}
 }

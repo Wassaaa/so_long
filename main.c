@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 18:09:41 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 23:25:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,13 +193,17 @@ void	draw_map(t_game *game)
 {
 	t_map_element	*el;
 	t_list			*tile;
+	mlx_image_t		*img;
+	mlx_image_t		*free_img;
 
 	tile = game->map->elements;
 	while (tile)
 	{
 		el = (t_map_element *)tile->content;
-		mlx_image_to_window(game->mlx, game->free, el->x * TILE_SIZE, el->y * TILE_SIZE);
-		el->instance = mlx_image_to_window(game->mlx, el->img, el->x * TILE_SIZE, el->y * TILE_SIZE);
+		free_img = ft_lstget(game->free_imgs, 0)->content;
+		img = ft_lstget(el->images, rand() % ft_lstsize(el->images))->content;
+		mlx_image_to_window(game->mlx, free_img, el->x * TILE_SIZE, el->y * TILE_SIZE);
+		el->instance = mlx_image_to_window(game->mlx, img, el->x * TILE_SIZE, el->y * TILE_SIZE);
 		tile = tile->next;
 	}
 }
