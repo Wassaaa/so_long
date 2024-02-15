@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 18:16:01 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 19:14:37 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <MLX42/MLX42.h>
 # include <libft.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 

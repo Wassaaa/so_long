@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:08:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 00:08:29 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 19:15:06 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 void error(void)
 {
-	puts(mlx_strerror(mlx_errno));
+	ft_printf("%s", mlx_strerror(mlx_errno));
 	exit(EXIT_FAILURE);
 }

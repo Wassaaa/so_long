@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/13 22:54:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/15 19:22:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	blue = start_location + 2;
 	alpha = start_location + 3;
 	color = get_rgba(*red, *green, *blue, *alpha);
-	return (color);	
+	return (color);
 }
 
 int	not_transparent(uint32_t color)
