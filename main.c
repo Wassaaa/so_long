@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 23:25:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 02:59:38 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,8 +201,12 @@ void	draw_map(t_game *game)
 	{
 		el = (t_map_element *)tile->content;
 		free_img = ft_lstget(game->free_imgs, 0)->content;
-		img = ft_lstget(el->images, rand() % ft_lstsize(el->images))->content;
+		if (el->type == WALL)
+			free_img = ft_lstget(game->free_imgs, 1)->content;
 		mlx_image_to_window(game->mlx, free_img, el->x * TILE_SIZE, el->y * TILE_SIZE);
+		img = ft_lstget(el->images, rand() % ft_lstsize(el->images))->content;
+		if (el->type == EMPTY || el->type == PLAYER)
+			img = ft_lstget(el->images, 0)->content;
 		el->instance = mlx_image_to_window(game->mlx, img, el->x * TILE_SIZE, el->y * TILE_SIZE);
 		tile = tile->next;
 	}
@@ -223,7 +227,7 @@ int32_t	main(void)
 		error();
 	if (mlx_image_to_window(mlx, background, 0, 0) < 0)
 		error();
-	ft_memset(background->pixels, 0x00000000, WIDTH * HEIGHT * BPP);
+	ft_memset(background->pixels, 0xFF000000, WIDTH * HEIGHT * BPP);
 	game = init_game(mlx);
 	load_map_textures(game);
 	read_map(game, "./maps/map.ber");

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 23:20:05 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 02:20:01 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@
 # define WIDTH 1280
 # define HEIGHT 1024
 
-# define CHAR_SIZE 512
+# define CHAR_SIZE 384
+# define CHAR_X_OFF -145
+# define CHAR_Y_OFF -250
 # define TILE_SIZE 98
 # define COLL_SIZE 80
 
 # define WALL_C 3
 # define EXIT_C 1
-# define FREE_C 3
+# define FREE_C 2
 # define COLL_C 1
 
 # define BPP sizeof(int32_t)
@@ -49,6 +51,8 @@ typedef struct s_anim
 	bool		is_active;
 	bool		one_cycle;
 	bool		going_up;
+	int			x_off;
+	int			y_off;
 }				t_anim;
 
 typedef struct s_map_element

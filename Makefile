@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/15 18:08:27 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/16 01:24:57 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,8 +35,8 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
 ################################################################################
 # MLX
 ################################################################################
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 
 MLX42_DIR		= ./MLX42
 

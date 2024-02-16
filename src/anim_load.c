@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 23:24:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 02:58:00 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,30 @@ void	load_char_up(t_game *game)
 	add_to_anim_frames(game->char_up->frames, game->hair->frames);
 }
 
+void	handle_offset(t_game *game)
+{
+	mlx_image_t		*img;
+	t_list			*elements;
+	t_map_element	*el;
+	
+	elements = game->map->elements;
+	img = game->char_idle->frames->content;
+	while (elements)
+	{
+		el = elements->content;
+		if (el->type == PLAYER)
+		{
+			img->instances[0].x = el->x * game->tile_size;
+			img->instances[0].y = el->y * game->tile_size;
+			break ;
+		}
+		elements = elements->next;
+	}
+	img->instances[0].x += CHAR_X_OFF;
+	img->instances[0].y += CHAR_Y_OFF;
+	sync_anim_frames(img, game->char_anims);
+}
+
 void	get_animations(t_game *game)
 {
 	t_sprite	char_idle;
@@ -187,6 +211,7 @@ void	get_animations(t_game *game)
 	game->char_roll_right->one_cycle = true;
 	game->char_roll_left->one_cycle = true;
 	load_char_up(game);
+	handle_offset(game);
 }
 
 void	load_tiles(t_game *game, t_list **type, char *path, int img_count)
