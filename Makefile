@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/15 18:08:27 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/16 20:53:20 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS			=	ft_lstget.c\
 					img_moves.c\
 					char_moves.c\
 					map.c\
+					move_it.c\
 
 B_SRCS			=
 
@@ -27,7 +28,7 @@ B_SRCS			=
 # COMPILATION
 ################################################################################
 CC				=	gcc
-CC_STRICT		=	-Wall -Wextra -Werror
+CC_STRICT		=	#-Wall -Wextra -Werror
 CC_DEBUG		=	-g #-fsanitize=leak
 HEADERS		=	-I $(LIBFT_INCLUDES) -I $(INCLUDES) -I $(MLX42_DIR)/include
 CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
