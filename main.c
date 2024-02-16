@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 21:21:16 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 21:57:16 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,20 +209,6 @@ void	draw_map(t_game *game)
 	}
 }
 
-void	animate(t_game *game)
-{
-	if (game->movement->active)
-	{
-		toggle_states(game, game->movement->anim);
-		animate_character(game->movement->anim, game->mlx->delta_time);
-	}
-	else
-	{
-		toggle_states(game, game->char_idle);
-		animate_character(game->char_idle, game->mlx->delta_time);
-	}
-}
-
 void	do_move(t_game *game)
 {
 	toggle_states(game, game->movement->anim);
@@ -233,12 +219,13 @@ void	do_move(t_game *game)
 	else if (game->movement->to == DOWN)
 		image_down(game, game->char_idle->frames->content);
 	else if (game->movement->to == LEFT)
-		image_down(game, game->char_idle->frames->content);
+		image_left(game, game->char_idle->frames->content);
 }
 
 void	sync_char(t_game *game)
 {
 	mlx_image_t	*base;
+
 
 	base = game->char_idle->frames->content;
 	sync_anim_frames(base, game->char_anims);
@@ -250,13 +237,9 @@ void	my_loop(void *my_game)
 
 	game = (t_game *)my_game;
 	if (game->movement->active)
-	{
 		do_move(game);
-	}
 	else
-	{
 		next_move(game);
-	}
 	animation_loop(game->char_anims, game->mlx->delta_time);
 	toggle_states(game, game->char_idle);
 	sync_char(game);
@@ -266,6 +249,12 @@ void	next_move(t_game *game)
 {
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
 		go_right(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		go_down(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		go_left(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		go_up(game);
 }
 
 int	main(void)
@@ -285,10 +274,10 @@ int	main(void)
 		error();
 	ft_memset(background->pixels, 0x00000000, WIDTH * HEIGHT * BPP);
 	game = init_game(mlx);
+	get_animations(game);
 	load_map_textures(game);
 	read_map(game, "./maps/map.ber");
 	draw_map(game);
-	get_animations(game);
 	srand((unsigned long)mlx * (unsigned long)background);
 	mlx_loop_hook(mlx, my_loop, game);
 	mlx_loop(mlx);

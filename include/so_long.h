@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 20:54:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 21:44:50 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,11 @@ void			fill_elements(t_game *game, char *line, int y);
 void			load_map_textures(t_game *game);
 
 void			go_right(t_game *game);
+void			go_left(t_game *game);
+void			go_up(t_game *game);
+void			go_down(t_game *game);
 
 void			next_move(t_game *game);
-void	toggle_states(t_game *game, t_anim *current);
+void			oggle_states(t_game *game, t_anim *current);
 
 #endif

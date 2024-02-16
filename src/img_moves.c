@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:54:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 21:11:35 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 21:39:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ void	image_left(t_game *game, void *image)
 	if ((x - game->movement->x) > SPEED)
 		x = SPEED;
 	else
+	{
 		x = x - game->movement->x;
+		ft_bzero(game->movement, sizeof(t_movement));
+	}
 	img->instances[0].x -= x;
 }
 
@@ -53,7 +56,10 @@ void	image_down(t_game *game, void *image)
 	if (game->movement->y - y > SPEED)
 		y = SPEED;
 	else
+	{
 		y = game->movement->y - y;
+		ft_bzero(game->movement, sizeof(t_movement));
+	}
 	img->instances[0].y += y;
 }
 
@@ -67,6 +73,9 @@ void	image_up(t_game *game, void *image)
 	if (y - game->movement->y > SPEED)
 		y = SPEED;
 	else
+	{
 		y = y - game->movement->y;
+		ft_bzero(game->movement, sizeof(t_movement));
+	}
 	img->instances[0].y -= y;
 }
