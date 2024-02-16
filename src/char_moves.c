@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:55:46 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 17:53:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 20:04:51 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	move_right(t_game *game)
 	mlx_image_t	*img;
 
 	img = game->char_idle->frames->content;
-	image_right(img);
+	image_right(game, img);
 	sync_anim_frames(img, game->char_anims);
 }
 
@@ -26,7 +26,7 @@ void	move_left(t_game *game)
 	mlx_image_t	*img;
 
 	img = game->char_idle->frames->content;
-	image_left(img);
+	image_left(game, img);
 	sync_anim_frames(img, game->char_anims);
 }
 
@@ -35,7 +35,7 @@ void	move_up(t_game *game)
 	mlx_image_t	*img;
 
 	img = game->char_idle->frames->content;
-	image_up(img);
+	image_up(game, img);
 	sync_anim_frames(img, game->char_anims);
 }
 
@@ -44,6 +44,6 @@ void	move_down(t_game *game)
 	mlx_image_t	*img;
 
 	img = game->char_idle->frames->content;
-	image_down(img);
+	image_down(game, img);
 	sync_anim_frames(img, game->char_anims);
 }

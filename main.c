@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 02:59:38 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 01:14:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ int32_t	main(void)
 	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 	mlx = mlx_init(WIDTH, HEIGHT, "Test", true);
 	if (!mlx)
-        error();
+		error();
 	background = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!background)
 		error();
@@ -229,12 +229,12 @@ int32_t	main(void)
 		error();
 	ft_memset(background->pixels, 0xFF000000, WIDTH * HEIGHT * BPP);
 	game = init_game(mlx);
+	get_animations(game);
 	load_map_textures(game);
 	read_map(game, "./maps/map.ber");
 	draw_map(game);
-	get_animations(game);
 	srand((unsigned long)mlx * (unsigned long)background);
-	mlx_loop_hook(mlx, character_move, game);
+	mlx_loop_hook(mlx, my_loop, game);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);

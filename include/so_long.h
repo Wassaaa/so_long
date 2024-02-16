@@ -6,9 +6,10 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 02:20:01 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 01:15:52 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
@@ -33,17 +34,23 @@
 # define COLL_C 1
 
 # define BPP sizeof(int32_t)
-# define SPEED 5;
+# define SPEED 5
 
-# define EMPTY 0
+# define FREE 0
 # define WALL 1
 # define COLL 2
 # define EXIT 3
 # define PLAYER 4
 
+# define UP 0
+# define RIGHT 1
+# define DOWN 2
+# define LEFT 3
+
 typedef struct s_anim
 {
 	t_list		*frames;
+	mlx_image_t	*base_img;
 	int			frame_speed;
 	double		accum;
 	int			cur_f;
@@ -69,12 +76,26 @@ typedef struct s_map_element
 typedef struct s_map
 {
 	t_list		*elements;
+	int			char_x;
+	int			char_y;
+	int			width;
+	int			height;
 }				t_map;
+
+typedef struct s_movement
+{
+	int			active;
+	int			x;
+	int			y;
+	int			to;
+	t_anim		*anim;
+}				t_movement;
 
 typedef struct s_game
 {
 	mlx_t		*mlx;
 	t_map		*map;
+	t_movement	*movement;
 	t_list		*char_anims;
 	t_list		*free_imgs;
 	t_list		*wall_imgs;
@@ -114,10 +135,10 @@ void			img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y);
 void			color_from_src(mlx_image_t *dst, mlx_image_t *src);
 
 // img moves
-void			image_right(void *image);
-void			image_left(void *image);
-void			image_up(void *image);
-void			image_down(void *image);
+void			image_right(t_game *game, void *image);
+void			image_left(t_game *game, void *image);
+void			image_up(t_game *game, void *image);
+void			image_down(t_game *game, void *image);
 
 // char moves
 void			move_right(t_game *game);
@@ -134,5 +155,13 @@ void			read_map(t_game *game, char *map_file);
 // new map stuff
 void			fill_elements(t_game *game, char *line, int y);
 void			load_map_textures(t_game *game);
+
+void			go_right(t_game *game);
+void			go_left(t_game *game);
+void			go_up(t_game *game);
+void			go_down(t_game *game);
+
+void			next_move(t_game *game);
+void			oggle_states(t_game *game, t_anim *current);
 
 #endif

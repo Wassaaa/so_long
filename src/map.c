@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 22:51:01 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/16 20:46:58 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ void	read_map(t_game *game, char *map_file)
 		line = get_next_line(fd);
 		line_nr++;
 	}
+	game->map->height = line_nr;
 }
 
 int	get_el_type(char c)
 {
 	if (c == '0')
-		return (EMPTY);
+		return (FREE);
 	if (c == '1')
 		return (WALL);
 	if (c == 'C')
@@ -72,10 +73,16 @@ void	fill_elements(t_game *game, char *line, int y)
 			break ;
 		el = ft_calloc(1, sizeof(t_map_element));
 		el->type = get_el_type(*line);
+		if (el->type == PLAYER)
+		{
+			game->map->char_x = x;
+			game->map->char_y = y;
+		}
 		el->images = get_el_imgs(game, *line);
 		el->x = x++;
 		el->y = y;
 		ft_lstadd_back(&game->map->elements, safe_lstnew(el));
 		line++;
 	}
+	game->map->width = x;
 }
