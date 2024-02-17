@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 02:45:38 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:14:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1280
 # define HEIGHT 1024
-# define ROLL_CHANCE 25
+# define ROLL_CHANCE 15
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -32,7 +32,6 @@
 # define FREE_C 2
 # define COLL_C 1
 
-# define BPP sizeof(int32_t)
 # define SPEED 5
 
 # define FREE 0
@@ -118,6 +117,7 @@ typedef struct s_game
 	t_list		*coll_imgs;
 	t_list		*exit_imgs;
 	int			game_status;
+	int			move_speed;
 	uint32_t	char_size;
 	uint32_t	tile_size;
 	uint32_t	coll_size;
@@ -131,9 +131,9 @@ typedef struct s_sprite
 	int			mirrored;
 }				t_sprite;
 
-void			get_animations(t_game *game);
-t_list			*ft_lstget(t_list *l, int n);
-t_list			*safe_lstnew(void *content);
+// init
+void			init_player(t_game *game);
+t_game			*init_game(void);
 
 // pixels
 int32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
@@ -148,27 +148,31 @@ void			image_up(t_game *game, void *image);
 void			image_down(t_game *game, void *image);
 
 // char moves
-void			move_right(t_game *game);
-void			move_left(t_game *game);
-void			move_up(t_game *game);
-void			move_down(t_game *game);
-
-void			sync_anim_frames(mlx_image_t *base, t_list *anims);
-
-void			error(void);
-
-void			read_map(t_game *game, char *map_file);
-
-// new map stuff
-void			fill_elements(t_game *game, char *line, int y);
-void			load_map_textures(t_game *game);
-
 void			go_right(t_game *game);
 void			go_left(t_game *game);
 void			go_up(t_game *game);
 void			go_down(t_game *game);
 
-void			next_move(t_game *game);
+// animation
 void			toggle_states(t_game *game, t_anim *current);
+void			animation_loop(t_list *anims, double dt);
+
+// frames sync
+void			sync_anim_frames(mlx_image_t *base, t_list *anims);
+void			sync_char(t_game *game);
+
+// maps & textures
+void			read_map(t_game *game, char *map_file);
+void			fill_elements(t_game *game, char *line, int y);
+void			load_map_textures(t_game *game);
+void			get_animations(t_game *game);
+
+// get moves
+void			next_move(t_game *game);
+void			error(void);
+
+// helpers
+t_list			*ft_lstget(t_list *l, int n);
+t_list			*safe_lstnew(void *content);
 
 #endif

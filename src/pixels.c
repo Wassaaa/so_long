@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/15 19:22:34 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:07:59 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 	uint8_t *alpha;
 	int		color;
 
-	start_location = img->pixels + (y * img->width + x) * BPP;
+	start_location = img->pixels + (y * img->width + x) * 4;
 	red = start_location;
 	green = start_location + 1;
 	blue = start_location + 2;

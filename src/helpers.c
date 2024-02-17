@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget.c                                        :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 20:32:25 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 04:13:50 by aklein           ###   ########.fr       */
+/*   Created: 2024/02/17 04:14:00 by aklein            #+#    #+#             */
+/*   Updated: 2024/02/17 04:14:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libft.h>
+#include <so_long.h>
 
-t_list	*ft_lstget(t_list *l, int n)
+t_list *safe_lstnew(void *content)
 {
-	while (n-- && l)
-		l = l->next;
-	return (l);
+	t_list *frame;
+
+	frame = ft_lstnew(content);
+	if (!frame)
+		error();
+	return (frame);
 }

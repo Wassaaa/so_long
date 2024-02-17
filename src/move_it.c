@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 02:47:02 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 03:04:40 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,18 @@ void	go_left(t_game *game)
 {
 	t_map_element	*el_to_l;
 	int				dest_loc;
+	int				random;
 
+	random = rand() % 100;
 	dest_loc = (game->map->char_y * game->map->width) + game->map->char_x - 1;
 	el_to_l = ft_lstget(game->map->elements, dest_loc)->content;
 	if (move_allowed(el_to_l))
 	{
 		game->movement->anim = game->p->char_left;
-		if (rand() % 100 < ROLL_CHANCE)
+		if (random < ROLL_CHANCE)
 			game->movement->anim = game->p->char_roll_left;
 		move_to(game, el_to_l, LEFT);
 		toggle_states(game, game->p->char_left);
-		game->movement->anim = game->p->char_left;
 		game->map->char_x--;
 	}
 	else
@@ -97,7 +98,6 @@ void	go_up(t_game *game)
 			game->movement->anim = game->p->char_roll_left;
 		move_to(game, el_to_u, UP);
 		toggle_states(game, game->p->char_up);
-		game->movement->anim = game->p->char_up;
 		game->map->char_y--;
 	}
 	else
@@ -119,7 +119,6 @@ void	go_down(t_game *game)
 			game->movement->anim = game->p->char_roll_right;
 		move_to(game, el_to_d, DOWN);
 		toggle_states(game, game->p->char_down);
-		game->movement->anim = game->p->char_down;
 		game->map->char_y++;
 	}
 	else
