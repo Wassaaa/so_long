@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 02:58:00 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:44:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,22 +159,22 @@ void	load_char_up(t_game *game)
 	walk = new_sprite("./assets/full/walk_", 8, 100, 1);
 	head = new_sprite("./assets/head/walk_", 8, 100, 1);
 	hair = new_sprite("./assets/hair/walk_", 8, 100, 1);
-	game->char_up = load_animation(game, walk, &game->char_anims);
-	game->head = load_animation(game, head, &game->char_anims);
-	game->hair = load_animation(game, hair, &game->char_anims);
-	color_anim(game->hair->frames, game->char_up->frames);
-	add_to_anim_frames(game->char_up->frames, game->head->frames);
-	add_to_anim_frames(game->char_up->frames, game->hair->frames);
+	game->p->char_up = load_animation(game, walk, &game->p->char_anims);
+	game->p->head = load_animation(game, head, &game->p->char_anims);
+	game->p->hair = load_animation(game, hair, &game->p->char_anims);
+	color_anim(game->p->hair->frames, game->p->char_up->frames);
+	add_to_anim_frames(game->p->char_up->frames, game->p->head->frames);
+	add_to_anim_frames(game->p->char_up->frames, game->p->hair->frames);
 }
 
-void	handle_offset(t_game *game)
+void	handle_char_offset(t_game *game)
 {
 	mlx_image_t		*img;
 	t_list			*elements;
 	t_map_element	*el;
 	
 	elements = game->map->elements;
-	img = game->char_idle->frames->content;
+	img = game->p->char_idle->frames->content;
 	while (elements)
 	{
 		el = elements->content;
@@ -186,10 +186,13 @@ void	handle_offset(t_game *game)
 		}
 		elements = elements->next;
 	}
-	img->instances[0].x += CHAR_X_OFF;
-	img->instances[0].y += CHAR_Y_OFF;
-	sync_anim_frames(img, game->char_anims);
+	game->p->off.x = CHAR_X_OFF;
+	game->p->off.y = CHAR_Y_OFF;
+	img->instances[0].x += game->p->off.x;
+	img->instances[0].y += game->p->off.y;
+	sync_anim_frames(img, game->p->char_anims);
 }
+
 
 void	get_animations(t_game *game)
 {
@@ -198,20 +201,20 @@ void	get_animations(t_game *game)
 	t_sprite	char_roll;
 
 	char_idle = new_sprite("./assets/full/idle_", 6, 100, 0);
-	game->char_idle = load_animation(game, char_idle, &game->char_anims);
+	game->p->char_idle = load_animation(game, char_idle, &game->p->char_anims);
+	char_idle.mirrored = 1;
+	game->p->char_idle_l = load_animation(game, char_idle, &game->p->char_anims);
 	char_walk = new_sprite("./assets/full/walk_", 8, 100, 0);
-	game->char_right = load_animation(game, char_walk, &game->char_anims);
-	game->char_down = load_animation(game, char_walk, &game->char_anims);
+	game->p->char_right = load_animation(game, char_walk, &game->p->char_anims);
+	game->p->char_down = load_animation(game, char_walk, &game->p->char_anims);
 	char_walk.mirrored = 1;
-	game->char_left = load_animation(game, char_walk, &game->char_anims);
-	char_roll = new_sprite("./assets/full/roll_", 5, 100, 0);
-	game->char_roll_right = load_animation(game, char_roll, &game->char_anims);
+	game->p->char_left = load_animation(game, char_walk, &game->p->char_anims);
+	char_roll = new_sprite("./assets/full/roll_", 5, 50, 0);
+	game->p->char_roll_right = load_animation(game, char_roll, &game->p->char_anims);
 	char_roll.mirrored = 1;
-	game->char_roll_left = load_animation(game, char_roll, &game->char_anims);
-	game->char_roll_right->one_cycle = true;
-	game->char_roll_left->one_cycle = true;
+	game->p->char_roll_left = load_animation(game, char_roll, &game->p->char_anims);
 	load_char_up(game);
-	handle_offset(game);
+	handle_char_offset(game);
 }
 
 void	load_tiles(t_game *game, t_list **type, char *path, int img_count)

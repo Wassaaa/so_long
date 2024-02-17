@@ -6,10 +6,9 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 01:15:52 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:45:38 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
@@ -21,7 +20,7 @@
 
 # define WIDTH 1280
 # define HEIGHT 1024
-
+# define ROLL_CHANCE 25
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -50,16 +49,11 @@
 typedef struct s_anim
 {
 	t_list		*frames;
-	mlx_image_t	*base_img;
 	int			frame_speed;
 	double		accum;
 	int			cur_f;
 	long int	frame_count;
 	bool		is_active;
-	bool		one_cycle;
-	bool		going_up;
-	int			x_off;
-	int			y_off;
 }				t_anim;
 
 typedef struct s_map_element
@@ -68,8 +62,6 @@ typedef struct s_map_element
 	int			x;
 	int			y;
 	int			instance;
-	int			img_count;
-	t_anim		*anim;
 	t_list		*images;
 }				t_map_element;
 
@@ -82,6 +74,13 @@ typedef struct s_map
 	int			height;
 }				t_map;
 
+typedef struct s_point
+{
+	int			x;
+	int			y;
+	int			z;
+}				t_point;
+
 typedef struct s_movement
 {
 	int			active;
@@ -91,17 +90,11 @@ typedef struct s_movement
 	t_anim		*anim;
 }				t_movement;
 
-typedef struct s_game
+typedef struct s_player
 {
-	mlx_t		*mlx;
-	t_map		*map;
-	t_movement	*movement;
 	t_list		*char_anims;
-	t_list		*free_imgs;
-	t_list		*wall_imgs;
-	t_list		*coll_imgs;
-	t_list		*exit_imgs;
 	t_anim		*char_idle;
+	t_anim		*char_idle_l;
 	t_anim		*char_right;
 	t_anim		*char_left;
 	t_anim		*char_up;
@@ -110,6 +103,20 @@ typedef struct s_game
 	t_anim		*char_roll_left;
 	t_anim		*hair;
 	t_anim		*head;
+	t_point		off;
+	char		last_move;
+}				t_player;
+
+typedef struct s_game
+{
+	mlx_t		*mlx;
+	t_map		*map;
+	t_player	*p;
+	t_movement	*movement;
+	t_list		*free_imgs;
+	t_list		*wall_imgs;
+	t_list		*coll_imgs;
+	t_list		*exit_imgs;
 	int			game_status;
 	uint32_t	char_size;
 	uint32_t	tile_size;
@@ -162,6 +169,6 @@ void			go_up(t_game *game);
 void			go_down(t_game *game);
 
 void			next_move(t_game *game);
-void			oggle_states(t_game *game, t_anim *current);
+void			toggle_states(t_game *game, t_anim *current);
 
 #endif

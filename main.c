@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 01:14:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:48:47 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,6 @@ void	animate_character(t_anim *anim, double dt)
 	if (anim->is_active)
 	{
 		if (update_animation(anim, dt))
-			if (anim->one_cycle && anim->cur_f == 0)
-			{
-				anim->is_active = false;
-				return ;
-			}
 		img = ft_lstget(anim->frames, anim->cur_f)->content;
 		img->instances[0].enabled = true;
 	}
@@ -97,7 +92,7 @@ void	turn_others_off(t_game *game, t_anim *current)
 	t_list	*temp_anims;
 	t_anim	*iter;
 
-	temp_anims = game->char_anims;
+	temp_anims = game->p->char_anims;
 	while (temp_anims != NULL)
 	{
 		iter = (t_anim *)temp_anims->content;
@@ -107,73 +102,11 @@ void	turn_others_off(t_game *game, t_anim *current)
 			iter->is_active = false;
 		temp_anims = temp_anims->next;
 	}
-
-
 }
 
 void	toggle_states(t_game *game, t_anim *current)
 {
 	turn_others_off(game, current);
-}
-
-void	character_move(void *my_game)
-{
-	t_game	*game;
-
-	game = (t_game *)my_game;
-	if (game->char_roll_right->is_active)
-	{
-		animate_character(game->char_roll_right, game->mlx->delta_time);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-			move_down(game);
-		else
-			move_right(game);
-		return ;
-	}
-	if (game->char_roll_left->is_active)
-	{
-		animate_character(game->char_roll_left, game->mlx->delta_time);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-			move_up(game);
-		else
-			move_left(game);
-		return ;
-	}
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-	{
-		toggle_states(game, game->char_right);
-		move_right(game);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
-			toggle_states(game, game->char_roll_right);
-	}
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-	{
-		toggle_states(game, game->char_left);
-		move_left(game);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
-			toggle_states(game, game->char_roll_left);
-	}
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-	{
-		toggle_states(game, game->char_down);
-		move_down(game);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
-			toggle_states(game, game->char_roll_right);
-	}
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-	{
-		toggle_states(game, game->char_up);
-		move_up(game);
-		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
-			toggle_states(game, game->char_roll_left);
-	}
-	else
-		toggle_states(game, game->char_idle);
-	animation_loop(game->char_anims, game->mlx->delta_time);
-	static int fps;
-	fps = 1000 * game->mlx->delta_time;
-	ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
-	// ft_printf("random: [%d]\n", rand() % 100);
 }
 
 t_game *init_game(mlx_t *mlx)
@@ -186,6 +119,8 @@ t_game *init_game(mlx_t *mlx)
 	game->tile_size = TILE_SIZE;
 	game->coll_size = COLL_SIZE;
 	game->map = ft_calloc(1, sizeof(t_map));
+	game->movement = ft_calloc(1, sizeof(t_movement));
+	game->p = ft_calloc(1, sizeof(t_player));
 	return (game);
 }
 
@@ -205,11 +140,61 @@ void	draw_map(t_game *game)
 			free_img = ft_lstget(game->free_imgs, 1)->content;
 		mlx_image_to_window(game->mlx, free_img, el->x * TILE_SIZE, el->y * TILE_SIZE);
 		img = ft_lstget(el->images, rand() % ft_lstsize(el->images))->content;
-		if (el->type == EMPTY || el->type == PLAYER)
+		if (el->type == FREE || el->type == PLAYER)
 			img = ft_lstget(el->images, 0)->content;
 		el->instance = mlx_image_to_window(game->mlx, img, el->x * TILE_SIZE, el->y * TILE_SIZE);
 		tile = tile->next;
 	}
+}
+
+void	do_move(t_game *game)
+{
+	toggle_states(game, game->movement->anim);
+	if (game->movement->to == UP)
+		image_up(game, game->p->char_idle->frames->content);
+	else if (game->movement->to == RIGHT)
+		image_right(game, game->p->char_idle->frames->content);
+	else if (game->movement->to == DOWN)
+		image_down(game, game->p->char_idle->frames->content);
+	else if (game->movement->to == LEFT)
+		image_left(game, game->p->char_idle->frames->content);
+}
+
+void	sync_char(t_game *game)
+{
+	mlx_image_t	*base;
+
+	base = game->p->char_idle->frames->content;
+	sync_anim_frames(base, game->p->char_anims);
+}
+
+void	my_loop(void *my_game)
+{
+	t_game *game;
+
+	game = (t_game *)my_game;
+	if (game->movement->active)
+		do_move(game);
+	else
+		next_move(game);
+	animation_loop(game->p->char_anims, game->mlx->delta_time);
+	if (game->p->last_move == 'r')
+		toggle_states(game, game->p->char_idle);
+	else
+		toggle_states(game, game->p->char_idle_l);
+	sync_char(game);
+}
+
+void	next_move(t_game *game)
+{
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+		go_right(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		go_down(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		go_left(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		go_up(game);
 }
 
 int32_t	main(void)
@@ -229,10 +214,10 @@ int32_t	main(void)
 		error();
 	ft_memset(background->pixels, 0xFF000000, WIDTH * HEIGHT * BPP);
 	game = init_game(mlx);
-	get_animations(game);
 	load_map_textures(game);
 	read_map(game, "./maps/map.ber");
 	draw_map(game);
+	get_animations(game);
 	srand((unsigned long)mlx * (unsigned long)background);
 	mlx_loop_hook(mlx, my_loop, game);
 	mlx_loop(mlx);

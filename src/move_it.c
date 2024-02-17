@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 21:41:55 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:47:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,14 @@ int	move_allowed(t_map_element *el)
 
 void	move_to(t_game *game, t_map_element *el, int to)
 {
+	int	to_x;
+	int	to_y;
+
+	to_x = (el->x * game->tile_size) + game->p->off.x;
+	to_y = (el->y * game->tile_size) + game->p->off.y;
 	game->movement->active = 1;
-	game->movement->x = el->x * game->tile_size;
-	game->movement->y = el->y * game->tile_size;
+	game->movement->x = to_x;
+	game->movement->y = to_y;
 	game->movement->to = to;
 }
 
@@ -44,14 +49,16 @@ void	go_right(t_game *game)
 	el_to_r = ft_lstget(game->map->elements, dest_loc)->content;
 	if (move_allowed(el_to_r))
 	{
-		game->movement->anim = game->char_right;
+		game->movement->anim = game->p->char_right;
+		if (rand() % 100 < ROLL_CHANCE)
+			game->movement->anim = game->p->char_roll_right;
 		move_to(game, el_to_r, RIGHT);
-		toggle_states(game, game->char_right);
-		game->movement->anim = game->char_right;
+		toggle_states(game, game->p->char_right);
 		game->map->char_x++;
 	}
 	else
 		ft_bzero(game->movement, sizeof(t_movement));
+	game->p->last_move = 'r';
 }
 
 void	go_left(t_game *game)
@@ -63,14 +70,17 @@ void	go_left(t_game *game)
 	el_to_l = ft_lstget(game->map->elements, dest_loc)->content;
 	if (move_allowed(el_to_l))
 	{
-		game->movement->anim = game->char_left;
+		game->movement->anim = game->p->char_left;
+		if (rand() % 100 < ROLL_CHANCE)
+			game->movement->anim = game->p->char_roll_left;
 		move_to(game, el_to_l, LEFT);
-		toggle_states(game, game->char_left);
-		game->movement->anim = game->char_left;
+		toggle_states(game, game->p->char_left);
+		game->movement->anim = game->p->char_left;
 		game->map->char_x--;
 	}
 	else
 		ft_bzero(game->movement, sizeof(t_movement));
+	game->p->last_move = 'l';
 }
 
 void	go_up(t_game *game)
@@ -82,14 +92,17 @@ void	go_up(t_game *game)
 	el_to_u = ft_lstget(game->map->elements, dest_loc)->content;
 	if (move_allowed(el_to_u))
 	{
-		game->movement->anim = game->char_up;
+		game->movement->anim = game->p->char_up;
+		if (rand() % 100 < ROLL_CHANCE)
+			game->movement->anim = game->p->char_roll_left;
 		move_to(game, el_to_u, UP);
-		toggle_states(game, game->char_up);
-		game->movement->anim = game->char_up;
+		toggle_states(game, game->p->char_up);
+		game->movement->anim = game->p->char_up;
 		game->map->char_y--;
 	}
 	else
 		ft_bzero(game->movement, sizeof(t_movement));
+	game->p->last_move = 'l';
 }
 
 void	go_down(t_game *game)
@@ -101,12 +114,15 @@ void	go_down(t_game *game)
 	el_to_d = ft_lstget(game->map->elements, dest_loc)->content;
 	if (move_allowed(el_to_d))
 	{
-		game->movement->anim = game->char_down;
+		game->movement->anim = game->p->char_down;
+		if (rand() % 100 < ROLL_CHANCE)
+			game->movement->anim = game->p->char_roll_right;
 		move_to(game, el_to_d, DOWN);
-		toggle_states(game, game->char_down);
-		game->movement->anim = game->char_down;
+		toggle_states(game, game->p->char_down);
+		game->movement->anim = game->p->char_down;
 		game->map->char_y++;
 	}
 	else
 		ft_bzero(game->movement, sizeof(t_movement));
+	game->p->last_move = 'r';
 }
