@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 04:14:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 21:40:33 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define WIDTH 1280
-# define HEIGHT 1024
+# define WIDTH 1920
+# define HEIGHT 1080
 # define ROLL_CHANCE 15
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
-# define TILE_SIZE 98
-# define COLL_SIZE 80
+# define TILE_SIZE 100
+# define COLL_SIZE 120
 
 # define WALL_C 3
 # define EXIT_C 1
-# define FREE_C 2
+# define FREE_C 4
 # define COLL_C 1
 
-# define SPEED 5
+# define SPEED 6
 
 # define FREE 0
 # define WALL 1
@@ -118,9 +118,9 @@ typedef struct s_game
 	t_list		*exit_imgs;
 	int			game_status;
 	int			move_speed;
-	uint32_t	char_size;
-	uint32_t	tile_size;
-	uint32_t	coll_size;
+	int			char_size;
+	int			tile_size;
+	int			coll_size;
 }				t_game;
 
 typedef struct s_sprite
@@ -134,6 +134,7 @@ typedef struct s_sprite
 // init
 void			init_player(t_game *game);
 t_game			*init_game(void);
+void			start_mlx(t_game *game);
 
 // pixels
 int32_t			get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);

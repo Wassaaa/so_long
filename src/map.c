@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/16 20:46:58 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 16:38:40 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@ void	read_map(t_game *game, char *map_file)
 {
 	int		fd;
 	char	*line;
-	int		line_nr;
+	int		height;
+	int		width;
 
-	line_nr = 0;
+	height = 0;
 	fd = open(map_file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		fill_elements(game, line, line_nr);
+		width = ft_strlen(line);
+		if (game->mlx != NULL)
+			fill_elements(game, line, height);
 		free(line);
 		line = get_next_line(fd);
-		line_nr++;
+		height++;
 	}
-	game->map->height = line_nr;
+	game->map->height = height;
+	game->map->width = width;
+	close(fd);
 }
 
 int	get_el_type(char c)
@@ -84,5 +89,4 @@ void	fill_elements(t_game *game, char *line, int y)
 		ft_lstadd_back(&game->map->elements, safe_lstnew(el));
 		line++;
 	}
-	game->map->width = x;
 }

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 04:29:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/17 20:45:36 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	get_animations(t_game *game)
 	game->p->char_down = load_animation(game, char_walk, &game->p->char_anims);
 	char_walk.mirrored = 1;
 	game->p->char_left = load_animation(game, char_walk, &game->p->char_anims);
-	char_roll = new_sprite("./textures/full/roll_", 5, 100, 0);
+	char_roll = new_sprite("./textures/full/roll_", 5, 80, 0);
 	game->p->char_roll_right = load_animation(game, char_roll, &game->p->char_anims);
 	char_roll.mirrored = 1;
 	game->p->char_roll_left = load_animation(game, char_roll, &game->p->char_anims);

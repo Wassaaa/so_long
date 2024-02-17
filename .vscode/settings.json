@@ -19,7 +19,9 @@
 		"so_long.h": "c",
 		"get_next_line.h": "c",
 		"*.tcc": "c",
-		"istream": "c"
+		"istream": "c",
+		"ios": "c",
+		"random": "c"
 	},
 	"cmake.configureOnOpen": false
 }
