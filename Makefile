@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/17 04:14:59 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/17 04:40:47 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,9 +39,9 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
 ################################################################################
 # MLX
 ################################################################################
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm 
 #MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
-
+MLX_DEBUG		= -DDEBUG=1
 MLX42_DIR		= ./MLX42
 
 ################################################################################
@@ -81,7 +81,7 @@ B_ARCHIVES		=	$(B_ARCHIVE) $(LIBFT)
 all: libmlx $(NAME)
 
 libmlx:
-	@cmake $(MLX42_DIR) -B $(MLX42_DIR)/build && make -C $(MLX42_DIR)/build -j4
+	@cmake $(MLX42_DIR) $(MLX_DEBUG) -B $(MLX42_DIR)/build && make -C $(MLX42_DIR)/build -j4
 
 $(NAME): $(LIBFT) $(M_ARCHIVE) $(M_MAIN)
 					$(CC_FULL) $(M_MAIN) $(M_ARCHIVES) $(MLX42) -o $(NAME)
