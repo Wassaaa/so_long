@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/17 04:40:47 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/17 22:19:13 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,6 +78,7 @@ B_ARCHIVES		=	$(B_ARCHIVE) $(LIBFT)
 ################################################################################
 # RULES
 ################################################################################
+
 all: libmlx $(NAME)
 
 libmlx:
@@ -86,8 +87,11 @@ libmlx:
 $(NAME): $(LIBFT) $(M_ARCHIVE) $(M_MAIN)
 					$(CC_FULL) $(M_MAIN) $(M_ARCHIVES) $(MLX42) -o $(NAME)
 
-$(LIBFT):
+$(LIBFT): libft_force
 					make -C $(LIBFT_DIR)
+				
+libft_force:
+					@true
 
 $(M_ARCHIVE): $(OBJECTS)
 					mkdir -p $(@D)
@@ -197,4 +201,4 @@ RC = \033[0m
 ################################################################################
 # PHONY
 ################################################################################
-.PHONY: all re clean fclean bonus libmlx
+.PHONY: all re clean fclean bonus libmlx libft_force
