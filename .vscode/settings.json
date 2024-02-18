@@ -21,7 +21,8 @@
 		"*.tcc": "c",
 		"istream": "c",
 		"ios": "c",
-		"random": "c"
+		"random": "c",
+		"math.h": "c"
 	},
 	"cmake.configureOnOpen": false
 }

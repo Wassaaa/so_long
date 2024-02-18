@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 03:04:40 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/18 20:38:20 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	move_to(t_game *game, t_map_element *el, int to)
 	game->movement->x = to_x;
 	game->movement->y = to_y;
 	game->movement->to = to;
+	game->movement->el = el;
 }
 
 void	go_right(t_game *game)

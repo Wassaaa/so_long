@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 11:02:08 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/18 22:56:18 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,49 @@ void	load_char_up(t_game *game)
 	add_to_anim_frames(game->p->char_up->frames, game->p->hair->frames);
 }
 
+void	load_gun(t_game *game)
+{
+	t_sprite	gun_idle;
+	t_sprite	gun_walk;
+	t_sprite	gun_roll;
+
+	gun_idle = new_sprite("./textures/wep/idle_", 6, 100, 0);
+	game->p->gun_idle = load_animation(game, gun_idle, &game->p->char_anims);
+	gun_idle.mirrored = 1;
+	game->p->gun_idle_l = load_animation(game, gun_idle, &game->p->char_anims);
+	gun_walk = new_sprite("./textures/wep/walk_", 8, 100, 0);
+	game->p->gun_right = load_animation(game, gun_walk, &game->p->char_anims);
+	game->p->gun_down = load_animation(game, gun_walk, &game->p->char_anims);
+	gun_walk.mirrored = 1;
+	game->p->gun_left = load_animation(game, gun_walk, &game->p->char_anims);
+	game->p->gun_up = load_animation(game, gun_walk, &game->p->char_anims);
+	gun_roll = new_sprite("./textures/wep/roll_", 5, 100, 0);
+	game->p->gun_roll_right = load_animation(game, gun_roll, &game->p->char_anims);
+	gun_roll.mirrored = 1;
+	game->p->gun_roll_left = load_animation(game, gun_roll, &game->p->char_anims);
+	game->p->gun_roll_left->full_cycle = true;
+	game->p->gun_roll_right->full_cycle = true;
+}
+
+void	gun_picked_up(t_game *game)
+{
+	add_to_anim_frames(game->p->char_idle->frames, game->p->gun_idle->frames);
+	add_to_anim_frames(game->p->char_idle_l->frames, game->p->gun_idle_l->frames);
+	add_to_anim_frames(game->p->char_down->frames, game->p->gun_down->frames);
+	add_to_anim_frames(game->p->char_right->frames, game->p->gun_right->frames);
+	add_to_anim_frames(game->p->char_left->frames, game->p->gun_left->frames);
+	add_to_anim_frames(game->p->gun_up->frames, game->p->char_up->frames);
+	add_to_anim_frames(game->p->char_up->frames, game->p->gun_up->frames);
+	add_to_anim_frames(game->p->char_roll_right->frames, game->p->gun_roll_right->frames);
+	add_to_anim_frames(game->p->char_roll_left->frames, game->p->gun_roll_left->frames);
+}
+
 void	handle_char_offset(t_game *game)
 {
 	mlx_image_t		*img;
 	t_list			*elements;
 	t_map_element	*el;
-	
+
 	elements = game->map->elements;
 	img = game->p->char_idle->frames->content;
 	while (elements)
@@ -197,13 +234,14 @@ void	get_animations(t_game *game)
 	game->p->char_down = load_animation(game, char_walk, &game->p->char_anims);
 	char_walk.mirrored = 1;
 	game->p->char_left = load_animation(game, char_walk, &game->p->char_anims);
-	char_roll = new_sprite("./textures/full/roll_", 5, 80, 0);
+	char_roll = new_sprite("./textures/full/roll_", 5, 100, 0);
 	game->p->char_roll_right = load_animation(game, char_roll, &game->p->char_anims);
 	char_roll.mirrored = 1;
 	game->p->char_roll_left = load_animation(game, char_roll, &game->p->char_anims);
 	game->p->char_roll_left->full_cycle = true;
 	game->p->char_roll_right->full_cycle = true;
 	load_char_up(game);
+	load_gun(game);
 	handle_char_offset(game);
 }
 
@@ -217,8 +255,21 @@ void	load_tiles(t_game *game, t_list **type, char *path, int img_count)
 	while (i < img_count)
 	{
 		img = get_img(game, path, i, 0);
-		if (!mlx_resize_image(img, game->tile_size, game->tile_size))
-			error();
+		if (type == &game->coll_imgs)
+		{
+			if (!mlx_resize_image(img, game->coll_size, game->coll_size))
+				error();
+		}
+		else if (type == &game->exit_imgs)
+		{
+			if (!mlx_resize_image(img, game->exit_size, game->exit_size))
+				error();
+		}
+		else
+		{
+			if (!mlx_resize_image(img, game->tile_size, game->tile_size))
+				error();
+		}
 		list = safe_lstnew(img);
 		ft_lstadd_back(type, list);
 		i++;

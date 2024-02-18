@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 04:07:59 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/18 22:25:52 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,42 @@ void	color_from_src(mlx_image_t *dst, mlx_image_t *src)
 		i++;
 	}
 }
+uint32_t	alpha_blend(uint32_t src_color, uint32_t dst_color)
+{
+	uint8_t		src_alpha;
+	uint8_t		src_red;
+	uint8_t		src_green;
+	uint8_t		src_blue;
+	uint8_t		dst_red;
+	uint8_t		dst_green;
+	uint8_t		dst_blue;
+	float		alpha;
+	uint8_t		red;
+	uint8_t		green;
+	uint8_t		blue;
+
+	src_red = (src_color >> 24) & 0xFF;
+	src_green = (src_color >> 16) & 0xFF;
+	src_blue = (src_color >> 8) & 0xFF;
+	src_alpha = (src_color) & 0xFF;
+	dst_red = (dst_color >> 24) & 0xFF;
+	dst_green = (dst_color >> 16) & 0xFF;
+	dst_blue = (dst_color >> 8) & 0xFF;
+	alpha = src_alpha / 255.0f;
+	red = (uint8_t)(alpha * src_red + (1 - alpha) * dst_red);
+	green = (uint8_t)(alpha * src_green + (1 - alpha) * dst_green);
+	blue = (uint8_t)(alpha * src_blue + (1 - alpha) * dst_blue);
+	return (red << 24) | (green << 16) | (blue << 8) | src_alpha;
+}
+
 
 void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y)
 {
 	uint32_t	i;
 	uint32_t	j;
-	uint32_t	color;
+	uint32_t	src_color;
+	uint32_t	dst_color;
+	uint32_t	blended_color;
 
 	i = 0;
 	while (i < src->width)
@@ -105,9 +135,13 @@ void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y)
 		j = 0;
 		while (j < src->height)
 		{
-			color = get_pixel_color(src, i, j);
-			if (valid_pixel_spot(dst, x + i, y + j) && not_transparent(color))
-				mlx_put_pixel(dst, x + i, y + j, color);
+			src_color = get_pixel_color(src, i, j);
+			if (valid_pixel_spot(dst, x + i, y + j) && not_transparent(src_color))
+			{
+				dst_color = get_pixel_color(dst, x + i, y + j);
+				blended_color = alpha_blend(src_color, dst_color);
+				mlx_put_pixel(dst, x + i, y + j, blended_color);
+			}
 			j++;
 		}
 		i++;
