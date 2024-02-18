@@ -6,36 +6,11 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 11:52:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/18 23:09:35 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
-
-void	draw_map(t_game *game)
-{
-	t_map_element	*el;
-	t_list			*tile;
-	mlx_image_t		*img;
-	mlx_image_t		*free_img;
-
-	tile = game->map->elements;
-	while (tile)
-	{
-		el = (t_map_element *)tile->content;
-		free_img = ft_lstget(game->free_imgs, 0)->content;
-		if (el->type == WALL)
-			free_img = ft_lstget(game->free_imgs, FREE_C - 1)->content;
-		mlx_image_to_window(game->mlx, free_img, el->x * game->tile_size, el->y
-			* game->tile_size);
-		img = ft_lstget(el->images, rand() % ft_lstsize(el->images))->content;
-		if (el->type == FREE || el->type == PLAYER)
-			img = ft_lstget(el->images, rand() % 3)->content;
-		el->instance = mlx_image_to_window(game->mlx, img, el->x * game->tile_size,
-				el->y * game->tile_size);
-		tile = tile->next;
-	}
-}
 
 void	do_move(t_game *game)
 {
@@ -66,7 +41,7 @@ void	show_fps(t_game *game)
 		i = 0;
 		fps = 0;
 	}
-		
+
 }
 
 void	finish_prio(t_game *game)
@@ -81,10 +56,21 @@ void	finish_prio(t_game *game)
 	}
 	else
 	{
-		game->prio->is_active = false;
 		game->next->is_active = true;
+		game->prio->is_active = false;
 		game->prio = NULL;
 		game->next = NULL;
+	}
+}
+
+void	item_collection(t_game *game)
+{
+	if (game->movement->el->type == COLL)
+	{
+		int	instance;
+
+		instance = game->movement->el->instance;
+		game->movement->el->img->instances[instance].enabled = false;
 	}
 }
 
@@ -95,6 +81,8 @@ void	my_loop(void *my_game)
 	game = (t_game *)my_game;
 	show_fps(game);
 	game->move_speed = (game->tile_size / game->fps) * 6;
+	if (game->move_speed < 1)
+		game->move_speed = 1;
 	if (game->movement->active)
 		do_move(game);
 	else
@@ -111,7 +99,8 @@ void	my_loop(void *my_game)
 				toggle_states(game, game->p->char_idle_l);
 		}
 	}
-
+	if (game->movement->active)
+		item_collection(game);
 }
 
 void	next_move(t_game *game)
@@ -131,8 +120,11 @@ void	scale_sizes(t_game *game, float change)
 	game->char_size = CHAR_SIZE * change;
 	game->p->off.x = CHAR_X_OFF * change;
 	game->p->off.y = CHAR_Y_OFF * change;
+	game->map->coll_off_x = COLL_X_OFF * change;
+	game->map->coll_off_y = COLL_Y_OFF * change;
 	game->tile_size = TILE_SIZE * change;
 	game->coll_size = COLL_SIZE * change;
+	game->exit_size = EXIT_SIZE * change;
 	game->move_speed = SPEED * change;
 	game->fps = 60;
 }
