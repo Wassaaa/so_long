@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 21:40:33 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/18 11:51:25 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define ROLL_CHANCE 15
+# define ROLL_CHANCE 20
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -53,6 +53,7 @@ typedef struct s_anim
 	int			cur_f;
 	long int	frame_count;
 	bool		is_active;
+	bool		full_cycle;
 }				t_anim;
 
 typedef struct s_map_element
@@ -116,6 +117,9 @@ typedef struct s_game
 	t_list		*wall_imgs;
 	t_list		*coll_imgs;
 	t_list		*exit_imgs;
+	t_anim		*prio;
+	t_anim		*next;
+	int			fps;
 	int			game_status;
 	int			move_speed;
 	int			char_size;

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 21:19:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/18 11:52:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,67 @@ void	do_move(t_game *game)
 	sync_char(game);
 }
 
+void	show_fps(t_game *game)
+{
+	static int		fps = 1;
+	static double	i = 0;
+
+
+	i += game->mlx->delta_time;
+	fps++;
+	if (i >= 1)
+	{
+		game->fps = fps;
+		ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
+		i = 0;
+		fps = 0;
+	}
+		
+}
+
+void	finish_prio(t_game *game)
+{
+	if (!game->prio)
+		return ;
+	if (game->prio->cur_f != 0)
+	{
+		game->prio->is_active = true;
+		if (game->prio != game->next)
+			game->next->is_active = false;
+	}
+	else
+	{
+		game->prio->is_active = false;
+		game->next->is_active = true;
+		game->prio = NULL;
+		game->next = NULL;
+	}
+}
+
 void	my_loop(void *my_game)
 {
 	t_game		*game;
-	static int	fps;
 
 	game = (t_game *)my_game;
-	fps = 1 / game->mlx->delta_time;
-	ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
+	show_fps(game);
+	game->move_speed = (game->tile_size / game->fps) * 6;
 	if (game->movement->active)
 		do_move(game);
 	else
 		next_move(game);
+	finish_prio(game);
 	animation_loop(game->p->char_anims, game->mlx->delta_time);
-	if (!game->p->char_idle ->is_active && !game->p->char_idle_l->is_active)
+	if (!game->movement->active && !game->prio)
 	{
-		if (game->p->last_move == 'r')
-			toggle_states(game, game->p->char_idle);
-		else
-			toggle_states(game, game->p->char_idle_l);
+		if (!game->p->char_idle ->is_active && !game->p->char_idle_l->is_active)
+		{
+			if (game->p->last_move == 'r')
+				toggle_states(game, game->p->char_idle);
+			else
+				toggle_states(game, game->p->char_idle_l);
+		}
 	}
+
 }
 
 void	next_move(t_game *game)
@@ -93,6 +134,7 @@ void	scale_sizes(t_game *game, float change)
 	game->tile_size = TILE_SIZE * change;
 	game->coll_size = COLL_SIZE * change;
 	game->move_speed = SPEED * change;
+	game->fps = 60;
 }
 
 void	fix_sizes(t_game *game)
