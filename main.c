@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 03:07:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 03:39:28 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ void	show_fps(t_game *game)
 	if (i >= 1)
 	{
 		game->fps = fps;
+		if (game->fps < 30)
+			game->fps = 60;
 		ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
 		ft_printf("\e[2;1HMoves: [%d]\n", game->score);
 		ft_printf("\e[3;1HCollectables: [%d]\n", game->map->colls);
 		i = 0;
 		fps = 0;
 	}
-	game->move_speed = (game->tile_size / game->fps) * 6;
+	game->move_speed = (game->tile_size / game->fps) * SPEED;
 	if (game->move_speed < 1)
-		game->move_speed = 1;
+		game->move_speed = 1 * SPEED;
 }
 
 void	finish_prio(t_game *game)
@@ -99,9 +101,9 @@ void	do_idle(t_game *game)
 int	win_lose(t_game *game)
 {
 	if (game->game_status == 1)
-		ft_printf("VICTORY!");
+		ft_printf("\e[4;1H\e[JVICTORY!");
 	if (game->game_status == -1)
-		ft_printf("YOU DIED");
+		ft_printf("\e[4;1H\e[JYOU DIED");
 	if (game->game_status != 0)
 		return (1);
 	return (0);
@@ -177,6 +179,7 @@ void	next_move(t_game *game)
 
 void	scale_sizes(t_game *game, float change)
 {
+	game->fps = 60;
 	game->char_size = CHAR_SIZE * change;
 	game->p->off.x = CHAR_X_OFF * change;
 	game->p->off.y = CHAR_Y_OFF * change;
@@ -185,8 +188,6 @@ void	scale_sizes(t_game *game, float change)
 	game->tile_size = TILE_SIZE * change;
 	game->coll_size = COLL_SIZE * change;
 	game->exit_size = EXIT_SIZE * change;
-	game->move_speed = SPEED * change;
-	game->fps = 60;
 }
 
 void	fix_sizes(t_game *game)
