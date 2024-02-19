@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 22:56:18 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 02:43:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,10 @@ void	load_gun(t_game *game)
 
 void	gun_picked_up(t_game *game)
 {
+	game->map->colls--;
+	if (game->p->has_gun)
+		return ;
+	game->p->has_gun = true;
 	add_to_anim_frames(game->p->char_idle->frames, game->p->gun_idle->frames);
 	add_to_anim_frames(game->p->char_idle_l->frames, game->p->gun_idle_l->frames);
 	add_to_anim_frames(game->p->char_down->frames, game->p->gun_down->frames);

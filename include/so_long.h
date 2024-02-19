@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 23:09:08 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 02:35:10 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define ROLL_CHANCE 20
+# define ROLL_CHANCE 5
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -48,6 +48,16 @@
 # define DOWN 2
 # define LEFT 3
 
+typedef struct s_rgba
+{
+	uint32_t		color;
+	uint8_t			r;
+	uint8_t			g;
+	uint8_t			b;
+	uint8_t			a;
+	float			a_norm;
+}					t_rgba;
+
 typedef struct s_anim
 {
 	t_list			*frames;
@@ -73,6 +83,7 @@ typedef struct s_map_element
 typedef struct s_map
 {
 	t_list			*elements;
+	int				colls;
 	int				char_x;
 	int				char_y;
 	int				coll_off_x;
@@ -121,6 +132,8 @@ typedef struct s_player
 	t_anim			*gun_roll_left;
 	t_point			off;
 	char			last_move;
+	bool			has_gun;
+	t_map_element	*facing;
 }					t_player;
 
 typedef struct s_game
@@ -135,6 +148,7 @@ typedef struct s_game
 	t_list			*exit_imgs;
 	t_anim			*prio;
 	t_anim			*next;
+	int				score;
 	int				fps;
 	int				game_status;
 	int				move_speed;

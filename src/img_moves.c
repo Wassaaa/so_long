@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 18:54:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 21:20:35 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 03:07:37 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	image_right(t_game *game, void *image)
 	else
 	{
 		x = game->movement->x - x;
-		if (game->movement->el->type == COLL)
-			gun_picked_up(game);
 		ft_bzero(game->movement, sizeof(t_movement));
 	}
 	img->instances[0].x += x;
@@ -43,8 +41,6 @@ void	image_left(t_game *game, void *image)
 	else
 	{
 		x = x - game->movement->x;
-		if (game->movement->el->type == COLL)
-			gun_picked_up(game);
 		ft_bzero(game->movement, sizeof(t_movement));
 	}
 	img->instances[0].x -= x;
@@ -62,8 +58,6 @@ void	image_down(t_game *game, void *image)
 	else
 	{
 		y = game->movement->y - y;
-		if (game->movement->el->type == COLL)
-			gun_picked_up(game);
 		ft_bzero(game->movement, sizeof(t_movement));
 	}
 	img->instances[0].y += y;
@@ -81,8 +75,6 @@ void	image_up(t_game *game, void *image)
 	else
 	{
 		y = y - game->movement->y;
-		if (game->movement->el->type == COLL)
-			gun_picked_up(game);
 		ft_bzero(game->movement, sizeof(t_movement));
 	}
 	img->instances[0].y -= y;

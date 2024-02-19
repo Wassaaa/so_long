@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 23:09:35 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 03:07:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,14 @@ void	show_fps(t_game *game)
 	{
 		game->fps = fps;
 		ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
+		ft_printf("\e[2;1HMoves: [%d]\n", game->score);
+		ft_printf("\e[3;1HCollectables: [%d]\n", game->map->colls);
 		i = 0;
 		fps = 0;
 	}
-
+	game->move_speed = (game->tile_size / game->fps) * 6;
+	if (game->move_speed < 1)
+		game->move_speed = 1;
 }
 
 void	finish_prio(t_game *game)
@@ -65,13 +69,42 @@ void	finish_prio(t_game *game)
 
 void	item_collection(t_game *game)
 {
+	int	coll_ins;
+
 	if (game->movement->el->type == COLL)
 	{
-		int	instance;
-
-		instance = game->movement->el->instance;
-		game->movement->el->img->instances[instance].enabled = false;
+		gun_picked_up(game);
+		coll_ins = game->movement->el->instance;
+		game->movement->el->img->instances[coll_ins].enabled = false;
+		game->movement->el->type = FREE;
 	}
+	else if (game->movement->el->type == EXIT)
+	{
+		if (game->map->colls == 0)
+			game->game_status = 1;
+	}
+}
+
+void	do_idle(t_game *game)
+{
+	if (!game->p->char_idle ->is_active && !game->p->char_idle_l->is_active)
+	{
+		if (game->p->last_move == 'r')
+			toggle_states(game, game->p->char_idle);
+		else
+			toggle_states(game, game->p->char_idle_l);
+	}
+}
+
+int	win_lose(t_game *game)
+{
+	if (game->game_status == 1)
+		ft_printf("VICTORY!");
+	if (game->game_status == -1)
+		ft_printf("YOU DIED");
+	if (game->game_status != 0)
+		return (1);
+	return (0);
 }
 
 void	my_loop(void *my_game)
@@ -80,9 +113,8 @@ void	my_loop(void *my_game)
 
 	game = (t_game *)my_game;
 	show_fps(game);
-	game->move_speed = (game->tile_size / game->fps) * 6;
-	if (game->move_speed < 1)
-		game->move_speed = 1;
+	if (win_lose(game))
+		return ;
 	if (game->movement->active)
 		do_move(game);
 	else
@@ -90,29 +122,57 @@ void	my_loop(void *my_game)
 	finish_prio(game);
 	animation_loop(game->p->char_anims, game->mlx->delta_time);
 	if (!game->movement->active && !game->prio)
-	{
-		if (!game->p->char_idle ->is_active && !game->p->char_idle_l->is_active)
-		{
-			if (game->p->last_move == 'r')
-				toggle_states(game, game->p->char_idle);
-			else
-				toggle_states(game, game->p->char_idle_l);
-		}
-	}
+		do_idle(game);
 	if (game->movement->active)
 		item_collection(game);
+}
+
+void	handle_shoot(t_game *game)
+{
+	t_map_element	*el;
+	int				h;
+	int				w;
+
+	h = game->map->height - 1;
+	w = game->map->width - 1;
+	el = game->p->facing;
+
+	if (el->type == WALL && game->p->has_gun)
+	{
+		if (el->x != 0 && el->y != 0 && el->y != h && el->x != w)
+		{
+			el->img->instances[el->instance].enabled = false;
+			el->type = FREE;
+		}
+	}
 }
 
 void	next_move(t_game *game)
 {
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+	{
 		go_right(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+			handle_shoot(game);
+	}
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+	{
 		go_down(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+			handle_shoot(game);
+	}
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+	{
 		go_left(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+			handle_shoot(game);
+	}
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+	{
 		go_up(game);
+		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+			handle_shoot(game);
+	}
 }
 
 void	scale_sizes(t_game *game, float change)

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 20:38:20 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 02:35:44 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	move_to(t_game *game, t_map_element *el, int to)
 	game->movement->y = to_y;
 	game->movement->to = to;
 	game->movement->el = el;
+	game->score++;
 }
 
 void	go_right(t_game *game)
@@ -48,6 +49,7 @@ void	go_right(t_game *game)
 
 	dest_loc = (game->map->char_y * game->map->width) + game->map->char_x + 1;
 	el_to_r = ft_lstget(game->map->elements, dest_loc)->content;
+	game->p->facing = el_to_r;
 	if (move_allowed(el_to_r))
 	{
 		game->movement->anim = game->p->char_right;
@@ -71,6 +73,7 @@ void	go_left(t_game *game)
 	random = rand() % 100;
 	dest_loc = (game->map->char_y * game->map->width) + game->map->char_x - 1;
 	el_to_l = ft_lstget(game->map->elements, dest_loc)->content;
+	game->p->facing = el_to_l;
 	if (move_allowed(el_to_l))
 	{
 		game->movement->anim = game->p->char_left;
@@ -92,6 +95,7 @@ void	go_up(t_game *game)
 
 	dest_loc = ((game->map->char_y - 1) * game->map->width) + game->map->char_x;
 	el_to_u = ft_lstget(game->map->elements, dest_loc)->content;
+	game->p->facing = el_to_u;
 	if (move_allowed(el_to_u))
 	{
 		game->movement->anim = game->p->char_up;
@@ -113,6 +117,7 @@ void	go_down(t_game *game)
 
 	dest_loc = ((game->map->char_y + 1) * game->map->width) + game->map->char_x;
 	el_to_d = ft_lstget(game->map->elements, dest_loc)->content;
+	game->p->facing = el_to_d;
 	if (move_allowed(el_to_d))
 	{
 		game->movement->anim = game->p->char_down;

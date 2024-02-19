@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/17 16:38:40 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 00:07:11 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	read_map(t_game *game, char *map_file)
 	int		width;
 
 	height = 0;
+	width = 0;
 	fd = open(map_file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line != NULL)
