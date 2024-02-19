@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 22:59:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 01:15:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,19 +115,43 @@ int	win_lose(t_game *game)
 	return (0);
 }
 
-void	got_gun(t_game *game)
+void	image_off(t_list *anims, bool onoff)
 {
-	game->g->el = game->p->el;
-	game->g->facing = game->p->facing;
-	game->g->has_gun = game->p->has_gun;
-	game->g->last_move = game->p->last_move;
-	game->g->off = game->p->off;
-	if (game->p->has_gun)
+	t_anim	*an;
+	t_list	*frames;
+	mlx_image_t *img;
+
+	while (anims)
 	{
+		an = anims->content;
+		frames = an->frames;
+		while (frames)
+		{
+			img = frames->content;
+			img->enabled = onoff;
+			frames = frames->next;
+		}
+		anims = anims->next;
+	}
+}
+
+void	got_gun(t_game *game)
+{	
+	if ((game->ammo < 1 && game->last_ammo >= 1) || \
+	(game->last_ammo < 1 && game->ammo >= 1))
+	{
+		game->g->el = game->p->el;
+		game->g->facing = game->p->facing;
+		game->g->last_move = game->p->last_move;
+		game->g->off = game->p->off;
+		image_off(game->p->char_anims, false);
+		image_off(game->g->char_anims, true);
 		game->backup = game->p;
 		game->p = game->g;
 		game->g = game->backup;
+		
 	}
+	game->last_ammo = game->ammo;
 }
 
 void	my_loop(void *my_game)
@@ -161,12 +185,13 @@ void	handle_shoot(t_game *game)
 	w = game->map->width - 1;
 	el = game->p->facing;
 
-	if (el->type == WALL && game->p->has_gun)
+	if (el->type == WALL && game->ammo > 0)
 	{
 		if (el->x != 0 && el->y != 0 && el->y != h && el->x != w)
 		{
 			el->img->instances[el->instance].enabled = false;
 			el->type = FREE;
+			game->ammo--;
 		}
 	}
 }

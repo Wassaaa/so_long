@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:47:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 22:57:04 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 00:46:42 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void	toggle_states(t_game *game, t_list *anims, t_anim *current)
 			iter->is_active = false;
 		temp_anims = temp_anims->next;
 	}
-	game->next->is_active = true;
+	if (game->next)
+		game->next->is_active = true;
 }

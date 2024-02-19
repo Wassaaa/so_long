@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 22:52:56 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 00:38:44 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ typedef struct s_player
 	t_anim			*head;
 	t_point			off;
 	char			last_move;
-	bool			has_gun;
 	t_map_element	*facing;
 }					t_player;
 
@@ -161,6 +160,8 @@ typedef struct s_game
 	int				tile_size;
 	int				coll_size;
 	int				exit_size;
+	int				ammo;
+	int				last_ammo;
 }					t_game;
 
 typedef struct s_sprite

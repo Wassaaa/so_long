@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 22:52:43 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 01:00:35 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	set_types(t_list *anims, int type)
 void	gun_picked_up(t_game *game)
 {
 	game->map->colls--;
-	game->p->has_gun = true;
+	game->ammo++;
 }
 
 void	load_enemy (t_game *game)

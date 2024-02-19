@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:46:24 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 22:56:47 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 00:36:15 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void	sync_char(t_game *game)
 
 	base = game->p->char_idle->frames->content;
 	sync_anim_frames(base, game->p->char_anims);
+	sync_anim_frames(base, game->g->char_anims);
 }

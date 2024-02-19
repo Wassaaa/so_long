@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:08:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 19:39:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 00:09:47 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 void	null_content(void *content)
 {
 	content = NULL;
+	(void)content;
 }
 
 void error(void)
