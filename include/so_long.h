@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 03:42:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:47:03 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define FREE_C 4
 # define COLL_C 1
 
-# define SPEED 9
+# define SPEED 8
 
 # define FREE 0
 # define WALL 1
