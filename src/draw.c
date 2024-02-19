@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 21:42:03 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 21:51:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void	draw_gun_anim(t_game *game)
 	temp = game->g->gun_up->frames;
 	x = game->p->el->x;
 	y = game->p->el->y;
-	game->g->el = frames_to_window(game->mlx, game->g->gun_anims, x, y);
+	game->g->el->instance = frames_to_window(game->mlx, game->g->gun_anims, x, y);
 	fix_depth(game->g->el, game->g->gun_anims);
 	while (temp)
 	{
