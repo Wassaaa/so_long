@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 11:47:03 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 21:37:49 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@
 # define WALL 1
 # define COLL 2
 # define EXIT 3
-# define PLAYER 4
+# define PLAYER 5
+# define ENEMY 4
 
 # define UP 0
 # define RIGHT 1
@@ -67,6 +68,7 @@ typedef struct s_anim
 	long int		frame_count;
 	bool			is_active;
 	bool			full_cycle;
+	int				type;
 }					t_anim;
 
 typedef struct s_map_element
@@ -109,9 +111,31 @@ typedef struct s_movement
 	t_map_element	*el;
 }					t_movement;
 
+typedef struct s_gun
+{
+	t_list			*gun_anims;
+	t_map_element	*el;
+	t_anim			*gun_idle;
+	t_anim			*gun_idle_l;
+	t_anim			*gun_right;
+	t_anim			*gun_left;
+	t_anim			*gun_up;
+	t_anim			*gun_down;
+	t_anim			*gun_roll_right;
+	t_anim			*gun_roll_left;
+}					t_gun;
+
+typedef struct s_enemy
+{
+	t_list			*enemy_anims;
+	t_anim			*move_left;
+	t_anim			*move_right;
+}					t_enemy;
+
 typedef struct s_player
 {
 	t_list			*char_anims;
+	t_map_element	*el;
 	t_anim			*char_idle;
 	t_anim			*char_idle_l;
 	t_anim			*char_right;
@@ -122,14 +146,6 @@ typedef struct s_player
 	t_anim			*char_roll_left;
 	t_anim			*hair;
 	t_anim			*head;
-	t_anim			*gun_idle;
-	t_anim			*gun_idle_l;
-	t_anim			*gun_right;
-	t_anim			*gun_left;
-	t_anim			*gun_up;
-	t_anim			*gun_down;
-	t_anim			*gun_roll_right;
-	t_anim			*gun_roll_left;
 	t_point			off;
 	char			last_move;
 	bool			has_gun;
@@ -141,6 +157,8 @@ typedef struct s_game
 	mlx_t			*mlx;
 	t_map			*map;
 	t_player		*p;
+	t_enemy			*e;
+	t_gun			*g;
 	t_movement		*movement;
 	t_list			*free_imgs;
 	t_list			*wall_imgs;
@@ -211,6 +229,7 @@ void				get_animations(t_game *game);
 // get moves
 void				next_move(t_game *game);
 void				error(void);
+void				clear_anim(t_anim **anim);
 
 // helpers
 t_list				*ft_lstget(t_list *l, int n);

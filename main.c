@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 03:39:28 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 19:59:21 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,8 +223,8 @@ int32_t	main(void)
 	start_mlx(game);
 	load_map_textures(game);
 	read_map(game, "./maps/map.ber");
-	draw_map(game);
 	get_animations(game);
+	draw_map(game);
 	mlx_loop_hook(game->mlx, my_loop, game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
