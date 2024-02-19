@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 02:35:44 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:39:46 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	go_right(t_game *game)
 		if (rand() % 100 < ROLL_CHANCE)
 			game->movement->anim = game->p->char_roll_right;
 		move_to(game, el_to_r, RIGHT);
-		toggle_states(game, game->p->char_right);
+		toggle_states(game, game->p->char_anims, game->p->char_right);
 		game->map->char_x++;
 	}
 	else
@@ -80,7 +80,7 @@ void	go_left(t_game *game)
 		if (random < ROLL_CHANCE)
 			game->movement->anim = game->p->char_roll_left;
 		move_to(game, el_to_l, LEFT);
-		toggle_states(game, game->p->char_left);
+		toggle_states(game, game->p->char_anims, game->p->char_left);
 		game->map->char_x--;
 	}
 	else
@@ -102,7 +102,7 @@ void	go_up(t_game *game)
 		if (rand() % 100 < ROLL_CHANCE)
 			game->movement->anim = game->p->char_roll_left;
 		move_to(game, el_to_u, UP);
-		toggle_states(game, game->p->char_up);
+		toggle_states(game, game->p->char_anims, game->p->char_up);
 		game->map->char_y--;
 	}
 	else
@@ -124,7 +124,7 @@ void	go_down(t_game *game)
 		if (rand() % 100 < ROLL_CHANCE)
 			game->movement->anim = game->p->char_roll_right;
 		move_to(game, el_to_d, DOWN);
-		toggle_states(game, game->p->char_down);
+		toggle_states(game, game->p->char_anims, game->p->char_down);
 		game->map->char_y++;
 	}
 	else

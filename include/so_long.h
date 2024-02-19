@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 21:37:49 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:52:56 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,20 +111,6 @@ typedef struct s_movement
 	t_map_element	*el;
 }					t_movement;
 
-typedef struct s_gun
-{
-	t_list			*gun_anims;
-	t_map_element	*el;
-	t_anim			*gun_idle;
-	t_anim			*gun_idle_l;
-	t_anim			*gun_right;
-	t_anim			*gun_left;
-	t_anim			*gun_up;
-	t_anim			*gun_down;
-	t_anim			*gun_roll_right;
-	t_anim			*gun_roll_left;
-}					t_gun;
-
 typedef struct s_enemy
 {
 	t_list			*enemy_anims;
@@ -156,9 +142,10 @@ typedef struct s_game
 {
 	mlx_t			*mlx;
 	t_map			*map;
+	t_player		*backup;
 	t_player		*p;
 	t_enemy			*e;
-	t_gun			*g;
+	t_player		*g;
 	t_movement		*movement;
 	t_list			*free_imgs;
 	t_list			*wall_imgs;
@@ -212,7 +199,7 @@ void				go_up(t_game *game);
 void				go_down(t_game *game);
 
 // animation
-void				toggle_states(t_game *game, t_anim *current);
+void				toggle_states(t_game *game, t_list *anims, t_anim *current);
 void				animation_loop(t_list *anims, double dt);
 void				gun_picked_up(t_game *game);
 

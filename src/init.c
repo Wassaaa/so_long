@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 17:38:39 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:48:06 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	init_player(t_game *game)
 	game->p = ft_calloc(1, sizeof(t_player));
 	game->p->last_move = 'r';
 	game->e = ft_calloc(1, sizeof(t_enemy));
-	game->g = ft_calloc(1, sizeof(t_gun));
+	game->g = ft_calloc(1, sizeof(t_player));
+	game->g->el = ft_calloc(1, sizeof(t_map_element));
 }
 
 t_game	*init_game(void)

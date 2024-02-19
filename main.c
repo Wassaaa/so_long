@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 19:59:21 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:59:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 void	do_move(t_game *game)
 {
-	toggle_states(game, game->movement->anim);
+	t_list	*anims;
+
+	anims = game->p->char_anims;
+	toggle_states(game, anims, game->movement->anim);
 	if (game->movement->to == UP)
 		image_up(game, game->p->char_idle->frames->content);
 	else if (game->movement->to == RIGHT)
@@ -89,13 +92,16 @@ void	item_collection(t_game *game)
 
 void	do_idle(t_game *game)
 {
-	if (!game->p->char_idle ->is_active && !game->p->char_idle_l->is_active)
-	{
-		if (game->p->last_move == 'r')
-			toggle_states(game, game->p->char_idle);
-		else
-			toggle_states(game, game->p->char_idle_l);
-	}
+	t_anim	*next_idle;
+	t_list	*next_anims;
+
+	next_anims = game->p->char_anims;
+	if (game->p->last_move == 'r')
+		next_idle = game->p->char_idle;
+	else
+		next_idle = game->p->char_idle_l;
+
+	toggle_states(game, next_anims, next_idle);
 }
 
 int	win_lose(t_game *game)
@@ -107,6 +113,21 @@ int	win_lose(t_game *game)
 	if (game->game_status != 0)
 		return (1);
 	return (0);
+}
+
+void	got_gun(t_game *game)
+{
+	game->g->el = game->p->el;
+	game->g->facing = game->p->facing;
+	game->g->has_gun = game->p->has_gun;
+	game->g->last_move = game->p->last_move;
+	game->g->off = game->p->off;
+	if (game->p->has_gun)
+	{
+		game->backup = game->p;
+		game->p = game->g;
+		game->g = game->backup;
+	}
 }
 
 void	my_loop(void *my_game)
@@ -122,6 +143,7 @@ void	my_loop(void *my_game)
 	else
 		next_move(game);
 	finish_prio(game);
+	got_gun(game);
 	animation_loop(game->p->char_anims, game->mlx->delta_time);
 	if (!game->movement->active && !game->prio)
 		do_idle(game);

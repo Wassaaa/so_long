@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 20:47:39 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:52:43 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ void	set_types(t_list *anims, int type)
 void	gun_picked_up(t_game *game)
 {
 	game->map->colls--;
-	if (game->p->has_gun)
-		return ;
 	game->p->has_gun = true;
 }
 
@@ -167,22 +165,22 @@ void	load_gun(t_game *game)
 	t_sprite	gun_roll;
 
 	gun_idle = new_sprite("./textures/wep/idle_", 6, 100, 0);
-	game->g->gun_idle = load_animation(game, gun_idle, &game->g->gun_anims, 1);
+	game->g->char_idle = load_animation(game, gun_idle, &game->g->char_anims, 1);
 	gun_idle.mirrored = 1;
-	game->g->gun_idle_l = load_animation(game, gun_idle, &game->g->gun_anims, 1);
+	game->g->char_idle_l = load_animation(game, gun_idle, &game->g->char_anims, 1);
 	gun_walk = new_sprite("./textures/wep/walk_", 8, 100, 0);
-	game->g->gun_right = load_animation(game, gun_walk, &game->g->gun_anims, 1);
-	game->g->gun_down = load_animation(game, gun_walk, &game->g->gun_anims, 1);
+	game->g->char_right = load_animation(game, gun_walk, &game->g->char_anims, 1);
+	game->g->char_down = load_animation(game, gun_walk, &game->g->char_anims, 1);
 	gun_walk.mirrored = 1;
-	game->g->gun_left = load_animation(game, gun_walk, &game->g->gun_anims, 1);
-	game->g->gun_up = load_animation(game, gun_walk, &game->g->gun_anims, 1);
+	game->g->char_left = load_animation(game, gun_walk, &game->g->char_anims, 1);
+	game->g->char_up = load_animation(game, gun_walk, &game->g->char_anims, 1);
 	gun_roll = new_sprite("./textures/wep/roll_", 5, 100, 0);
-	game->g->gun_roll_right = load_animation(game, gun_roll, &game->g->gun_anims, 1);
+	game->g->char_roll_right = load_animation(game, gun_roll, &game->g->char_anims, 1);
 	gun_roll.mirrored = 1;
-	game->g->gun_roll_left = load_animation(game, gun_roll, &game->g->gun_anims, 1);
-	game->g->gun_roll_left->full_cycle = true;
-	game->g->gun_roll_right->full_cycle = true;
-	set_types(game->g->gun_anims, COLL);
+	game->g->char_roll_left = load_animation(game, gun_roll, &game->g->char_anims, 1);
+	game->g->char_roll_left->full_cycle = true;
+	game->g->char_roll_right->full_cycle = true;
+	set_types(game->g->char_anims, COLL);
 }
 
 void	load_char_up(t_game *game)

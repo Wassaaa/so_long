@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:47:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/18 11:38:59 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:57:04 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ void	animation_loop(t_list *anims, double dt)
 	}
 }
 
-void	toggle_states(t_game *game, t_anim *current)
+void	toggle_states(t_game *game, t_list *anims, t_anim *current)
 {
 	t_list	*temp_anims;
 	t_anim	*iter;
 
-	temp_anims = game->p->char_anims;
+	temp_anims = anims;
 	while (temp_anims != NULL)
 	{
 		iter = (t_anim *)temp_anims->content;

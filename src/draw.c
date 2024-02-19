@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 21:51:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/19 22:53:19 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ int	frames_to_window(mlx_t *mlx, t_list *anims, int x, int y)
 
 void	fix_depth(t_map_element *el, t_list *anims)
 {
-	static int	i = 1000;
+	static int	i = 6;
 	mlx_image_t	*frame;
 	t_anim		*anim;
 	t_list		*temp;
 
 	if (el->type == PLAYER)
-		i = 10000;
+		i = 100;
 	while (anims != NULL)
 	{
 		anim = (t_anim *)anims->content;
@@ -175,16 +175,16 @@ void	draw_player(t_game *game, t_map_element *el)
 }
 void	draw_gun_anim(t_game *game)
 {
-	int			x;
-	int			y;
-	t_list		*temp;
-	mlx_image_t	*img;
+	int				x;
+	int				y;
+	t_list			*temp;
+	mlx_image_t		*img;
 
-	temp = game->g->gun_up->frames;
+	temp = game->g->char_up->frames;
 	x = game->p->el->x;
 	y = game->p->el->y;
-	game->g->el->instance = frames_to_window(game->mlx, game->g->gun_anims, x, y);
-	fix_depth(game->g->el, game->g->gun_anims);
+	game->g->el->instance = frames_to_window(game->mlx, game->g->char_anims, x, y);
+	fix_depth(game->g->el, game->g->char_anims);
 	while (temp)
 	{
 		img = (mlx_image_t *)temp->content;
@@ -218,4 +218,5 @@ void	draw_map(t_game *game)
 		tile = tile->next;
 	}
 	fix_depth(game->p->el, game->p->char_anims);
+	draw_gun_anim(game);
 }
