@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 03:54:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 18:10:21 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,24 @@ void	show_fps(t_game *game)
 
 void	finish_prio(t_game *game)
 {
-	if (!game->prio)
-		return ;
-	if (game->prio->cur_f != 0)
+	if (game->prio)
 	{
-		game->prio->is_active = true;
-		if (game->prio != game->next)
-			game->next->is_active = false;
+		if (game->prio->cur_f != 0)
+		{
+			game->prio->is_active = true;
+			if (game->prio != game->next)
+				game->next->is_active = false;
+		}
+		else
+		{
+			game->prio->is_active = false;
+			game->next->is_active = true;
+			game->prio = NULL;
+			game->next = NULL;
+		}
 	}
 	else
-	{
-		game->prio->is_active = false;
 		game->next->is_active = true;
-		game->prio = NULL;
-		game->next = NULL;
-	}
 }
 
 void	item_collection(t_game *game)
@@ -168,12 +171,16 @@ void	my_loop(void *my_game)
 		return ;
 	if (game->movement->active)
 		do_move(game);
+	else if (game->prio)
+		finish_prio(game);
 	else
 		next_move(game);
-	finish_prio(game);
 	roll_animations(game);
-	if (!game->movement->active && !game->prio)
-		do_idle(game);
+	if (!game->movement->active)
+	{
+		if (!game->prio || (game->prio && !game->prio->is_active))
+			do_idle(game);
+	}
 	if (game->movement->active)
 		item_collection(game);
 }
