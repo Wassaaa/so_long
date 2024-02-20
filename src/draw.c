@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 22:53:19 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 03:58:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void	draw_gun_anim(t_game *game)
 	while (temp)
 	{
 		img = (mlx_image_t *)temp->content;
-		mlx_set_instance_depth(&img->instances[game->g->el->instance], 999);
+		mlx_set_instance_depth(&img->instances[game->g->el->instance], 99);
 		temp = temp->next;
 	}
 

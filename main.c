@@ -6,18 +6,22 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 01:15:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 03:54:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
+// void	toggle_move(t_game *game)
+// {
+// 	// toggle_states(game, game->p->char_anims, game->movement->anim);
+// 	// toggle_states(game, game->g->char_anims, game->movement->anim_g);
+// 	//game->movement->anim_g->cur_f = game->movement->anim->cur_f;
+// }
+
 void	do_move(t_game *game)
 {
-	t_list	*anims;
-
-	anims = game->p->char_anims;
-	toggle_states(game, anims, game->movement->anim);
+	//toggle_move(game);
 	if (game->movement->to == UP)
 		image_up(game, game->p->char_idle->frames->content);
 	else if (game->movement->to == RIGHT)
@@ -65,8 +69,8 @@ void	finish_prio(t_game *game)
 	}
 	else
 	{
-		game->next->is_active = true;
 		game->prio->is_active = false;
+		game->next->is_active = true;
 		game->prio = NULL;
 		game->next = NULL;
 	}
@@ -93,15 +97,25 @@ void	item_collection(t_game *game)
 void	do_idle(t_game *game)
 {
 	t_anim	*next_idle;
+	t_anim	*next_idle_g;
 	t_list	*next_anims;
+	t_list	*next_anims_g;
 
 	next_anims = game->p->char_anims;
+	next_anims_g = game->g->char_anims;
 	if (game->p->last_move == 'r')
+	{
 		next_idle = game->p->char_idle;
+		next_idle_g = game->g->char_idle;
+	}
 	else
+	{
 		next_idle = game->p->char_idle_l;
+		next_idle_g = game->g->char_idle_l;
+	}
 
 	toggle_states(game, next_anims, next_idle);
+	toggle_states(game, next_anims_g, next_idle_g);
 }
 
 int	win_lose(t_game *game)
@@ -115,7 +129,7 @@ int	win_lose(t_game *game)
 	return (0);
 }
 
-void	image_off(t_list *anims, bool onoff)
+void	image_toggle(t_list *anims, bool onoff)
 {
 	t_anim	*an;
 	t_list	*frames;
@@ -137,20 +151,10 @@ void	image_off(t_list *anims, bool onoff)
 
 void	got_gun(t_game *game)
 {	
-	if ((game->ammo < 1 && game->last_ammo >= 1) || \
-	(game->last_ammo < 1 && game->ammo >= 1))
-	{
-		game->g->el = game->p->el;
-		game->g->facing = game->p->facing;
-		game->g->last_move = game->p->last_move;
-		game->g->off = game->p->off;
-		image_off(game->p->char_anims, false);
-		image_off(game->g->char_anims, true);
-		game->backup = game->p;
-		game->p = game->g;
-		game->g = game->backup;
-		
-	}
+	if (game->ammo < 1 && game->last_ammo >= 1)
+		image_toggle(game->g->char_anims, false);
+	else if(game->last_ammo < 1 && game->ammo >= 1)
+		image_toggle(game->g->char_anims, true);		
 	game->last_ammo = game->ammo;
 }
 
@@ -167,8 +171,7 @@ void	my_loop(void *my_game)
 	else
 		next_move(game);
 	finish_prio(game);
-	got_gun(game);
-	animation_loop(game->p->char_anims, game->mlx->delta_time);
+	roll_animations(game);
 	if (!game->movement->active && !game->prio)
 		do_idle(game);
 	if (game->movement->active)
@@ -192,6 +195,7 @@ void	handle_shoot(t_game *game)
 			el->img->instances[el->instance].enabled = false;
 			el->type = FREE;
 			game->ammo--;
+			got_gun(game);
 		}
 	}
 }

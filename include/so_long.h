@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 00:38:44 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 03:56:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define FREE_C 4
 # define COLL_C 1
 
-# define SPEED 8
+# define SPEED 7
 
 # define FREE 0
 # define WALL 1
@@ -108,6 +108,7 @@ typedef struct s_movement
 	int				y;
 	int				to;
 	t_anim			*anim;
+	t_anim			*anim_g;
 	t_map_element	*el;
 }					t_movement;
 
@@ -201,6 +202,7 @@ void				go_down(t_game *game);
 
 // animation
 void				toggle_states(t_game *game, t_list *anims, t_anim *current);
+void				roll_animations(t_game *game);
 void				animation_loop(t_list *anims, double dt);
 void				gun_picked_up(t_game *game);
 
@@ -218,6 +220,9 @@ void				get_animations(t_game *game);
 void				next_move(t_game *game);
 void				error(void);
 void				clear_anim(t_anim **anim);
+
+// game elements
+void				got_gun(t_game *game);
 
 // helpers
 t_list				*ft_lstget(t_list *l, int n);

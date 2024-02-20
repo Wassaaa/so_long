@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:47:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 00:46:42 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 02:38:17 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ void	animate_character(t_anim *anim, double dt)
 	}
 }
 
+void	roll_animations(t_game *game)
+{
+	animation_loop(game->p->char_anims, game->mlx->delta_time);
+	animation_loop(game->g->char_anims, game->mlx->delta_time);
+}
+
 void	animation_loop(t_list *anims, double dt)
 {
 	t_anim	*anim;
@@ -69,7 +75,7 @@ void	toggle_states(t_game *game, t_list *anims, t_anim *current)
 			game->next = iter;
 		else if (iter->is_active && iter->full_cycle)
 			game->prio = iter;
-		else if (game->prio != iter)
+		if (game->prio != iter)
 			iter->is_active = false;
 		temp_anims = temp_anims->next;
 	}
