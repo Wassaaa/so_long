@@ -6,41 +6,13 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 21:59:39 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 23:11:11 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-int	move_allowed(t_map_element *el)
-{
-	if (el->type == WALL)
-		return (0);
-	if (el->type == PLAYER)
-		return (1);
-	if (el->type == FREE)
-		return (1);
-	if (el->type == COLL)
-		return (1);
-	if (el->type == EXIT)
-		return (1);
-	return (0);
-}
 
-void	move_to(t_game *game, t_map_element *el, int to)
-{
-	int	to_x;
-	int	to_y;
-
-	to_x = (el->x * game->tile_size) + game->p->off.x;
-	to_y = (el->y * game->tile_size) + game->p->off.y;
-	game->movement->active = 1;
-	game->movement->x = to_x;
-	game->movement->y = to_y;
-	game->movement->to = to;
-	game->movement->el = el;
-	game->score++;
-}
 
 void	go_right(t_game *game)
 {
@@ -121,7 +93,7 @@ void	go_up(t_game *game)
 	}
 	else
 		ft_bzero(game->movement, sizeof(t_movement));
-	game->p->last_move = 'l';
+	game->p->last_move = 'u';
 }
 
 void	go_down(t_game *game)
@@ -148,5 +120,19 @@ void	go_down(t_game *game)
 	}
 	else
 		ft_bzero(game->movement, sizeof(t_movement));
-	game->p->last_move = 'r';
+	game->p->last_move = 'd';
+}
+
+void	next_move(t_game *game)
+{
+	if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
+		handle_shoot(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+		go_right(game);
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+		go_down(game);
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+		go_left(game);
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+		go_up(game);
 }

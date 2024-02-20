@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 22:00:49 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 22:52:33 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define ROLL_CHANCE 50
+# define ROLL_CHANCE 5
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -180,6 +180,10 @@ t_game				*init_game(void);
 void				start_mlx(t_game *game);
 void				fix_sizes(t_game *game);
 
+// display
+void				show_fps(t_game *game);
+int					win_lose(t_game *game);
+
 // pixels
 int32_t				get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 void				get_mirrored(mlx_image_t *dst, mlx_image_t *src);
@@ -197,6 +201,9 @@ void				image_up(t_game *game, void *image);
 void				image_down(t_game *game, void *image);
 
 // char moves
+void				next_move(t_game *game);
+int					move_allowed(t_map_element *el);
+void				move_to(t_game *game, t_map_element *el, int to);
 void				go_right(t_game *game);
 void				go_left(t_game *game);
 void				go_up(t_game *game);
@@ -206,7 +213,9 @@ void				go_down(t_game *game);
 void				toggle_states(t_game *game, t_list *anims, t_anim *current);
 void				roll_animations(t_game *game);
 void				animation_loop(t_list *anims, double dt);
-void				gun_picked_up(t_game *game);
+void				do_move(t_game *game);
+void				do_idle(t_game *game);
+void				finish_prio(t_game *game);
 
 // frames sync
 void				sync_anim_frames(mlx_image_t *base, t_list *anims);
@@ -218,17 +227,18 @@ void				fill_elements(t_game *game, char *line, int y);
 void				load_map_textures(t_game *game);
 void				get_animations(t_game *game);
 
-// get moves
-void				next_move(t_game *game);
-void				clear_anim(t_anim **anim);
-
 // game elements
 void				got_gun(t_game *game);
+void				gun_picked_up(t_game *game);
+void				item_collection(t_game *game);
+void				image_toggle(t_list *anims, bool onoff);
+void				handle_shoot(t_game *game);
 
 // helpers
 t_list				*ft_lstget(t_list *l, int n);
 t_list				*safe_lstnew(void *content);
 void				error(void);
 void				null_content(void *content);
+void				clear_anim(t_anim **anim);
 
 #endif

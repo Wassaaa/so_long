@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/20 20:52:13 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/20 23:00:30 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,14 @@ SRCS			=	ft_lstget.c\
 					init.c\
 					helpers.c\
 					draw.c\
-					sizes.c
+					sizes.c\
+					prio.c\
+					move_helpers.c\
+					do_anim.c\
+					display.c\
+					gun.c\
+					
+					
 
 
 B_SRCS			=
@@ -34,10 +41,12 @@ B_SRCS			=
 # COMPILATION
 ################################################################################
 CC				=	gcc
-CC_STRICT		=	-Wall -Wextra -Werror #-Og -flto #-Ofast
+CC_STRICT		=	-Wall -Wextra -Werror
+OFAST			=	-Ofast -flto
+OG				=	-Og -flto
 CC_DEBUG		=	-g #-fsanitize=leak
 HEADERS		=	-I $(LIBFT_INCLUDES) -I $(INCLUDES) -I $(MLX42_DIR)/include
-CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
+CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG)
 
 ################################################################################
 # MLX
