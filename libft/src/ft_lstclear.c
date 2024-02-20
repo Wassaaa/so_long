@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 20:07:28 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 19:47:08 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 18:48:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
 	t_list	*temp;
 
-	if (!lst || !del)
+	if (!lst)
 		return ;
 	while (*lst)
 	{

@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/20 17:18:39 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/20 20:52:13 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCS			=	ft_lstget.c\
 					init.c\
 					helpers.c\
 					draw.c\
+					sizes.c
 
 
 B_SRCS			=

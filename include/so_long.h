@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 17:56:33 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 22:00:49 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define ROLL_CHANCE 99
+# define ROLL_CHANCE 50
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -151,7 +151,7 @@ typedef struct s_game
 	t_list			*wall_imgs;
 	t_list			*coll_imgs;
 	t_list			*exit_imgs;
-	t_anim			*prio;
+	t_list			*prio;
 	t_anim			*next;
 	int				score;
 	int				fps;
@@ -163,6 +163,7 @@ typedef struct s_game
 	int				exit_size;
 	int				ammo;
 	int				last_ammo;
+	int				random;
 }					t_game;
 
 typedef struct s_sprite
@@ -177,6 +178,7 @@ typedef struct s_sprite
 void				init_player(t_game *game);
 t_game				*init_game(void);
 void				start_mlx(t_game *game);
+void				fix_sizes(t_game *game);
 
 // pixels
 int32_t				get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
@@ -218,7 +220,6 @@ void				get_animations(t_game *game);
 
 // get moves
 void				next_move(t_game *game);
-void				error(void);
 void				clear_anim(t_anim **anim);
 
 // game elements
@@ -227,5 +228,7 @@ void				got_gun(t_game *game);
 // helpers
 t_list				*ft_lstget(t_list *l, int n);
 t_list				*safe_lstnew(void *content);
+void				error(void);
+void				null_content(void *content);
 
 #endif

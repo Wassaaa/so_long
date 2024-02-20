@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:47:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 18:22:55 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 19:04:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,24 @@ void	toggle_states(t_game *game, t_list *anims, t_anim *current)
 {
 	t_list	*temp_anims;
 	t_anim	*iter;
+	t_anim	*current_one;
 
 	temp_anims = anims;
+	current_one = NULL;
 	while (temp_anims != NULL)
 	{
 		iter = (t_anim *)temp_anims->content;
-		if (iter == current)
+		if (iter->is_active && iter->full_cycle)
+			ft_lstadd_back(&game->prio, safe_lstnew(iter));
+		else if (iter == current)
 		{
-			game->next = iter;
-			iter = false;
+			current_one = iter;
+			iter->is_active = true;
 		}
-		else if (iter->is_active && iter->full_cycle)
-			game->prio = iter;
 		else
 			iter->is_active = false;
 		temp_anims = temp_anims->next;
 	}
-	if (game->next && !game->prio)
-		game->next->is_active = true;
+	if (game->prio && current_one)
+		current_one->is_active = false;
 }

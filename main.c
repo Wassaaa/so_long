@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 18:10:21 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 21:54:33 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	show_fps(t_game *game)
 {
 	static int		fps = 1;
 	static double	i = 0;
+	static int		random;
 
 
 	i += game->mlx->delta_time;
+	random++;
 	fps++;
 	if (i >= 1)
 	{
@@ -55,28 +57,29 @@ void	show_fps(t_game *game)
 	game->move_speed = (game->tile_size / game->fps) * SPEED;
 	if (game->move_speed < 1)
 		game->move_speed = 1 * SPEED;
+	got_gun(game);
+	game->random = random;
 }
 
 void	finish_prio(t_game *game)
 {
+	t_anim	*prio;
+	t_list	*prio_list;
+
 	if (game->prio)
 	{
-		if (game->prio->cur_f != 0)
+		prio_list = game->prio;
+		while (prio_list)
 		{
-			game->prio->is_active = true;
-			if (game->prio != game->next)
-				game->next->is_active = false;
+			prio = (t_anim *)prio_list->content;
+			if (prio->cur_f != prio->frame_count - 1)
+				prio->is_active = true;
+			else
+				prio->is_active = false;
+			prio_list = prio_list->next;
 		}
-		else
-		{
-			game->prio->is_active = false;
-			game->next->is_active = true;
-			game->prio = NULL;
-			game->next = NULL;
-		}
+		ft_lstclear(&game->prio, NULL);
 	}
-	else
-		game->next->is_active = true;
 }
 
 void	item_collection(t_game *game)
@@ -161,6 +164,28 @@ void	got_gun(t_game *game)
 	game->last_ammo = game->ammo;
 }
 
+void	find_empty_frame(t_game *game)
+{
+	t_list	*anims;
+	t_anim	*anim;
+	int		i;
+
+	i = 0;
+	anims = game->p->char_anims;
+	while (anims)
+	{
+		anim = (t_anim *)(anims->content);
+		if (anim->is_active)
+			i++;
+		anims = anims->next;
+	}
+	if (i > 0)
+		ft_printf("\e[5;1H\e[J%d anims active", i);
+	else
+		ft_printf("bad frame");
+	ft_printf("\e[6;1HRandom: [%d]\n", game->random);
+}
+
 void	my_loop(void *my_game)
 {
 	t_game		*game;
@@ -169,20 +194,19 @@ void	my_loop(void *my_game)
 	show_fps(game);
 	if (win_lose(game))
 		return ;
-	if (game->movement->active)
-		do_move(game);
-	else if (game->prio)
-		finish_prio(game);
-	else
-		next_move(game);
 	roll_animations(game);
+	finish_prio(game);
+	if (game->movement->active)
+	{
+		item_collection(game);
+		do_move(game);
+	}
 	if (!game->movement->active)
 	{
-		if (!game->prio || (game->prio && !game->prio->is_active))
-			do_idle(game);
+		do_idle(game);
+		next_move(game);
 	}
-	if (game->movement->active)
-		item_collection(game);
+	find_empty_frame(game);
 }
 
 void	handle_shoot(t_game *game)
@@ -233,42 +257,6 @@ void	next_move(t_game *game)
 		if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
 			handle_shoot(game);
 	}
-}
-
-void	scale_sizes(t_game *game, float change)
-{
-	game->fps = 60;
-	game->char_size = CHAR_SIZE * change;
-	game->p->off.x = CHAR_X_OFF * change;
-	game->p->off.y = CHAR_Y_OFF * change;
-	game->map->coll_off_x = COLL_X_OFF * change;
-	game->map->coll_off_y = COLL_Y_OFF * change;
-	game->tile_size = TILE_SIZE * change;
-	game->coll_size = COLL_SIZE * change;
-	game->exit_size = EXIT_SIZE * change;
-}
-
-void	fix_sizes(t_game *game)
-{
-	int		limiter;
-	int		width;
-	int 	height;
-	float	change;
-
-	width = game->map->width;
-	height = game->map->height;
-	if (width > height)
-        limiter = width;
-    else
-	{
-        limiter = height;
-	}
-	if (limiter * TILE_SIZE > WIDTH)
-		game->tile_size = WIDTH / limiter;
-	else
-		game->tile_size = TILE_SIZE;
-	change = (float)game->tile_size / (float)TILE_SIZE;
-	scale_sizes(game, change);
 }
 
 int32_t	main(void)

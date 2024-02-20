@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 19:40:20 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/14 19:47:08 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 18:54:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
-	if (!lst || !del)
+	if (!lst)
 		return ;
-	if (lst->content)
+	if (lst->content && del)
 		del(lst->content);
 	free(lst);
 }

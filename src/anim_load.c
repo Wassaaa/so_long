@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 03:52:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/20 18:54:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,8 +179,8 @@ void	load_gun(t_game *game)
 	game->g->char_roll_right = load_animation(game, gun_roll, &game->g->char_anims, 1);
 	gun_roll.mirrored = 1;
 	game->g->char_roll_left = load_animation(game, gun_roll, &game->g->char_anims, 1);
-	// game->g->char_roll_left->full_cycle = true;
-	// game->g->char_roll_right->full_cycle = true;
+	game->g->char_roll_left->full_cycle = true;
+	game->g->char_roll_right->full_cycle = true;
 	set_types(game->g->char_anims, COLL);
 }
 
