@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 14:56:44 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:57:49 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_enemy
 	t_point			off;
 	t_map_element	*el;
 	int				index;
+	t_anim			*current;
 }					t_enemy;
 
 typedef struct s_player
@@ -216,7 +217,7 @@ void				go_down(t_game *game);
 // animation
 void				toggle_states(t_game *game, t_list *anims, t_anim *current);
 void				roll_animations(t_game *game);
-void				animation_loop(t_list *anims, double dt);
+void				animation_loop(t_list *anims, int instance, double dt);
 void				do_move(t_game *game);
 void				do_idle(t_game *game);
 void				finish_prio(t_game *game);

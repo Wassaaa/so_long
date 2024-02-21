@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 23:15:28 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 16:03:52 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
+
+void	enemy_anim(t_game *game)
+{
+	t_list	*enemies;
+	t_enemy *enemy;
+
+	enemies = game->enemies;
+	while (enemies)
+	{
+		enemy = (t_enemy *)enemies->content;
+		enemy->current = enemy->move_right;
+		toggle_states(game, enemy->enemy_anims, enemy->current);
+		enemies = enemies->next;
+	}
+}
 
 void	my_loop(void *my_game)
 {
@@ -32,6 +47,7 @@ void	my_loop(void *my_game)
 		do_idle(game);
 		next_move(game);
 	}
+	//enemy_anim(game);
 }
 
 int32_t	main(void)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animate.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:47:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 22:50:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:52:37 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,44 @@ int	update_animation(t_anim *a, double dt)
 	return (0);
 }
 
-void	animate_character(t_anim *anim, double dt)
+void	animate_character(t_anim *anim, int instance, double dt)
 {
 	mlx_image_t *img;
 
 	img = ft_lstget(anim->frames, anim->cur_f)->content;
-	img->instances[0].enabled = false;
+	img->instances[instance].enabled = false;
 	if (anim->is_active)
 	{
 		if (update_animation(anim, dt))
 			img = ft_lstget(anim->frames, anim->cur_f)->content;
-		img->instances[0].enabled = true;
+		img->instances[instance].enabled = true;
 	}
 }
 
 void	roll_animations(t_game *game)
 {
-	animation_loop(game->p->char_anims, game->mlx->delta_time);
-	animation_loop(game->g->char_anims, game->mlx->delta_time);
+	t_list	*enemies;
+	t_enemy	*enemy;
+
+	enemies = game->enemies;
+	animation_loop(game->p->char_anims, game->p->el->instance, game->mlx->delta_time);
+	animation_loop(game->g->char_anims, game->g->el->instance, game->mlx->delta_time);
+	while (enemies)
+	{
+		enemy = (t_enemy *)enemies->content;
+		animation_loop(enemy->enemy_anims, enemy->el->instance, game->mlx->delta_time);
+		enemies = enemies->next;
+	}
 }
 
-void	animation_loop(t_list *anims, double dt)
+void	animation_loop(t_list *anims, int instance, double dt)
 {
 	t_anim	*anim;
 
 	while (anims != NULL)
 	{
 		anim = (t_anim *)anims->content;
-		animate_character(anim, dt);
+		animate_character(anim, instance, dt);
 		anims = anims->next;
 	}
 }
