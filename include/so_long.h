@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 22:52:33 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 14:56:44 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,9 @@ typedef struct s_enemy
 	t_list			*enemy_anims;
 	t_anim			*move_left;
 	t_anim			*move_right;
+	t_point			off;
+	t_map_element	*el;
+	int				index;
 }					t_enemy;
 
 typedef struct s_player
@@ -145,6 +148,7 @@ typedef struct s_game
 	t_player		*backup;
 	t_player		*p;
 	t_enemy			*e;
+	t_list			*enemies;
 	t_player		*g;
 	t_movement		*movement;
 	t_list			*free_imgs;

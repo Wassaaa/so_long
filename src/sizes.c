@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sizes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 20:47:37 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 14:42:13 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	scale_sizes(t_game *game, float change)
 	game->char_size = CHAR_SIZE * change;
 	game->p->off.x = CHAR_X_OFF * change;
 	game->p->off.y = CHAR_Y_OFF * change;
+	game->e->off.x = CHAR_X_OFF * change;
+	game->e->off.y = CHAR_Y_OFF * change;
 	game->map->coll_off_x = COLL_X_OFF * change;
 	game->map->coll_off_y = COLL_Y_OFF * change;
 	game->tile_size = TILE_SIZE * change;

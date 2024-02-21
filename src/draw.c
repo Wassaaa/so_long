@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 03:58:09 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:13:39 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ void	fix_depth(t_map_element *el, t_list *anims)
 
 	if (el->type == PLAYER)
 		i = 100;
+	if (el->type == ENEMY)
+		i = 10;
 	while (anims != NULL)
 	{
 		anim = (t_anim *)anims->content;
@@ -137,21 +139,40 @@ void	fix_depth(t_map_element *el, t_list *anims)
 	i++;
 }
 
+t_enemy	*build_enemy(t_game *game)
+{
+	t_enemy *enemy;
+
+	enemy = ft_calloc(1, sizeof(t_enemy));
+	if (!enemy)
+		error();
+	ft_memcpy(enemy, game->e, sizeof(t_enemy));
+	return (enemy);
+}
+
 void	draw_enemy(t_game *game, t_map_element *el)
 {
 	mlx_image_t *enemy_bg;
 	t_list		*enemy_anims;
+	t_enemy		*enemy;
 	int			x;
 	int			y;
+	static int	index = 0;
 
+	enemy = build_enemy(game);
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
 	enemy_bg = ft_lstget(game->free_imgs, rand() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, enemy_bg, x, y);
 	enemy_anims = game->e->enemy_anims;
+	x += enemy->off.x;
+	y += enemy->off.y;
 	el->instance = frames_to_window(game->mlx, enemy_anims, x, y);
 	mlx_set_instance_depth(&enemy_bg->instances[el->bg_instance], FREE);
-	fix_depth(el, enemy_anims);
+	enemy->el = el;
+	enemy->index = index++;
+	ft_lstadd_back(&game->enemies, safe_lstnew(enemy));
+	// fix_depth(el, enemy_anims);y.
 	// el->img = (mlx_image_t *)ft_lstget(game->e->move_right, 0)->content;
 }
 
