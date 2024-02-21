@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 15:57:49 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 20:04:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_rgba
 typedef struct s_anim
 {
 	t_list			*frames;
+	int				instance;
 	int				frame_speed;
 	double			accum;
 	int				cur_f;
@@ -121,6 +122,7 @@ typedef struct s_enemy
 	t_map_element	*el;
 	int				index;
 	t_anim			*current;
+	t_anim			*next;
 }					t_enemy;
 
 typedef struct s_player
@@ -217,7 +219,7 @@ void				go_down(t_game *game);
 // animation
 void				toggle_states(t_game *game, t_list *anims, t_anim *current);
 void				roll_animations(t_game *game);
-void				animation_loop(t_list *anims, int instance, double dt);
+void				animation_loop(t_list *anims, double dt);
 void				do_move(t_game *game);
 void				do_idle(t_game *game);
 void				finish_prio(t_game *game);

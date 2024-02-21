@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 16:03:52 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 20:17:32 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,14 @@ void	enemy_anim(t_game *game)
 	{
 		enemy = (t_enemy *)enemies->content;
 		enemy->current = enemy->move_right;
-		toggle_states(game, enemy->enemy_anims, enemy->current);
+		enemy->current->is_active = true;
+		if (enemy->next)
+		{
+			enemy->current->is_active = false;
+			enemy->current = enemy->next;
+			enemy->current->is_active = true;
+			enemy->next = NULL;
+		}
 		enemies = enemies->next;
 	}
 }
@@ -47,7 +54,7 @@ void	my_loop(void *my_game)
 		do_idle(game);
 		next_move(game);
 	}
-	//enemy_anim(game);
+	enemy_anim(game);
 }
 
 int32_t	main(void)

@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/20 23:00:30 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/21 16:38:33 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,11 +42,11 @@ B_SRCS			=
 ################################################################################
 CC				=	gcc
 CC_STRICT		=	-Wall -Wextra -Werror
-OFAST			=	-Ofast -flto
-OG				=	-Og -flto
+OFAST			=	#-Ofast -flto
+OG				=	#-Og -flto
 CC_DEBUG		=	-g #-fsanitize=leak
 HEADERS		=	-I $(LIBFT_INCLUDES) -I $(INCLUDES) -I $(MLX42_DIR)/include
-CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG)
+CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST)
 
 ################################################################################
 # MLX
