@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:46:24 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 03:10:46 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 18:07:50 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	sync_anim(t_enemy *enemy)
 	int		x;
 	int		y;
 
-	x = enemy->base->instances[enemy->right->instance].x;
-	y = enemy->base->instances[enemy->right->instance].y;
+	x = enemy->base.x;
+	y = enemy->base.y;
 	sync_enemy(enemy->left, x, y);
 	sync_enemy(enemy->right, x, y);
 

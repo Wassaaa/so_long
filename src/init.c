@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 17:23:52 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 20:27:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	start_mlx(t_game *game)
 
 	width = game->map->width * game->tile_size;
 	height = game->map->height * game->tile_size;
-	game->mlx = mlx_init(width, height, "2D Game", true);
+	game->mlx = mlx_init(width, height, "Animated Gun-game", true);
 	if (!game->mlx)
 		error();
 }
@@ -43,6 +43,7 @@ t_game	*init_game(void)
 	game->movement = ft_calloc(1, sizeof(t_movement));
 	game->ammo = 0;
 	game->last_ammo = 1;
+	game->z = 3;
 	init_player(game);
 	srand((unsigned long)game->map * (unsigned long)game);
 	return (game);

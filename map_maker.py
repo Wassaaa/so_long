@@ -4,6 +4,7 @@ from queue import Queue
 
 def generate_map(width, height):
 	num_collectibles = max(1, (width * height) // 20)
+	num_enemies = max(1, (width * height) // 50)
 	
 	game_map = [['1' for _ in range(width)] for _ in range(height)]
 	for i in range(1, height-1):
@@ -12,7 +13,7 @@ def generate_map(width, height):
 
 	add_internal_walls(game_map, int((width * height) * 0.2))
 
-	placed = place_special_tiles(game_map, num_collectibles)
+	placed = place_special_tiles(game_map, num_collectibles, num_enemies)
 	if not placed:
 		return generate_map(width, height)  # Retry if placement fails
 
@@ -25,7 +26,7 @@ def add_internal_walls(game_map, num_walls):
 		if game_map[x][y] == '0':  # Ensure we don't overwrite special tiles
 			game_map[x][y] = '1'
 
-def place_special_tiles(game_map, num_collectibles):
+def place_special_tiles(game_map, num_collectibles, num_enemies):
 	height = len(game_map)
 	width = len(game_map[0])
 	free_spaces = [(i, j) for i in range(1, height-1) for j in range(1, width-1) if game_map[i][j] == '0']
@@ -33,7 +34,7 @@ def place_special_tiles(game_map, num_collectibles):
 	
 	if len(free_spaces) < num_collectibles + 2:
 		return False
-	
+
 	p_pos = free_spaces.pop()
 	game_map[p_pos[0]][p_pos[1]] = 'P'
 	
@@ -43,6 +44,10 @@ def place_special_tiles(game_map, num_collectibles):
 	for _ in range(num_collectibles):
 		c_pos = free_spaces.pop()
 		game_map[c_pos[0]][c_pos[1]] = 'C'
+
+	for _ in range(num_enemies):
+		c_pos = free_spaces.pop()
+		game_map[c_pos[0]][c_pos[1]] = 'X'
 	
 	if not is_accessible(game_map, p_pos):
 		return False

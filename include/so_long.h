@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 03:01:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 20:57:01 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@
 
 # define FREE 0
 # define WALL 1
-# define COLL 2
-# define EXIT 3
+# define COLL 3
+# define EXIT 2
 # define PLAYER 5
 # define ENEMY 4
 
@@ -117,7 +117,7 @@ typedef struct s_movement
 typedef struct s_enemy
 {
 	t_list			*enemy_anims;
-	mlx_image_t		*base;
+	mlx_instance_t	base;
 	t_anim			*up;
 	t_anim			*right;
 	t_anim			*down;
@@ -132,6 +132,7 @@ typedef struct s_enemy
 	t_map_element	*el;
 	int				index;
 	t_movement		*movement;
+	int				move_speed;
 	int				direction;
 	t_anim			*current;
 	t_anim			*next;
@@ -181,6 +182,7 @@ typedef struct s_game
 	int				ammo;
 	int				last_ammo;
 	int				random;
+	int				z;
 }					t_game;
 
 typedef struct s_sprite
@@ -272,5 +274,6 @@ t_list				*safe_lstnew(void *content);
 void				error(void);
 void				null_content(void *content);
 void				clear_anim(t_anim **anim);
+int					get_random(void);
 
 #endif
