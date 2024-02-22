@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 21:01:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 03:15:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,31 +142,34 @@ t_enemy	*build_enemy(t_game *game)
 
 	enemy = ft_calloc(1, sizeof(t_enemy));
 	if (!enemy)
-		error();
+		error();	
 	*enemy = *game->e;
-	enemy->move_left = ft_calloc(1, sizeof(t_anim));
-	enemy->move_right = ft_calloc(1, sizeof (t_anim));
-	if (!enemy->move_right || !enemy->move_left)
+	enemy->movement = ft_calloc(1, sizeof(t_movement));
+	if (!enemy->movement)
 		error();
-	*enemy->move_left = *game->e->move_left;
-	*enemy->move_right = *game->e->move_right;
-	enemy->move_right->cur_f = rand() % (enemy->move_right->frame_count - 1);
-	enemy->move_left->cur_f = rand() % (enemy->move_left->frame_count - 1);
-	enemy->current = enemy->move_right;
-	ft_lstadd_back(&game->e->enemy_anims, safe_lstnew(enemy->move_left));
-	ft_lstadd_back(&game->e->enemy_anims, safe_lstnew(enemy->move_right));
+	enemy->right = ft_calloc(1, sizeof (t_anim));
+	enemy->left = ft_calloc(1, sizeof(t_anim));
+	if (!enemy->right || !enemy->left)
+		error();
+	*enemy->right = *game->e->right;
+	*enemy->left = *game->e->left;
+	enemy->up = enemy->left;
+	enemy->down = enemy->right;
+	enemy->right->cur_f = rand() % (enemy->right->frame_count - 1);
+	enemy->left->cur_f = rand() % (enemy->left->frame_count - 1);
+	enemy->current = enemy->right;
+	ft_lstadd_back(&game->e->enemy_anims, safe_lstnew(enemy->left));
+	ft_lstadd_back(&game->e->enemy_anims, safe_lstnew(enemy->right));
 	return (enemy);
 }
 
-int	draw_anim(mlx_t *mlx, t_anim **anim, int x, int y)
+int	draw_anim(mlx_t *mlx, t_anim *anim, int x, int y)
 {
 	mlx_image_t	*img;
 	t_list		*frames;
 	int			instance;
-	t_anim		*this_anim;
 
-	this_anim = *anim;
-	frames = this_anim->frames;
+	frames = anim->frames;
 	instance = -1;
 	while (frames)
 	{
@@ -183,6 +186,7 @@ int	draw_anim(mlx_t *mlx, t_anim **anim, int x, int y)
 void	draw_enemy(t_game *game, t_map_element *el)
 {
 	mlx_image_t *enemy_bg;
+	mlx_image_t	*base;
 	t_enemy		*enemy;
 	int			x;
 	int			y;
@@ -191,13 +195,17 @@ void	draw_enemy(t_game *game, t_map_element *el)
 	enemy = build_enemy(game);
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
+	enemy->pos.x = el->x;
+	enemy->pos.y = el->y;
 	enemy_bg = ft_lstget(game->free_imgs, rand() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, enemy_bg, x, y);
 	mlx_set_instance_depth(&enemy_bg->instances[el->bg_instance], FREE);
 	x += enemy->off.x;
 	y += enemy->off.y;
-	enemy->move_left->instance = draw_anim(game->mlx, &enemy->move_left, x, y);
-	enemy->move_right->instance = draw_anim(game->mlx, &enemy->move_right, x, y);
+	enemy->left->instance = draw_anim(game->mlx, enemy->left, x, y);
+	enemy->right->instance = draw_anim(game->mlx, enemy->right, x, y);
+	base = (mlx_image_t *)(enemy->right->frames->content);
+	enemy->base = base;
 	enemy->el = el;
 	enemy->index = index++;
 	ft_lstadd_back(&game->enemies, safe_lstnew(enemy));

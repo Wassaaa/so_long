@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 20:04:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 03:01:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_movement
 	int				x;
 	int				y;
 	int				to;
+	t_point			tar;
 	t_anim			*anim;
 	t_anim			*anim_g;
 	t_map_element	*el;
@@ -116,11 +117,22 @@ typedef struct s_movement
 typedef struct s_enemy
 {
 	t_list			*enemy_anims;
-	t_anim			*move_left;
-	t_anim			*move_right;
+	mlx_image_t		*base;
+	t_anim			*up;
+	t_anim			*right;
+	t_anim			*down;
+	t_anim			*left;
+	t_anim			*idle_r;
+	t_anim			*idle_l;
+	t_anim			*roll_r;
+	t_anim			*roll_l;
 	t_point			off;
+	t_point			pos;
+	t_map_element	*facing;
 	t_map_element	*el;
 	int				index;
+	t_movement		*movement;
+	int				direction;
 	t_anim			*current;
 	t_anim			*next;
 }					t_enemy;
@@ -137,8 +149,6 @@ typedef struct s_player
 	t_anim			*char_down;
 	t_anim			*char_roll_right;
 	t_anim			*char_roll_left;
-	t_anim			*hair;
-	t_anim			*head;
 	t_point			off;
 	char			last_move;
 	t_map_element	*facing;
@@ -181,6 +191,8 @@ typedef struct s_sprite
 	int				mirrored;
 }					t_sprite;
 
+typedef void		(*t_img_move)(t_game *, t_enemy *);
+
 // init
 void				init_player(t_game *game);
 t_game				*init_game(void);
@@ -216,6 +228,18 @@ void				go_left(t_game *game);
 void				go_up(t_game *game);
 void				go_down(t_game *game);
 
+// enemy moves
+void				enemy_move_to(t_game *game, t_enemy *enemy);
+void				enemy_up(t_game *game, t_enemy *enemy);
+void				enemy_right(t_game *game, t_enemy *enemy);
+void				enemy_down(t_game *game, t_enemy *enemy);
+void				enemy_left(t_game *game, t_enemy *enemy);
+
+void				img_up(t_game *game, t_enemy *enemy);
+void				img_right(t_game *game, t_enemy *enemy);
+void				img_down(t_game *game, t_enemy *enemy);
+void				img_left(t_game *game, t_enemy *enemy);
+
 // animation
 void				toggle_states(t_game *game, t_list *anims, t_anim *current);
 void				roll_animations(t_game *game);
@@ -225,6 +249,7 @@ void				do_idle(t_game *game);
 void				finish_prio(t_game *game);
 
 // frames sync
+void				sync_anim(t_enemy *enemy);
 void				sync_anim_frames(mlx_image_t *base, t_list *anims);
 void				sync_char(t_game *game);
 

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 23:12:59 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 22:36:45 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ void	load_enemy (t_game *game)
 	t_sprite enemy_fly;
 
 	enemy_fly = new_sprite("./textures/enemy/fly_", 6, 100, 0);
-	game->e->move_right = load_animation(game, enemy_fly, &game->e->enemy_anims, 1);
+	game->e->right = load_animation(game, enemy_fly, &game->e->enemy_anims, 1);
 	enemy_fly.mirrored = 1;
-	game->e->move_left = load_animation(game, enemy_fly, &game->e->enemy_anims, 1);
+	game->e->left = load_animation(game, enemy_fly, &game->e->enemy_anims, 1);
 	set_types(game->e->enemy_anims, ENEMY);
 }
 
@@ -181,18 +181,20 @@ void	load_char_up(t_game *game)
 	t_sprite	hair;
 	t_sprite	head;
 	t_sprite	walk;
+	t_anim		*head_anim;
+	t_anim		*hair_anim;
 
 	walk = new_sprite("./textures/full/walk_", 8, 100, 1);
 	head = new_sprite("./textures/head/walk_", 8, 100, 1);
 	hair = new_sprite("./textures/hair/walk_", 8, 100, 1);
 	game->p->char_up = load_animation(game, walk, &game->p->char_anims, 1);
-	game->p->head = load_animation(game, head, &game->p->char_anims, 0);
-	game->p->hair = load_animation(game, hair, &game->p->char_anims, 0);
-	color_anim(game->p->hair->frames, game->p->char_up->frames);
-	add_to_anim_frames(game->p->char_up->frames, game->p->head->frames);
-	add_to_anim_frames(game->p->char_up->frames, game->p->hair->frames);
-	clear_anim(&game->p->hair);
-	clear_anim(&game->p->head);
+	head_anim = load_animation(game, head, NULL, 0);
+	hair_anim = load_animation(game, hair, NULL, 0);
+	color_anim(hair_anim->frames, game->p->char_up->frames);
+	add_to_anim_frames(game->p->char_up->frames, head_anim->frames);
+	add_to_anim_frames(game->p->char_up->frames, hair_anim->frames);
+	clear_anim(&hair_anim);
+	clear_anim(&head_anim);
 }
 
 void	get_animations(t_game *game)

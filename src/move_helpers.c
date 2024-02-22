@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:16:03 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 22:20:16 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/21 21:21:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	move_allowed(t_map_element *el)
 	if (el->type == COLL)
 		return (1);
 	if (el->type == EXIT)
+		return (1);
+	if (el->type == ENEMY)
 		return (1);
 	return (0);
 }

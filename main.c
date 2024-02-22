@@ -6,11 +6,23 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 20:17:32 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 03:11:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
+
+void	move_image(t_game *game, t_enemy *enemy)
+{
+	t_img_move	move[4];
+
+	move[UP] = img_up;
+	move[RIGHT] = img_right;
+	move[DOWN] = img_down;
+	move[LEFT] = img_left;
+	move[enemy->movement->to](game, enemy);
+	sync_anim(enemy);
+}
 
 void	enemy_anim(t_game *game)
 {
@@ -21,17 +33,36 @@ void	enemy_anim(t_game *game)
 	while (enemies)
 	{
 		enemy = (t_enemy *)enemies->content;
-		enemy->current = enemy->move_right;
-		enemy->current->is_active = true;
-		if (enemy->next)
+		if (!enemy->movement->active)
 		{
-			enemy->current->is_active = false;
+			enemy->movement->to = rand() % 4;
+			enemy_move_to(game, enemy);
+		}
+		if (enemy->next && enemy->next != enemy->current)
+		{
+			if (enemy->current)
+				enemy->current->is_active = false;
 			enemy->current = enemy->next;
 			enemy->current->is_active = true;
 			enemy->next = NULL;
 		}
+		if (enemy->movement->active)
+			move_image(game, enemy);
 		enemies = enemies->next;
 	}
+}
+
+
+void	enemy_move_to(t_game *game, t_enemy *enemy)
+{
+	if (enemy->movement->to == UP)
+		enemy_up(game, enemy);
+	if (enemy->movement->to == RIGHT)
+		enemy_right(game, enemy);
+	if (enemy->movement->to == DOWN)
+		enemy_down(game, enemy);
+	if (enemy->movement->to == LEFT)
+		enemy_left(game, enemy);
 }
 
 void	my_loop(void *my_game)
