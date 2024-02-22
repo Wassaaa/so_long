@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 20:30:29 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 20:58:15 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	draw_wall(t_game *game, t_map_element *el)
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
 	wall_bg = ft_lstget(game->free_imgs, FREE_C - 1)->content;
-	wall_img = ft_lstget(game->wall_imgs, rand() % ft_lstsize(el->images))->content;
+	wall_img = ft_lstget(game->wall_imgs, get_random() % ft_lstsize(el->images))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, wall_bg, x, y);
 	el->instance = mlx_image_to_window(game->mlx, wall_img, x, y);
 	el->img = wall_img;
@@ -39,7 +39,7 @@ void	draw_free(t_game *game, t_map_element *el)
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
 
-	free_img = ft_lstget(el->images, rand() % (FREE_C - 1))->content;
+	free_img = ft_lstget(el->images, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, free_img, x, y);
 	el->instance = 0;
 	mlx_set_instance_depth(&free_img->instances[el->bg_instance], FREE);
@@ -54,7 +54,7 @@ void	draw_coll(t_game *game, t_map_element *el)
 
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
-	coll_bg = ft_lstget(game->free_imgs, rand() % (FREE_C - 1))->content;
+	coll_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	coll_img = ft_lstget(game->coll_imgs, 0)->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, coll_bg, x, y);
 	x += game->map->coll_off_x;
@@ -77,8 +77,8 @@ void	draw_exit(t_game *game, t_map_element *el)
 
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
-	exit_bg = ft_lstget(game->free_imgs, rand() % (FREE_C - 1))->content;
-	exit_img = ft_lstget(game->exit_imgs, rand() % ft_lstsize(el->images))->content;
+	exit_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
+	exit_img = ft_lstget(game->exit_imgs, get_random() % ft_lstsize(el->images))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, exit_bg, x, y);
 	el->instance = mlx_image_to_window(game->mlx, exit_img, x, y);
 	el->img = exit_img;
@@ -154,8 +154,8 @@ t_enemy	*build_enemy(t_game *game)
 	*enemy->left = *game->e->left;
 	enemy->up = enemy->left;
 	enemy->down = enemy->right;
-	enemy->right->cur_f = rand() % (enemy->right->frame_count - 1);
-	enemy->left->cur_f = rand() % (enemy->left->frame_count - 1);
+	enemy->right->cur_f = get_random() % (enemy->right->frame_count - 1);
+	enemy->left->cur_f = get_random() % (enemy->left->frame_count - 1);
 	enemy->current = enemy->right;
 	ft_lstadd_back(&game->e->enemy_anims, safe_lstnew(enemy->right));
 	ft_lstadd_back(&game->e->enemy_anims, safe_lstnew(enemy->left));
@@ -196,7 +196,7 @@ void	draw_enemy(t_game *game, t_map_element *el)
 	y = el->y * game->tile_size;
 	enemy->pos.x = el->x;
 	enemy->pos.y = el->y;
-	enemy_bg = ft_lstget(game->free_imgs, rand() % (FREE_C - 1))->content;
+	enemy_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, enemy_bg, x, y);
 	mlx_set_instance_depth(&enemy_bg->instances[el->bg_instance], FREE);
 	x += enemy->off.x;
@@ -219,7 +219,7 @@ void	draw_player(t_game *game, t_map_element *el)
 
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
-	player_bg = ft_lstget(game->free_imgs, rand() % (FREE_C - 1))->content;
+	player_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, player_bg, x, y);
 	player_anims = game->p->char_anims;
 	x += game->p->off.x;

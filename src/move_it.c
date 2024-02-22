@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 23:11:11 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 20:58:15 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	go_right(t_game *game)
 	{
 		game->movement->anim = game->p->char_right;
 		game->movement->anim_g = game->g->char_right;
-		if (rand() % 100 < ROLL_CHANCE)
+		if (get_random() % 100 < ROLL_CHANCE)
 		{
 			game->movement->anim = game->p->char_roll_right;
 			game->movement->anim_g = game->g->char_roll_right;
@@ -53,7 +53,7 @@ void	go_left(t_game *game)
 	{
 		game->movement->anim = game->p->char_left;
 		game->movement->anim_g = game->g->char_left;
-		if (rand() % 100 < ROLL_CHANCE)
+		if (get_random() % 100 < ROLL_CHANCE)
 		{
 			game->movement->anim = game->p->char_roll_left;
 			game->movement->anim_g = game->g->char_roll_left;
@@ -81,7 +81,7 @@ void	go_up(t_game *game)
 	{
 		game->movement->anim = game->p->char_up;
 		game->movement->anim_g = game->g->char_up;
-		if (rand() % 100 < ROLL_CHANCE)
+		if (get_random() % 100 < ROLL_CHANCE)
 		{
 			game->movement->anim = game->p->char_roll_left;
 			game->movement->anim_g = game->g->char_roll_left;
@@ -108,7 +108,7 @@ void	go_down(t_game *game)
 	{
 		game->movement->anim = game->p->char_down;
 		game->movement->anim_g = game->g->char_down;		
-		if (rand() % 100 < ROLL_CHANCE)
+		if (get_random() % 100 < ROLL_CHANCE)
 		{
 			game->movement->anim = game->p->char_roll_right;
 			game->movement->anim_g = game->g->char_roll_right;

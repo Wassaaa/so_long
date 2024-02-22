@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 20:27:09 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 21:03:08 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ t_game	*init_game(void)
 	game->last_ammo = 1;
 	game->z = 3;
 	init_player(game);
-	srand((unsigned long)game->map * (unsigned long)game);
 	return (game);
 }

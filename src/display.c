@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:13:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 20:10:10 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 20:59:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,9 @@ void	show_fps(t_game *game)
 {
 	static int		fps = 1;
 	static double	i = 0;
-	static int		random;
 
 
 	i += game->mlx->delta_time;
-	random++;
 	fps++;
 	if (i >= 1)
 	{
@@ -48,5 +46,4 @@ void	show_fps(t_game *game)
 	if (game->move_speed < 1)
 		game->move_speed = 1 * SPEED;
 	got_gun(game);
-	game->random = random;
 }

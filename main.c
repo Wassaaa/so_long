@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 20:55:57 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 21:03:58 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void keep_direction(t_game *game, t_enemy *enemy)
 	enemy_move_to(game, enemy);
 	if (!enemy->movement->active)
 	{
-		enemy->movement->to = rand() % 4;
+		enemy->movement->to = get_random() % 4;
 		enemy_move_to(game, enemy);
 	}
 }
@@ -113,13 +113,13 @@ void	check_collision(t_game *game)
 	}
 }
 
-int get_random(void)
+size_t get_random(void)
 {
 	int		fd;
-	int		buff;
+	size_t	buff;
 	
 	fd = open("/dev/random", O_RDONLY);
-	read(fd, &buff, sizeof(int));
+	read(fd, &buff, sizeof(size_t));
 	close(fd);
 	ft_printf("\e[5;1H\e[Jrandom is: %d", buff);
 	return (buff);

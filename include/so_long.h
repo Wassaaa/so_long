@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 20:57:01 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/22 21:04:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,6 @@ typedef struct s_game
 	int				exit_size;
 	int				ammo;
 	int				last_ammo;
-	int				random;
 	int				z;
 }					t_game;
 
@@ -274,6 +273,6 @@ t_list				*safe_lstnew(void *content);
 void				error(void);
 void				null_content(void *content);
 void				clear_anim(t_anim **anim);
-int					get_random(void);
+size_t				get_random(void);
 
 #endif
