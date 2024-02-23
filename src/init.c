@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 21:03:08 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 18:03:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,10 @@ void	start_mlx(t_game *game)
 
 void	init_player(t_game *game)
 {
-	game->p = ft_calloc(1, sizeof(t_player));
+	game->p = ft_calloc(1, sizeof(t_entity));
 	game->p->last_move = 'r';
-	game->e = ft_calloc(1, sizeof(t_enemy));
-	game->g = ft_calloc(1, sizeof(t_player));
-	game->g->el = ft_calloc(1, sizeof(t_map_element));
+	game->e = ft_calloc(1, sizeof(t_entity));
+	game->g = ft_calloc(1, sizeof(t_entity));
 }
 
 t_game	*init_game(void)
@@ -40,7 +39,6 @@ t_game	*init_game(void)
 	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 	game = ft_calloc(1, sizeof(t_game));
 	game->map = ft_calloc(1, sizeof(t_map));
-	game->movement = ft_calloc(1, sizeof(t_movement));
 	game->ammo = 0;
 	game->last_ammo = 1;
 	game->z = 3;
