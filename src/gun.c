@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/20 23:05:58 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 21:26:13 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 void	item_collection(t_game *game)
 {
-	int	coll_ins;
+	int			coll_inst;
+	t_entity	*player;
 
-	if (game->movement->el->type == COLL)
+	player = game->p;
+	if (player->facing->type == COLL)
 	{
 		gun_picked_up(game);
-		coll_ins = game->movement->el->instance;
-		game->movement->el->img->instances[coll_ins].enabled = false;
-		game->movement->el->type = FREE;
+		coll_inst = player->facing->instance;
+		player->facing->img->instances[coll_inst].enabled = false;
+		player->facing->type = FREE;
 	}
-	else if (game->movement->el->type == EXIT)
+	else if (player->facing->type == EXIT)
 	{
 		if (game->map->colls == 0)
 			game->game_status = 1;
@@ -38,24 +40,24 @@ void	gun_picked_up(t_game *game)
 }
 
 void	got_gun(t_game *game)
-{	
+{
 	if (game->ammo < 1 && game->last_ammo >= 1)
-		image_toggle(game->g->char_anims, false);
+		image_toggle(game->g->anims, false);
 	else if(game->last_ammo < 1 && game->ammo >= 1)
-		image_toggle(game->g->char_anims, true);		
+		image_toggle(game->g->anims, true);
 	game->last_ammo = game->ammo;
 }
 
 void	image_toggle(t_list *anims, bool onoff)
 {
-	t_anim	*an;
+	t_anim	*anim;
 	t_list	*frames;
 	mlx_image_t *img;
 
 	while (anims)
 	{
-		an = anims->content;
-		frames = an->frames;
+		anim = anims->content;
+		frames = anim->frames;
 		while (frames)
 		{
 			img = frames->content;

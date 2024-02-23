@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/21 23:19:17 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/23 23:11:34 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ SRCS			=	ft_lstget.c\
 					anim_load.c\
 					error.c\
 					pixels.c\
-					img_moves.c\
 					map.c\
 					move_it.c\
 					frame_sync.c\
@@ -25,14 +24,13 @@ SRCS			=	ft_lstget.c\
 					helpers.c\
 					draw.c\
 					sizes.c\
-					prio.c\
 					move_helpers.c\
 					do_anim.c\
 					display.c\
 					gun.c\
-					enemy_move.c
-					
-					
+					entity_move.c
+
+
 
 
 B_SRCS			=

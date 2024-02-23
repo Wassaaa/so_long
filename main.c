@@ -6,13 +6,13 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 21:03:58 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 23:28:03 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void	move_image(t_game *game, t_enemy *enemy)
+void	move_image(t_entity *entity)
 {
 	t_img_move	move[4];
 
@@ -20,17 +20,17 @@ void	move_image(t_game *game, t_enemy *enemy)
 	move[RIGHT] = img_right;
 	move[DOWN] = img_down;
 	move[LEFT] = img_left;
-	move[enemy->movement->to](game, enemy);
-	sync_anim(enemy);
+	move[entity->movement->to](entity);
+	sync_anim(entity);
 }
 
-void keep_direction(t_game *game, t_enemy *enemy)
+void keep_direction(t_game *game, t_entity *entity)
 {
-	enemy_move_to(game, enemy);
-	if (!enemy->movement->active)
+	entity_move_to(game, entity);
+	if (!entity->movement->active)
 	{
-		enemy->movement->to = get_random() % 4;
-		enemy_move_to(game, enemy);
+		entity->movement->to = get_random() % 4;
+		entity_move_to(game, entity);
 	}
 }
 
@@ -49,64 +49,119 @@ void	anim_off(t_anim *anim)
 	anim->is_active = false;
 }
 
-void	enemy_next_avail(t_enemy *enemy)
+void	handle_next_move(t_entity *entity)
 {
-	if (enemy->next != enemy->current)
+	if (entity->current->full_cycle)
 	{
-		if (enemy->current)
-			anim_off(enemy->current);
-		enemy->current = enemy->next;
-		enemy->current->is_active = true;
-		enemy->next = NULL;
+		if (entity->current->cur_f != 0)
+			entity->next = NULL;
+		else
+		{
+			anim_off(entity->current);
+			entity->current = entity->next;
+		}
 	}
-else
-	enemy->next = NULL;
+	else if (entity->next != entity->current)
+	{
+		if (entity->current)
+			anim_off(entity->current);
+		entity->current = entity->next;
+	}
+	sync_anim(entity);
+	entity->next = NULL;
+	entity->current->is_active = true;
 }
 
 void	enemy_anim(t_game *game)
 {
 	t_list	*enemies;
-	t_enemy *enemy;
+	t_entity *enemy;
 
 	enemies = game->enemies;
 	while (enemies)
 	{
-		enemy = (t_enemy *)enemies->content;
+		enemy = (t_entity *)enemies->content;
 		if (!enemy->movement->active)
 			keep_direction(game, enemy);
 		if (enemy->next)
-			enemy_next_avail(enemy);
+			handle_next_move(enemy);
 		if (enemy->movement->active)
-			move_image(game, enemy);
+			move_image(enemy);
 		enemies = enemies->next;
 	}
 }
 
-
-void	enemy_move_to(t_game *game, t_enemy *enemy)
+void	get_gun_next(t_game *game, t_anim *p_next)
 {
-	if (enemy->movement->to == UP)
-		enemy_up(game, enemy);
-	if (enemy->movement->to == RIGHT)
-		enemy_right(game, enemy);
-	if (enemy->movement->to == DOWN)
-		enemy_down(game, enemy);
-	if (enemy->movement->to == LEFT)
-		enemy_left(game, enemy);
+	t_list		*anims;
+	t_anim		*anim;
+	int			i;
+
+	i = 0;
+	anims = game->p->anims;
+	*game->g->movement = *game->p->movement;
+	game->g->base = game->p->base;
+	sync_anim(game->g);
+	while (anims)
+	{
+		anim = (t_anim *)anims->content;
+		if (anim == p_next)
+			break ;
+		i++;
+		anims = anims->next;
+	}
+	game->g->next = (t_anim *)ft_lstget(game->g->anims, i)->content;
+}
+
+void	player_anim(t_game *game)
+{
+	t_entity	*player;
+
+	player = game->p;
+	if (player->movement && !player->movement->active)
+	{
+		next_move(game);
+		if (!player->movement->active)
+			do_idle(game);
+	}
+	if (player->next)
+	{
+		get_gun_next(game, player->next);
+		handle_next_move(game->p);
+		handle_next_move(game->g);
+	}
+	if (player->movement && player->movement->active)
+	{
+		item_collection(game);
+		move_image(game->p);
+		move_image(game->g);
+	}
+}
+
+void	entity_move_to(t_game *game, t_entity *entity)
+{
+	t_move	move[4];
+
+	move[UP] = entity_up;
+	move[RIGHT] = entity_right;
+	move[DOWN] = entity_down;
+	move[LEFT] = entity_left;
+
+	move[entity->movement->to](game, entity);
 }
 
 void	check_collision(t_game *game)
 {
-	t_enemy		*enemy;
+	t_entity		*enemy;
 	t_list		*enemies;
-	
+
 	enemies = game->enemies;
 	while (enemies)
 	{
-		enemy = (t_enemy *)enemies->content;
+		enemy = (t_entity *)enemies->content;
 		if (enemy)
 		{
-			if (enemy->pos.x == game->map->char_x && enemy->pos.y == game->map->char_y)
+			if (enemy->pos.x == game->p->pos.x && enemy->pos.y == game->p->pos.y)
 				game->game_status = -1;
 		}
 		enemies = enemies->next;
@@ -117,12 +172,30 @@ size_t get_random(void)
 {
 	int		fd;
 	size_t	buff;
-	
+
 	fd = open("/dev/random", O_RDONLY);
 	read(fd, &buff, sizeof(size_t));
 	close(fd);
 	ft_printf("\e[5;1H\e[Jrandom is: %d", buff);
 	return (buff);
+}
+
+void	get_movespeed(t_game *game)
+{
+	t_list		*enemies;
+	t_entity	*enemy;
+
+	enemies = game->enemies;
+	game->p->move_speed = (game->tile_size / game->fps) * SPEED;
+	if (game->p->move_speed < 1)
+		game->p->move_speed = 1 * SPEED;
+	game->g->move_speed = game->p->move_speed;
+	while (enemies)
+	{
+		enemy = (t_entity *)enemies->content;
+		enemy->move_speed = game->p->move_speed / 2;
+		enemies = enemies->next;
+	}
 }
 
 void	my_loop(void *my_game)
@@ -131,23 +204,12 @@ void	my_loop(void *my_game)
 
 	game = (t_game *)my_game;
 	show_fps(game);
-	get_random();
-	if (win_lose(game))
-		return ;
+	// if (win_lose(game))
+	// 	return ;
+	get_movespeed(game);
 	enemy_anim(game);
+	player_anim(game);
 	roll_animations(game);
-	finish_prio(game);
-	if (game->movement->active)
-	{
-		item_collection(game);
-		do_move(game);
-	}
-	if (!game->movement->active)
-	{
-		check_collision(game);
-		do_idle(game);
-		next_move(game);
-	}
 }
 
 int32_t	main(void)

@@ -22,7 +22,12 @@
 		"istream": "c",
 		"ios": "c",
 		"random": "c",
-		"math.h": "c"
+		"math.h": "c",
+		"__bit_reference": "c",
+		"__string": "c",
+		"algorithm": "c",
+		"string": "c",
+		"type_traits": "c"
 	},
 	"cmake.configureOnOpen": false
 }

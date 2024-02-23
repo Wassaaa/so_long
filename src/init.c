@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 18:03:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 21:23:15 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ void	start_mlx(t_game *game)
 		error();
 }
 
-void	init_player(t_game *game)
+void	init_entities(t_game *game)
 {
 	game->p = ft_calloc(1, sizeof(t_entity));
+	game->p->movement = ft_calloc(1, sizeof(t_movement));
+	game->g = ft_calloc(1, sizeof(t_entity));
+	game->g->movement = ft_calloc(1, sizeof(t_movement));
 	game->p->last_move = 'r';
 	game->e = ft_calloc(1, sizeof(t_entity));
-	game->g = ft_calloc(1, sizeof(t_entity));
 }
 
 t_game	*init_game(void)
@@ -42,6 +44,6 @@ t_game	*init_game(void)
 	game->ammo = 0;
 	game->last_ammo = 1;
 	game->z = 3;
-	init_player(game);
+	init_entities(game);
 	return (game);
 }

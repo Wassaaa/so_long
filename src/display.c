@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:13:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/22 20:59:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 20:39:57 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,5 @@ void	show_fps(t_game *game)
 		i = 0;
 		fps = 0;
 	}
-	game->move_speed = (game->tile_size / game->fps) * SPEED;
-	if (game->move_speed < 1)
-		game->move_speed = 1 * SPEED;
 	got_gun(game);
 }

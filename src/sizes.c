@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sizes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 14:42:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 18:17:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ void	fix_sizes(t_game *game)
 	if (width > height)
         limiter = width;
     else
-	{
         limiter = height;
-	}
 	if (limiter * TILE_SIZE > WIDTH)
 		game->tile_size = WIDTH / limiter;
 	else

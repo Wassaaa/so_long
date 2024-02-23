@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 22:36:45 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 23:12:13 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ mlx_image_t	*get_img(t_game *game, char *path, int i, int mirr)
 	new_img = mlx_texture_to_image(game->mlx, texture);
 	if (!new_img)
 		error();
-	if (!mlx_resize_image(new_img, game->char_size, game->char_size))
+	if (!mlx_resize_image(new_img, game->char_size - 1, game->char_size - 1))
 		error();
 	mlx_delete_texture(texture);
 	free(full_path);
@@ -126,8 +126,6 @@ void	color_anim(t_list *dest, t_list *src)
 
 }
 
-
-
 void	set_types(t_list *anims, int type)
 {
 	t_anim	*anim;
@@ -145,10 +143,10 @@ void	load_enemy (t_game *game)
 	t_sprite enemy_fly;
 
 	enemy_fly = new_sprite("./textures/enemy/fly_", 6, 100, 0);
-	game->e->right = load_animation(game, enemy_fly, &game->e->enemy_anims, 1);
+	game->e->right = load_animation(game, enemy_fly, &game->e->anims, 1);
 	enemy_fly.mirrored = 1;
-	game->e->left = load_animation(game, enemy_fly, &game->e->enemy_anims, 1);
-	set_types(game->e->enemy_anims, ENEMY);
+	game->e->left = load_animation(game, enemy_fly, &game->e->anims, 1);
+	set_types(game->e->anims, ENEMY);
 }
 
 void	load_gun(t_game *game)
@@ -158,22 +156,22 @@ void	load_gun(t_game *game)
 	t_sprite	gun_roll;
 
 	gun_idle = new_sprite("./textures/wep/idle_", 6, 100, 0);
-	game->g->char_idle = load_animation(game, gun_idle, &game->g->char_anims, 1);
+	game->g->idle_r = load_animation(game, gun_idle, &game->g->anims, 1);
 	gun_idle.mirrored = 1;
-	game->g->char_idle_l = load_animation(game, gun_idle, &game->g->char_anims, 1);
+	game->g->idle_l = load_animation(game, gun_idle, &game->g->anims, 1);
 	gun_walk = new_sprite("./textures/wep/walk_", 8, 100, 0);
-	game->g->char_right = load_animation(game, gun_walk, &game->g->char_anims, 1);
-	game->g->char_down = load_animation(game, gun_walk, &game->g->char_anims, 1);
+	game->g->right = load_animation(game, gun_walk, &game->g->anims, 1);
+	game->g->down = load_animation(game, gun_walk, &game->g->anims, 1);
 	gun_walk.mirrored = 1;
-	game->g->char_left = load_animation(game, gun_walk, &game->g->char_anims, 1);
-	game->g->char_up = load_animation(game, gun_walk, &game->g->char_anims, 1);
+	game->g->left = load_animation(game, gun_walk, &game->g->anims, 1);
+	game->g->up = load_animation(game, gun_walk, &game->g->anims, 1);
 	gun_roll = new_sprite("./textures/wep/roll_", 5, 100, 0);
-	game->g->char_roll_right = load_animation(game, gun_roll, &game->g->char_anims, 1);
+	game->g->roll_r = load_animation(game, gun_roll, &game->g->anims, 1);
 	gun_roll.mirrored = 1;
-	game->g->char_roll_left = load_animation(game, gun_roll, &game->g->char_anims, 1);
-	game->g->char_roll_left->full_cycle = true;
-	game->g->char_roll_right->full_cycle = true;
-	set_types(game->g->char_anims, COLL);
+	game->g->roll_l = load_animation(game, gun_roll, &game->g->anims, 1);
+	game->g->roll_r->full_cycle = true;
+	game->g->roll_l->full_cycle = true;
+	set_types(game->g->anims, COLL);
 }
 
 void	load_char_up(t_game *game)
@@ -187,12 +185,12 @@ void	load_char_up(t_game *game)
 	walk = new_sprite("./textures/full/walk_", 8, 100, 1);
 	head = new_sprite("./textures/head/walk_", 8, 100, 1);
 	hair = new_sprite("./textures/hair/walk_", 8, 100, 1);
-	game->p->char_up = load_animation(game, walk, &game->p->char_anims, 1);
+	game->p->up = load_animation(game, walk, &game->p->anims, 1);
 	head_anim = load_animation(game, head, NULL, 0);
 	hair_anim = load_animation(game, hair, NULL, 0);
-	color_anim(hair_anim->frames, game->p->char_up->frames);
-	add_to_anim_frames(game->p->char_up->frames, head_anim->frames);
-	add_to_anim_frames(game->p->char_up->frames, hair_anim->frames);
+	color_anim(hair_anim->frames, game->p->up->frames);
+	add_to_anim_frames(game->p->up->frames, head_anim->frames);
+	add_to_anim_frames(game->p->up->frames, hair_anim->frames);
 	clear_anim(&hair_anim);
 	clear_anim(&head_anim);
 }
@@ -204,27 +202,27 @@ void	get_animations(t_game *game)
 	t_sprite	char_roll;
 
 	char_idle = new_sprite("./textures/full/idle_", 6, 100, 0);
-	game->p->char_idle = load_animation(game, char_idle, &game->p->char_anims, 1);
+	game->p->idle_r = load_animation(game, char_idle, &game->p->anims, 1);
 	char_idle.mirrored = 1;
-	game->p->char_idle_l = load_animation(game, char_idle, &game->p->char_anims, 1);
+	game->p->idle_l = load_animation(game, char_idle, &game->p->anims, 1);
 	char_walk = new_sprite("./textures/full/walk_", 8, 100, 0);
-	game->p->char_right = load_animation(game, char_walk, &game->p->char_anims, 1);
-	game->p->char_down = load_animation(game, char_walk, &game->p->char_anims, 1);
+	game->p->right = load_animation(game, char_walk, &game->p->anims, 1);
+	game->p->down = load_animation(game, char_walk, &game->p->anims, 1);
 	char_walk.mirrored = 1;
-	game->p->char_left = load_animation(game, char_walk, &game->p->char_anims, 1);
-	char_roll = new_sprite("./textures/full/roll_", 5, 100, 0);
-	game->p->char_roll_right = load_animation(game, char_roll, &game->p->char_anims, 1);
-	char_roll.mirrored = 1;
-	game->p->char_roll_left = load_animation(game, char_roll, &game->p->char_anims, 1);
-	game->p->char_roll_left->full_cycle = true;
-	game->p->char_roll_right->full_cycle = true;
+	game->p->left = load_animation(game, char_walk, &game->p->anims, 1);
 	load_char_up(game);
-	set_types(game->p->char_anims, PLAYER);
+	char_roll = new_sprite("./textures/full/roll_", 5, 100, 0);
+	game->p->roll_r = load_animation(game, char_roll, &game->p->anims, 1);
+	char_roll.mirrored = 1;
+	game->p->roll_l = load_animation(game, char_roll, &game->p->anims, 1);
+	game->p->roll_l->full_cycle = true;
+	game->p->roll_r->full_cycle = true;
+	set_types(game->p->anims, PLAYER);
 	load_gun(game);
 	load_enemy(game);
 }
 
-void	load_tiles(t_game *game, t_list **type, char *path, int img_count)
+void	load_tiles(t_game *game, t_list **type_lst, char *path, int img_count)
 {
 	t_list		*list;
 	mlx_image_t	*img;
@@ -234,12 +232,12 @@ void	load_tiles(t_game *game, t_list **type, char *path, int img_count)
 	while (i < img_count)
 	{
 		img = get_img(game, path, i, 0);
-		if (type == &game->coll_imgs)
+		if (type_lst == &game->coll_imgs)
 		{
 			if (!mlx_resize_image(img, game->coll_size, game->coll_size))
 				error();
 		}
-		else if (type == &game->exit_imgs)
+		else if (type_lst == &game->exit_imgs)
 		{
 			if (!mlx_resize_image(img, game->exit_size, game->exit_size))
 				error();
@@ -250,7 +248,7 @@ void	load_tiles(t_game *game, t_list **type, char *path, int img_count)
 				error();
 		}
 		list = safe_lstnew(img);
-		ft_lstadd_back(type, list);
+		ft_lstadd_back(type_lst, list);
 		i++;
 	}
 }

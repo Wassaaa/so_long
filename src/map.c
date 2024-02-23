@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/21 14:33:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 19:03:00 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	read_map(t_game *game, char *map_file)
 	width = 0;
 	fd = open(map_file, O_RDONLY);
 	line = get_next_line(fd);
+	if (!line)
+		error();
 	while (line != NULL)
 	{
 		width = ft_strlen(line);
@@ -81,11 +83,6 @@ void	fill_elements(t_game *game, char *line, int y)
 			break ;
 		el = ft_calloc(1, sizeof(t_map_element));
 		el->type = get_el_type(*line);
-		if (el->type == PLAYER)
-		{
-			game->map->char_x = x;
-			game->map->char_y = y;
-		}
 		el->images = get_el_imgs(game, *line);
 		el->x = x++;
 		el->y = y;
