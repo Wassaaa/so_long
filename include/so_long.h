@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 23:51:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/23 23:55:15 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define ROLL_CHANCE 25
+# define ROLL_CHANCE 10
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
