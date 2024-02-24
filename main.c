@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 23:28:03 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 02:56:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	anim_off(t_anim *anim)
 
 void	handle_next_move(t_entity *entity)
 {
-	if (entity->current->full_cycle)
+	if (entity->current && entity->current->full_cycle)
 	{
 		if (entity->current->cur_f != 0)
 			entity->next = NULL;

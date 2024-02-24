@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 02:41:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 03:03:37 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define ROLL_CHANCE 10
+# define ROLL_CHANCE 5
 # define CHAR_SIZE 384
 # define CHAR_X_OFF -145
 # define CHAR_Y_OFF -250
@@ -173,7 +173,6 @@ typedef struct s_sprite
 
 typedef void		(*t_img_move)(t_entity *);
 typedef void		(*t_move)(t_game *game, t_entity *entity);
-typedef void		(*t_idle)(t_entity *);
 
 // init
 t_game				*init_game(void);

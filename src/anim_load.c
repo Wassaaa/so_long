@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 23:12:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 03:13:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_sprite	new_sprite(char *path, int f_cnt, int f_spd, int mirrored)
 	return (sprite);
 }
 
-char *build_path(int i, char *path)
+char	*build_path(int i, char *path)
 {
 	char	*nr;
 	char	*path_start;
@@ -55,7 +55,7 @@ mlx_image_t	*get_img(t_game *game, char *path, int i, int mirr)
 	new_img = mlx_texture_to_image(game->mlx, texture);
 	if (!new_img)
 		error();
-	if (!mlx_resize_image(new_img, game->char_size - 1, game->char_size - 1))
+	if (!mlx_resize_image(new_img, game->char_size, game->char_size))
 		error();
 	mlx_delete_texture(texture);
 	free(full_path);
@@ -69,11 +69,12 @@ mlx_image_t	*get_img(t_game *game, char *path, int i, int mirr)
 	return (new_img);
 }
 
-t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base, int list)
+t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base,
+		int list)
 {
-	t_anim			*anim;
-	int				i;
-	mlx_image_t		*new_img;
+	t_anim		*anim;
+	int			i;
+	mlx_image_t	*new_img;
 
 	anim = ft_calloc(1, sizeof(t_anim));
 	if (!anim)
@@ -123,7 +124,6 @@ void	color_anim(t_list *dest, t_list *src)
 		dest = dest->next;
 		src = src->next;
 	}
-
 }
 
 void	set_types(t_list *anims, int type)
@@ -138,9 +138,9 @@ void	set_types(t_list *anims, int type)
 	}
 }
 
-void	load_enemy (t_game *game)
+void	load_enemy(t_game *game)
 {
-	t_sprite enemy_fly;
+	t_sprite	enemy_fly;
 
 	enemy_fly = new_sprite("./textures/enemy/fly_", 6, 100, 0);
 	game->e->right = load_animation(game, enemy_fly, &game->e->anims, 1);
@@ -259,5 +259,4 @@ void	load_map_textures(t_game *game)
 	load_tiles(game, &game->free_imgs, "./textures/free/", FREE_C);
 	load_tiles(game, &game->exit_imgs, "./textures/exit/", EXIT_C);
 	load_tiles(game, &game->coll_imgs, "./textures/coll/", COLL_C);
-
 }

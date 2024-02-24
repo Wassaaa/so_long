@@ -78,7 +78,7 @@ def is_accessible(game_map, start_pos):
 	# Check if all conditions met (at least one collectible and one exit found)
 	return targets['C'] >= 1 and targets['E']
 
-def save_map_to_file(game_map, filename="map.ber"):
+def save_map_to_file(game_map, filename="./maps/map.ber"):
     with open(filename, "w") as file:
         height = len(game_map)
         for i, row in enumerate(game_map):
