@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 02:56:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 04:51:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,26 +174,29 @@ size_t get_random(void)
 	size_t	buff;
 
 	fd = open("/dev/random", O_RDONLY);
-	read(fd, &buff, sizeof(size_t));
+	if (fd > -1)
+		read(fd, &buff, sizeof(size_t));
 	close(fd);
-	ft_printf("\e[5;1H\e[Jrandom is: %d", buff);
+	ft_printf("\e[5;1H\e[Jrandom is: %u", buff);
 	return (buff);
 }
 
-void	get_movespeed(t_game *game)
+void	entity_speed(t_game *game)
 {
+	float	scale;
 	t_list		*enemies;
 	t_entity	*enemy;
 
-	enemies = game->enemies;
-	game->p->move_speed = (game->tile_size / game->fps) * SPEED;
-	if (game->p->move_speed < 1)
-		game->p->move_speed = 1 * SPEED;
+	scale = game->scale;
+	game->p->move_speed = (int)((float)SPEED * scale);
+	if (game->p->move_speed < MIN_SPEED)
+		game->p->move_speed = MIN_SPEED;
 	game->g->move_speed = game->p->move_speed;
+	enemies = game->enemies;
 	while (enemies)
 	{
 		enemy = (t_entity *)enemies->content;
-		enemy->move_speed = game->p->move_speed / 2;
+		enemy->move_speed = game->p->move_speed / 2.0f;
 		enemies = enemies->next;
 	}
 }
@@ -206,7 +209,7 @@ void	my_loop(void *my_game)
 	show_fps(game);
 	// if (win_lose(game))
 	// 	return ;
-	get_movespeed(game);
+	entity_speed(game);
 	enemy_anim(game);
 	player_anim(game);
 	roll_animations(game);

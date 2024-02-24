@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 01:04:06 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 04:10:56 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	scale_sizes(t_game *game, float change)
 {
-	game->fps = 60;
 	game->char_size = CHAR_SIZE * change;
 	game->p->off.x = CHAR_X_OFF * change;
 	game->p->off.y = CHAR_Y_OFF * change;
@@ -25,6 +24,7 @@ void	scale_sizes(t_game *game, float change)
 	game->tile_size = TILE_SIZE * change;
 	game->coll_size = COLL_SIZE * change;
 	game->exit_size = EXIT_SIZE * change;
+	game->scale = change;
 }
 
 void	fix_sizes(t_game *game)

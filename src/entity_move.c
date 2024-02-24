@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 23:49:27 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 04:45:55 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,70 @@
 
 void	img_up(t_entity *entity)
 {
-	int	y;
+	float	y;
+	float	diff;
 
-	y = entity->base.y;
-	if (y - entity->movement->tar.y > entity->move_speed)
-		y = entity->move_speed;
+	y = (float)entity->base.y;
+	diff = y - entity->movement->tar.y;
+	if (diff > entity->move_speed)
+		y -= entity->move_speed;
 	else
 	{
-		y = y - entity->movement->tar.y;
+		y -= diff;
 		entity->movement->active = false;
 	}
-	entity->base.y -= y;
+	entity->base.y = (int)roundf(y);
 }
 
 void	img_right(t_entity *entity)
 {
-	int	x;
+	float	x;
+	float	diff;
 
-	x = entity->base.x;
-	if (entity->movement->tar.x - x > entity->move_speed)
-		x = entity->move_speed;
+	x = (float)entity->base.x;
+	diff = entity->movement->tar.x - x;
+	if (diff > entity->move_speed)
+		x += entity->move_speed;
 	else
 	{
-		x = entity->movement->tar.x - x;
+		x += diff;
 		entity->movement->active = false;
 	}
-	entity->base.x += x;
+	entity->base.x = (int)roundf(x);
 }
 
 void	img_down(t_entity *entity)
 {
-	int	y;
+	float	y;
+	float	diff;
 
-	y = entity->base.y;
-	if (entity->movement->tar.y - y > entity->move_speed)
-		y = entity->move_speed;
+	y = (float)entity->base.y;
+	diff = entity->movement->tar.y - y;
+	if (diff > entity->move_speed)
+		y += entity->move_speed;
 	else
 	{
-		y = entity->movement->tar.y - y;
+		y += diff;
 		entity->movement->active = false;
 	}
-	entity->base.y += y;
+	entity->base.y = (int)roundf(y);
 }
 
 void	img_left(t_entity *entity)
 {
-	int	x;
+	float	x;
+	float	diff;
 
-	x = entity->base.x;
-	if (x - entity->movement->tar.x > entity->move_speed)
-		x = entity->move_speed;
+	x = (float)entity->base.x;
+	diff = x - entity->movement->tar.x;
+	if (diff > entity->move_speed)
+		x -= entity->move_speed;
 	else
 	{
-		x = x - entity->movement->tar.x;
+		x -= diff;
 		entity->movement->active = false;
 	}
-	entity->base.x -= x;
+	entity->base.x = (int)roundf(x);
 }
 
 void	entity_up(t_game *game, t_entity *entity)

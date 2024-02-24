@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 03:13:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 03:28:58 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_anim	*load_animation(t_game *game, t_sprite sprite, t_list **anim_base,
 	return (anim);
 }
 
-void	add_to_anim_frames(t_list *dest, t_list *src)
+void	anim_to_anim(t_list *dest, t_list *src)
 {
 	mlx_image_t	*destination;
 	mlx_image_t	*source;
@@ -126,18 +126,6 @@ void	color_anim(t_list *dest, t_list *src)
 	}
 }
 
-void	set_types(t_list *anims, int type)
-{
-	t_anim	*anim;
-
-	while (anims)
-	{
-		anim = (t_anim *)anims->content;
-		anim->type = type;
-		anims = anims->next;
-	}
-}
-
 void	load_enemy(t_game *game)
 {
 	t_sprite	enemy_fly;
@@ -146,7 +134,6 @@ void	load_enemy(t_game *game)
 	game->e->right = load_animation(game, enemy_fly, &game->e->anims, 1);
 	enemy_fly.mirrored = 1;
 	game->e->left = load_animation(game, enemy_fly, &game->e->anims, 1);
-	set_types(game->e->anims, ENEMY);
 }
 
 void	load_gun(t_game *game)
@@ -171,7 +158,6 @@ void	load_gun(t_game *game)
 	game->g->roll_l = load_animation(game, gun_roll, &game->g->anims, 1);
 	game->g->roll_r->full_cycle = true;
 	game->g->roll_l->full_cycle = true;
-	set_types(game->g->anims, COLL);
 }
 
 void	load_char_up(t_game *game)
@@ -189,8 +175,8 @@ void	load_char_up(t_game *game)
 	head_anim = load_animation(game, head, NULL, 0);
 	hair_anim = load_animation(game, hair, NULL, 0);
 	color_anim(hair_anim->frames, game->p->up->frames);
-	add_to_anim_frames(game->p->up->frames, head_anim->frames);
-	add_to_anim_frames(game->p->up->frames, hair_anim->frames);
+	anim_to_anim(game->p->up->frames, head_anim->frames);
+	anim_to_anim(game->p->up->frames, hair_anim->frames);
 	clear_anim(&hair_anim);
 	clear_anim(&head_anim);
 }
@@ -217,7 +203,6 @@ void	get_animations(t_game *game)
 	game->p->roll_l = load_animation(game, char_roll, &game->p->anims, 1);
 	game->p->roll_l->full_cycle = true;
 	game->p->roll_r->full_cycle = true;
-	set_types(game->p->anims, PLAYER);
 	load_gun(game);
 	load_enemy(game);
 }

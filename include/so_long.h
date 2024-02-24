@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 03:03:37 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 04:49:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <libft.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <math.h>
 
 # define WIDTH 1920
 # define HEIGHT 1080
@@ -35,7 +36,8 @@
 # define FREE_C 4
 # define COLL_C 1
 
-# define SPEED 7
+# define SPEED 400.0f
+# define MIN_SPEED 200.0f
 
 typedef enum s_type
 {
@@ -72,10 +74,9 @@ typedef struct s_anim
 	int				frame_speed;
 	double			accum;
 	int				cur_f;
-	long int		frame_count;
+	int				frame_count;
 	bool			is_active;
 	bool			full_cycle;
-	t_type			type;
 }					t_anim;
 
 typedef struct s_map_element
@@ -132,7 +133,7 @@ typedef struct s_entity
 	t_map_element	*facing;
 	int				index;
 	t_movement		*movement;
-	int				move_speed;
+	float			move_speed;
 	t_anim			*current;
 	t_anim			*next;
 }					t_entity;
@@ -149,8 +150,6 @@ typedef struct s_game
 	t_list			*wall_imgs;
 	t_list			*coll_imgs;
 	t_list			*exit_imgs;
-	t_list			*prio;
-	t_anim			*next;
 	int				score;
 	int				fps;
 	int				game_status;
@@ -161,6 +160,7 @@ typedef struct s_game
 	int				ammo;
 	int				last_ammo;
 	int				z;
+	float			scale;
 }					t_game;
 
 typedef struct s_sprite
