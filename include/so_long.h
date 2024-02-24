@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 23:55:15 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 02:41:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,15 @@
 
 # define SPEED 7
 
-# define FREE 0
-# define WALL 1
-# define COLL 3
-# define EXIT 2
-# define PLAYER 5
-# define ENEMY 4
-
-// # define UP 0
-// # define RIGHT 1
-// # define DOWN 2
-// # define LEFT 3
+typedef enum s_type
+{
+	FREE,
+	WALL,
+	EXIT,
+	COLL,
+	ENEMY,
+	PLAYER
+}					t_type;
 
 typedef enum s_direction
 {
@@ -55,7 +53,7 @@ typedef enum s_direction
 	RIGHT,
 	DOWN,
 	LEFT
-}	t_direction;
+}					t_direction;
 
 typedef struct s_rgba
 {
@@ -77,12 +75,12 @@ typedef struct s_anim
 	long int		frame_count;
 	bool			is_active;
 	bool			full_cycle;
-	int				type;
+	t_type			type;
 }					t_anim;
 
 typedef struct s_map_element
 {
-	int				type;
+	t_type			type;
 	int				x;
 	int				y;
 	int				instance;
@@ -135,7 +133,6 @@ typedef struct s_entity
 	int				index;
 	t_movement		*movement;
 	int				move_speed;
-	char			last_move;
 	t_anim			*current;
 	t_anim			*next;
 }					t_entity;
@@ -190,7 +187,8 @@ int					win_lose(t_game *game);
 // pixels
 int32_t				get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
 void				get_mirrored(mlx_image_t *dst, mlx_image_t *src);
-void				img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y);
+void				img_to_img(mlx_image_t *dst, mlx_image_t *src, int x,
+						int y);
 void				color_from_src(mlx_image_t *dst, mlx_image_t *src);
 
 // draw stuff
