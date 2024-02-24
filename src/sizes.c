@@ -6,11 +6,31 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 04:10:56 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 05:27:25 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
+
+void	entity_speed(t_game *game)
+{
+	float	scale;
+	t_list		*enemies;
+	t_entity	*enemy;
+
+	scale = game->scale;
+	game->p->move_speed = (int)((float)SPEED * scale);
+	if (game->p->move_speed < MIN_SPEED)
+		game->p->move_speed = MIN_SPEED;
+	game->g->move_speed = game->p->move_speed;
+	enemies = game->enemies;
+	while (enemies)
+	{
+		enemy = (t_entity *)enemies->content;
+		enemy->move_speed = game->p->move_speed / 2.0f;
+		enemies = enemies->next;
+	}
+}
 
 void	scale_sizes(t_game *game, float change)
 {

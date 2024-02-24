@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 21:08:30 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 06:02:11 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,10 @@ void	fix_depth(t_list *anims, int *z)
 			frame = (mlx_image_t *)temp->content;
 			mlx_set_instance_depth(&frame->instances[anim->instance], *z);
 			temp = temp->next;
-			*z = *z + 1;
 		}
 		anims = anims->next;
 	}
-	*z = *z + 1;
+	*z = *z + 2;
 }
 
 t_entity	*build_enemy(t_game *game)
@@ -235,7 +234,9 @@ void	draw_gun_anim(t_game *game)
 	int				y;
 	t_list			*temp;
 	mlx_instance_t	instance;
+	mlx_instance_t	p_instance;
 	mlx_image_t		*img;
+	mlx_image_t		*p_img;
 
 	game->g->current = game->g->idle_r;
 	x = game->p->pos.x;
@@ -247,7 +248,9 @@ void	draw_gun_anim(t_game *game)
 	{
 		img = (mlx_image_t *)temp->content;
 		instance = img->instances[game->g->up->instance];
-		mlx_set_instance_depth(&instance, game->p->base.z - 1);
+		p_img = (mlx_image_t *)game->p->up->frames->content;
+		p_instance = p_img->instances[game->p->up->instance];
+		mlx_set_instance_depth(&instance, p_instance.z - 1);
 		temp = temp->next;
 	}
 

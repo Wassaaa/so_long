@@ -6,75 +6,83 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 04:45:55 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 05:20:50 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void	img_up(t_entity *entity)
+void	img_up(t_entity *entity, float dt)
 {
 	float	y;
 	float	diff;
+	float	move_step;
 
 	y = (float)entity->base.y;
 	diff = y - entity->movement->tar.y;
-	if (diff > entity->move_speed)
-		y -= entity->move_speed;
+	move_step = entity->move_speed * dt;
+	if (fabs(diff) > move_step)
+		y -= move_step;
 	else
 	{
-		y -= diff;
+		y = entity->movement->tar.y;
 		entity->movement->active = false;
 	}
 	entity->base.y = (int)roundf(y);
 }
 
-void	img_right(t_entity *entity)
+void	img_right(t_entity *entity, float dt)
 {
 	float	x;
 	float	diff;
+	float	move_step;
 
 	x = (float)entity->base.x;
 	diff = entity->movement->tar.x - x;
-	if (diff > entity->move_speed)
-		x += entity->move_speed;
+	move_step = entity->move_speed * dt;
+	if (fabs(diff) > move_step)
+		x += move_step;
 	else
 	{
-		x += diff;
+		x = entity->movement->tar.x;
 		entity->movement->active = false;
 	}
 	entity->base.x = (int)roundf(x);
 }
 
-void	img_down(t_entity *entity)
+void	img_down(t_entity *entity, float dt)
 {
 	float	y;
 	float	diff;
+	float	move_step;
 
 	y = (float)entity->base.y;
 	diff = entity->movement->tar.y - y;
-	if (diff > entity->move_speed)
-		y += entity->move_speed;
+	move_step = entity->move_speed * dt;
+	if (fabs(diff) > move_step)
+		y += move_step;
 	else
 	{
-		y += diff;
+		y = entity->movement->tar.y;
 		entity->movement->active = false;
 	}
 	entity->base.y = (int)roundf(y);
 }
 
-void	img_left(t_entity *entity)
+void	img_left(t_entity *entity, float dt)
 {
 	float	x;
 	float	diff;
+	float	move_step;
 
 	x = (float)entity->base.x;
 	diff = x - entity->movement->tar.x;
-	if (diff > entity->move_speed)
-		x -= entity->move_speed;
+	move_step = entity->move_speed * dt;
+	if (fabs(diff) > move_step)
+		x -= move_step;
 	else
 	{
-		x -= diff;
+		x = entity->movement->tar.x;
 		entity->movement->active = false;
 	}
 	entity->base.x = (int)roundf(x);

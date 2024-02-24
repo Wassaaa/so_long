@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 04:49:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 05:32:36 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 # define FREE_C 4
 # define COLL_C 1
 
-# define SPEED 400.0f
-# define MIN_SPEED 200.0f
+# define SPEED 500.0f
+# define MIN_SPEED 50.0f
 
 typedef enum s_type
 {
@@ -171,13 +171,14 @@ typedef struct s_sprite
 	int				mirrored;
 }					t_sprite;
 
-typedef void		(*t_img_move)(t_entity *);
+typedef void		(*t_img_move)(t_entity *, float);
 typedef void		(*t_move)(t_game *game, t_entity *entity);
 
 // init
 t_game				*init_game(void);
 void				start_mlx(t_game *game);
 void				fix_sizes(t_game *game);
+void				entity_speed(t_game *game);
 
 // display
 void				show_fps(t_game *game);
@@ -205,10 +206,10 @@ void				entity_right(t_game *game, t_entity *entity);
 void				entity_down(t_game *game, t_entity *entity);
 void				entity_left(t_game *game, t_entity *entity);
 
-void				img_up(t_entity *entity);
-void				img_right(t_entity *entity);
-void				img_down(t_entity *entity);
-void				img_left(t_entity *entity);
+void				img_up(t_entity *entity, float dt);
+void				img_right(t_entity *entity, float dt);
+void				img_down(t_entity *entity, float dt);
+void				img_left(t_entity *entity, float dt);
 
 // animation
 void				roll_animations(t_game *game);

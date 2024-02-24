@@ -6,13 +6,13 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 04:51:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 05:37:59 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void	move_image(t_entity *entity)
+void	move_image(t_entity *entity, float dt)
 {
 	t_img_move	move[4];
 
@@ -20,7 +20,7 @@ void	move_image(t_entity *entity)
 	move[RIGHT] = img_right;
 	move[DOWN] = img_down;
 	move[LEFT] = img_left;
-	move[entity->movement->to](entity);
+	move[entity->movement->to](entity, dt);
 	sync_anim(entity);
 }
 
@@ -86,7 +86,7 @@ void	enemy_anim(t_game *game)
 		if (enemy->next)
 			handle_next_move(enemy);
 		if (enemy->movement->active)
-			move_image(enemy);
+			move_image(enemy, game->mlx->delta_time);
 		enemies = enemies->next;
 	}
 }
@@ -133,8 +133,8 @@ void	player_anim(t_game *game)
 	if (player->movement && player->movement->active)
 	{
 		item_collection(game);
-		move_image(game->p);
-		move_image(game->g);
+		move_image(game->p, game->mlx->delta_time);
+		move_image(game->g, game->mlx->delta_time);
 	}
 }
 
@@ -175,30 +175,21 @@ size_t get_random(void)
 
 	fd = open("/dev/random", O_RDONLY);
 	if (fd > -1)
-		read(fd, &buff, sizeof(size_t));
+	{
+		if (read(fd, &buff, sizeof(size_t)) < 0)
+		{
+			close(fd);
+			error();
+		}
+	}
+	else
+	{
+		close(fd);
+		error();
+	}
 	close(fd);
 	ft_printf("\e[5;1H\e[Jrandom is: %u", buff);
 	return (buff);
-}
-
-void	entity_speed(t_game *game)
-{
-	float	scale;
-	t_list		*enemies;
-	t_entity	*enemy;
-
-	scale = game->scale;
-	game->p->move_speed = (int)((float)SPEED * scale);
-	if (game->p->move_speed < MIN_SPEED)
-		game->p->move_speed = MIN_SPEED;
-	game->g->move_speed = game->p->move_speed;
-	enemies = game->enemies;
-	while (enemies)
-	{
-		enemy = (t_entity *)enemies->content;
-		enemy->move_speed = game->p->move_speed / 2.0f;
-		enemies = enemies->next;
-	}
 }
 
 void	my_loop(void *my_game)
@@ -209,7 +200,6 @@ void	my_loop(void *my_game)
 	show_fps(game);
 	// if (win_lose(game))
 	// 	return ;
-	entity_speed(game);
 	enemy_anim(game);
 	player_anim(game);
 	roll_animations(game);
@@ -227,6 +217,7 @@ int32_t	main(void)
 	read_map(game, "./maps/map.ber");
 	get_animations(game);
 	draw_map(game);
+	entity_speed(game);
 	mlx_loop_hook(game->mlx, my_loop, game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
