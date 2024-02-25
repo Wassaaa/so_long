@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/24 06:03:07 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/24 17:21:54 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,10 +29,6 @@ SRCS			=	ft_lstget.c\
 					display.c\
 					gun.c\
 					entity_move.c
-
-
-
-
 B_SRCS			=
 
 

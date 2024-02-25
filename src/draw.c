@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 06:02:11 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/24 19:27:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,8 @@ void	fix_depth(t_list *anims, int *z)
 			temp = temp->next;
 		}
 		anims = anims->next;
+		*z = *z + 2;
 	}
-	*z = *z + 2;
 }
 
 t_entity	*build_enemy(t_game *game)
@@ -253,7 +253,6 @@ void	draw_gun_anim(t_game *game)
 		mlx_set_instance_depth(&instance, p_instance.z - 1);
 		temp = temp->next;
 	}
-
 }
 
 void	draw_map(t_game *game)
