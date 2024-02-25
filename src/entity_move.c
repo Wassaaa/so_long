@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 05:20:50 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/25 18:38:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,12 @@ void	entity_up(t_game *game, t_entity *entity)
 
 	dest = ((entity->pos.y - 1) * game->map->width) + entity->pos.x;
 	entity->facing = (t_map_element *)ft_lstget(game->map->elements,	dest)->content;
-	entity->movement->anim = entity->up;
+	entity->movement->anim = entity->anims[A_UP];
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
 			if (get_random() % 100 < ROLL_CHANCE)
-				entity->movement->anim = entity->roll_l;
+				entity->movement->anim = entity->anims[A_ROLL_L];
 		move_it(game, entity, UP);
 		entity->pos.y--;
 	}
@@ -116,12 +116,12 @@ void	entity_right(t_game *game, t_entity *entity)
 
 	dest = (entity->pos.y * game->map->width) + entity->pos.x + 1;
 	entity->facing = (t_map_element *)ft_lstget(game->map->elements, dest)->content;
-	entity->movement->anim = entity->right;
+	entity->movement->anim = entity->anims[A_RIGHT];
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
 			if (get_random() % 100 < ROLL_CHANCE)
-				entity->movement->anim = entity->roll_r;
+				entity->movement->anim = entity->anims[A_ROLL_R];
 		move_it(game, entity, RIGHT);
 		entity->pos.x++;
 	}
@@ -136,12 +136,12 @@ void	entity_down(t_game *game, t_entity *entity)
 
 	dest = ((entity->pos.y + 1) * game->map->width) + entity->pos.x;
 	entity->facing = (t_map_element *)ft_lstget(game->map->elements,	dest)->content;
-	entity->movement->anim = entity->down;
+	entity->movement->anim = entity->anims[A_DOWN];
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
 			if (get_random() % 100 < ROLL_CHANCE)
-				entity->movement->anim = entity->roll_r;
+				entity->movement->anim = entity->anims[A_ROLL_R];
 		move_it(game, entity, DOWN);
 		entity->pos.y++;
 	}
@@ -156,12 +156,12 @@ void	entity_left(t_game *game, t_entity *entity)
 
 	dest = (entity->pos.y * game->map->width) + entity->pos.x - 1;
 	entity->facing = (t_map_element *)ft_lstget(game->map->elements,	dest)->content;
-	entity->movement->anim = entity->left;
+	entity->movement->anim = entity->anims[A_LEFT];
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
 			if (get_random() % 100 < ROLL_CHANCE)
-				entity->movement->anim = entity->roll_l;
+				entity->movement->anim = entity->anims[A_ROLL_L];
 		move_it(game, entity, LEFT);
 		entity->pos.x--;
 	}

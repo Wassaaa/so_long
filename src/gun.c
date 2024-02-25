@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 21:26:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/25 19:10:33 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,29 +42,29 @@ void	gun_picked_up(t_game *game)
 void	got_gun(t_game *game)
 {
 	if (game->ammo < 1 && game->last_ammo >= 1)
-		image_toggle(game->g->anims, false);
+		image_toggle(game->g, false);
 	else if(game->last_ammo < 1 && game->ammo >= 1)
-		image_toggle(game->g->anims, true);
+		image_toggle(game->g, true);
 	game->last_ammo = game->ammo;
 }
 
-void	image_toggle(t_list *anims, bool onoff)
+void	image_toggle(t_entity *ent, bool onoff)
 {
-	t_anim	*anim;
-	t_list	*frames;
+	t_list		*frames;
 	mlx_image_t *img;
+	int			i;
 
-	while (anims)
+	i = 0;
+	while (i < A_COUNT)
 	{
-		anim = anims->content;
-		frames = anim->frames;
+		frames = ent->anims[i]->frames;
 		while (frames)
 		{
-			img = frames->content;
+			img = (mlx_image_t *)frames->content;
 			img->enabled = onoff;
 			frames = frames->next;
 		}
-		anims = anims->next;
+		i++;
 	}
 }
 

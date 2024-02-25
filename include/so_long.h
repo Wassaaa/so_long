@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 05:32:36 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/25 19:39:52 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <MLX42/MLX42.h>
 # include <libft.h>
+# include <math.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <math.h>
 
 # define WIDTH 1920
 # define HEIGHT 1080
@@ -57,7 +57,20 @@ typedef enum s_direction
 	LEFT
 }					t_direction;
 
-typedef struct s_rgba
+typedef enum s_anims
+{
+	A_UP,
+	A_RIGHT,
+	A_DOWN,
+	A_LEFT,
+	A_IDLE_R,
+	A_IDLE_L,
+	A_ROLL_R,
+	A_ROLL_L,
+	A_COUNT
+}					t_anims;
+
+typedef struct t_anims
 {
 	uint32_t		color;
 	uint8_t			r;
@@ -118,16 +131,8 @@ typedef struct s_movement
 
 typedef struct s_entity
 {
-	t_list			*anims;
 	mlx_instance_t	base;
-	t_anim			*up;
-	t_anim			*right;
-	t_anim			*down;
-	t_anim			*left;
-	t_anim			*idle_r;
-	t_anim			*idle_l;
-	t_anim			*roll_r;
-	t_anim			*roll_l;
+	t_anim			*anims[A_COUNT];
 	t_point			off;
 	t_point			pos;
 	t_map_element	*facing;
@@ -228,7 +233,7 @@ void				get_animations(t_game *game);
 void				got_gun(t_game *game);
 void				gun_picked_up(t_game *game);
 void				item_collection(t_game *game);
-void				image_toggle(t_list *anims, bool onoff);
+void				image_toggle(t_entity *ent, bool onoff);
 void				handle_shoot(t_game *game);
 
 // helpers

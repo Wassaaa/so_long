@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/25 18:04:39 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/25 19:33:59 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,49 +84,56 @@ void	draw_exit(t_game *game, t_map_element *el)
 	mlx_set_instance_depth(&exit_img->instances[el->instance], EXIT);
 }
 
-void	frames_to_window(mlx_t *mlx, t_list *anims, int x, int y)
+void	frames_to_window(mlx_t *mlx, t_entity *ent, int x, int y)
 {
-	mlx_image_t	*frame;
-	t_anim		*anim;
-	int			instance;
+	int			i;
 	t_list		*frames;
-
+	mlx_image_t	*frame;
+	int			instance;
+	
+	i = 0;
 	instance = -1;
-	while (anims != NULL)
+	while (i < A_COUNT)
 	{
-		anim = (t_anim *)anims->content;
-		frames = anim->frames;
+		frames = ent->anims[i]->frames;
 		while (frames)
 		{
 			frame = (mlx_image_t *)frames->content;
 			instance = mlx_image_to_window(mlx, frame, x, y);
-			anim->instance = instance;
+			ent->anims[i]->instance = instance;
 			frame->instances[instance].enabled = false;
 			frames = frames->next;
 		}
-		anims = anims->next;
+		i++;
+		if (instance < 0)
+			error();
 	}
-	if (instance == -1)
-		error();
 }
 
-void	fix_depth(t_list *anims, int *z)
+void	fix_depth(t_entity *ent, int *z)
 {
 	mlx_image_t	*frame;
 	t_anim		*anim;
-	t_list		*temp;
+	t_list		*frames;
+	int			i;
 
-	while (anims != NULL)
+	i = 0;
+	while (i < A_COUNT)
 	{
-		anim = (t_anim *)anims->content;
-		temp = anim->frames;
-		while (temp)
+		anim = ent->anims[i];
+		if (!anim)
 		{
-			frame = (mlx_image_t *)temp->content;
-			mlx_set_instance_depth(&frame->instances[anim->instance], *z);
-			temp = temp->next;
+			i++;
+			break ;
 		}
-		anims = anims->next;
+		frames = anim->frames;
+		while (frames)
+		{
+			frame = (mlx_image_t *)frames->content;
+			mlx_set_instance_depth(&frame->instances[anim->instance], *z);
+			frames = frames->next;
+		}
+		i++;
 		*z = *z + 2;
 	}
 }
@@ -142,19 +149,17 @@ t_entity	*build_enemy(t_game *game)
 	enemy->movement = ft_calloc(1, sizeof(t_movement));
 	if (!enemy->movement)
 		error();
-	enemy->right = ft_calloc(1, sizeof (t_anim));
-	enemy->left = ft_calloc(1, sizeof(t_anim));
-	if (!enemy->right || !enemy->left)
+	enemy->anims[A_RIGHT] = ft_calloc(1, sizeof (t_anim));
+	enemy->anims[A_LEFT] = ft_calloc(1, sizeof(t_anim));
+	if (!enemy->anims[A_RIGHT] || !enemy->anims[A_LEFT])
 		error();
-	*enemy->right = *game->e->right;
-	*enemy->left = *game->e->left;
-	enemy->up = enemy->left;
-	enemy->down = enemy->right;
-	enemy->right->cur_f = get_random() % (enemy->right->frame_count - 1);
-	enemy->left->cur_f = get_random() % (enemy->left->frame_count - 1);
-	enemy->current = enemy->right;
-	ft_lstadd_back(&game->e->anims, safe_lstnew(enemy->right));
-	ft_lstadd_back(&game->e->anims, safe_lstnew(enemy->left));
+	*enemy->anims[A_RIGHT] = *game->e->anims[A_RIGHT];
+	*enemy->anims[A_LEFT] = *game->e->anims[A_LEFT];
+	enemy->anims[A_UP] = enemy->anims[A_LEFT];
+	enemy->anims[A_DOWN] = enemy->anims[A_RIGHT];
+	enemy->anims[A_RIGHT]->cur_f = get_random() % (enemy->anims[A_RIGHT]->frame_count - 1);
+	enemy->anims[A_LEFT]->cur_f = get_random() % (enemy->anims[A_LEFT]->frame_count - 1);
+	enemy->current = enemy->anims[A_RIGHT];
 	return (enemy);
 }
 
@@ -197,10 +202,10 @@ void	draw_enemy(t_game *game, t_map_element *el)
 	mlx_set_instance_depth(&enemy_bg->instances[el->bg_instance], FREE);
 	x += enemy->off.x;
 	y += enemy->off.y;
-	enemy->left->instance = draw_anim(game->mlx, enemy->left, x, y);
-	enemy->right->instance = draw_anim(game->mlx, enemy->right, x, y);
-	base = (mlx_image_t *)(enemy->right->frames->content);
-	enemy->base = base->instances[enemy->right->instance];
+	enemy->anims[A_LEFT]->instance = draw_anim(game->mlx, enemy->anims[A_LEFT], x, y);
+	enemy->anims[A_RIGHT]->instance = draw_anim(game->mlx, enemy->anims[A_RIGHT], x, y);
+	base = (mlx_image_t *)(enemy->anims[A_RIGHT]->frames->content);
+	enemy->base = base->instances[enemy->anims[A_RIGHT]->instance];
 	enemy->index = index++;
 	ft_lstadd_back(&game->enemies, safe_lstnew(enemy));
 }
@@ -208,12 +213,11 @@ void	draw_enemy(t_game *game, t_map_element *el)
 void	draw_player(t_game *game, t_map_element *el)
 {
 	mlx_image_t *player_bg;
-	t_list		*player_anims;
 	mlx_image_t	*base;
 	int			x;
 	int			y;
 
-	game->p->current = game->p->idle_r;
+	game->p->current = game->p->anims[A_IDLE_R];
 	game->p->pos.x = el->x;
 	game->p->pos.y = el->y;
 	x = el->x * game->tile_size;
@@ -221,36 +225,35 @@ void	draw_player(t_game *game, t_map_element *el)
 	player_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, player_bg, x, y);
 	mlx_set_instance_depth(&player_bg->instances[el->bg_instance], FREE);
-	player_anims = game->p->anims;
 	x += game->p->off.x;
 	y += game->p->off.y;
-	frames_to_window(game->mlx, player_anims, x, y);
-	base = (mlx_image_t *)(game->p->right->frames->content);
-	game->p->base = base->instances[game->p->right->instance];
+	frames_to_window(game->mlx, game->p, x, y);
+	base = (mlx_image_t *)(game->p->anims[A_RIGHT]->frames->content);
+	game->p->base = base->instances[game->p->anims[A_RIGHT]->instance];
 }
 void	draw_gun_anim(t_game *game)
 {
 	int				x;
 	int				y;
 	t_list			*temp;
-	mlx_instance_t	instance;
+	mlx_instance_t	*instance;
 	mlx_instance_t	p_instance;
 	mlx_image_t		*img;
 	mlx_image_t		*p_img;
 
-	game->g->current = game->g->idle_r;
+	game->g->current = game->g->anims[A_IDLE_R];
 	x = game->p->pos.x;
 	y = game->p->pos.y;
-	frames_to_window(game->mlx, game->g->anims, x, y);
-	fix_depth(game->g->anims, &game->z);
-	temp = game->g->up->frames;
+	frames_to_window(game->mlx, game->g, x, y);
+	fix_depth(game->g, &game->z);
+	temp = game->g->anims[A_UP]->frames;
 	while (temp)
 	{
 		img = (mlx_image_t *)temp->content;
-		instance = img->instances[game->g->up->instance];
-		p_img = (mlx_image_t *)game->p->up->frames->content;
-		p_instance = p_img->instances[game->p->up->instance];
-		mlx_set_instance_depth(&instance, p_instance.z - 1);
+		instance = &img->instances[game->g->anims[A_UP]->instance];
+		p_img = (mlx_image_t *)game->p->anims[A_UP]->frames->content;
+		p_instance = p_img->instances[game->p->anims[A_UP]->instance];
+		mlx_set_instance_depth(instance, p_instance.z - 1);
 		temp = temp->next;
 	}
 }
@@ -278,7 +281,7 @@ void	draw_map(t_game *game)
 			draw_exit(game, el);
 		tile = tile->next;
 	}
-	fix_depth(game->e->anims, &game->z);
-	fix_depth(game->p->anims, &game->z);
+	fix_depth(game->e, &game->z);
+	fix_depth(game->p, &game->z);
 	draw_gun_anim(game);
 }

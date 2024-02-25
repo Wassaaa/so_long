@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 05:37:59 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/25 20:02:16 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ void	enemy_anim(t_game *game)
 
 void	get_gun_next(t_game *game, t_anim *p_next)
 {
-	t_list		*anims;
-	t_anim		*anim;
+	t_anim		**anims;
 	int			i;
 
 	i = 0;
@@ -102,15 +101,13 @@ void	get_gun_next(t_game *game, t_anim *p_next)
 	*game->g->movement = *game->p->movement;
 	game->g->base = game->p->base;
 	sync_anim(game->g);
-	while (anims)
+	while (i < A_COUNT)
 	{
-		anim = (t_anim *)anims->content;
-		if (anim == p_next)
+		if (anims[i] == p_next)
 			break ;
 		i++;
-		anims = anims->next;
 	}
-	game->g->next = (t_anim *)ft_lstget(game->g->anims, i)->content;
+	game->g->next = game->g->anims[i];
 }
 
 void	player_anim(t_game *game)
@@ -173,7 +170,7 @@ size_t get_random(void)
 	int		fd;
 	size_t	buff;
 
-	fd = open("/dev/random", O_RDONLY);
+	fd = open("/dev/urandom", O_RDONLY);
 	if (fd > -1)
 	{
 		if (read(fd, &buff, sizeof(size_t)) < 0)
@@ -189,7 +186,7 @@ size_t get_random(void)
 	}
 	close(fd);
 	ft_printf("\e[5;1H\e[Jrandom is: %u", buff);
-	return (buff);
+	return (buff);\
 }
 
 void	my_loop(void *my_game)
