@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/25 20:02:16 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 23:44:57 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 void	move_image(t_entity *entity, float dt)
 {
-	t_img_move	move[4];
+	static t_img_move	move[4] = {img_up, img_right, img_down, img_left};
 
-	move[UP] = img_up;
-	move[RIGHT] = img_right;
-	move[DOWN] = img_down;
-	move[LEFT] = img_left;
 	move[entity->movement->to](entity, dt);
 	sync_anim(entity);
 }
@@ -137,12 +133,7 @@ void	player_anim(t_game *game)
 
 void	entity_move_to(t_game *game, t_entity *entity)
 {
-	t_move	move[4];
-
-	move[UP] = entity_up;
-	move[RIGHT] = entity_right;
-	move[DOWN] = entity_down;
-	move[LEFT] = entity_left;
+	static t_move	move[4] = {ent_up, ent_right, ent_down, ent_left};
 
 	move[entity->movement->to](game, entity);
 }

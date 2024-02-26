@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 23:11:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 23:41:01 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ typedef struct s_point
 {
 	int				x;
 	int				y;
-	int				z;
 }					t_point;
 
 typedef struct s_movement
@@ -216,10 +215,10 @@ int					move_allowed(t_map_element *el);
 // entity moves
 void				move_it(t_game *game, t_entity *entity, int to);
 void				entity_move_to(t_game *game, t_entity *entity);
-void				entity_up(t_game *game, t_entity *entity);
-void				entity_right(t_game *game, t_entity *entity);
-void				entity_down(t_game *game, t_entity *entity);
-void				entity_left(t_game *game, t_entity *entity);
+void				ent_up(t_game *game, t_entity *entity);
+void				ent_right(t_game *game, t_entity *entity);
+void				ent_down(t_game *game, t_entity *entity);
+void				ent_left(t_game *game, t_entity *entity);
 
 void				img_up(t_entity *entity, float dt);
 void				img_right(t_entity *entity, float dt);

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 22:11:43 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 23:34:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	next_move(t_game *game)
 	if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
 		handle_shoot(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
-		entity_right(game, game->p);
+		ent_right(game, game->p);
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))
-		entity_down(game, game->p);
+		ent_down(game, game->p);
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
-		entity_left(game, game->p);
+		ent_left(game, game->p);
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_W))
-		entity_up(game, game->p);
+		ent_up(game, game->p);
 }

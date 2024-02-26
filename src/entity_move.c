@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/25 18:38:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 23:40:58 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	img_left(t_entity *entity, float dt)
 	entity->base.x = (int)roundf(x);
 }
 
-void	entity_up(t_game *game, t_entity *entity)
+void	ent_up(t_game *game, t_entity *entity)
 {
 	int	dest;
 
@@ -110,7 +110,7 @@ void	entity_up(t_game *game, t_entity *entity)
 	entity->next = entity->movement->anim;
 }
 
-void	entity_right(t_game *game, t_entity *entity)
+void	ent_right(t_game *game, t_entity *entity)
 {
 	int	dest;
 
@@ -130,7 +130,7 @@ void	entity_right(t_game *game, t_entity *entity)
 	entity->next = entity->movement->anim;
 }
 
-void	entity_down(t_game *game, t_entity *entity)
+void	ent_down(t_game *game, t_entity *entity)
 {
 	int	dest;
 
@@ -150,7 +150,7 @@ void	entity_down(t_game *game, t_entity *entity)
 	entity->next = entity->movement->anim;
 }
 
-void	entity_left(t_game *game, t_entity *entity)
+void	ent_left(t_game *game, t_entity *entity)
 {
 	int	dest;
 
@@ -177,7 +177,6 @@ void	move_it(t_game *game, t_entity *entity, int to)
 	entity->movement->active = true;
 	tar.x = (entity->facing->x * game->tile_size) + entity->off.x;
 	tar.y = (entity->facing->y * game->tile_size) + entity->off.y;
-	tar.z = entity->movement->tar.z;
 	entity->movement->tar = tar;
 	entity->movement->to = to;
 	entity->movement->el = entity->facing;
