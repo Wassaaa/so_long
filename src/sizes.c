@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/24 05:27:25 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 22:03:13 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ void	entity_speed(t_game *game)
 
 void	scale_sizes(t_game *game, float change)
 {
-	game->char_size = CHAR_SIZE * change;
-	game->p->off.x = CHAR_X_OFF * change;
-	game->p->off.y = CHAR_Y_OFF * change;
-	game->e->off.x = CHAR_X_OFF * change;
-	game->e->off.y = CHAR_Y_OFF * change;
+	game->char_size = PLAYER_SIZE * change;
+	game->p->off.x = PLAYER_X_OFF * change;
+	game->p->off.y = PLAYER_Y_OFF * change;
+	game->e->off.x = PLAYER_X_OFF * change;
+	game->e->off.y = PLAYER_Y_OFF * change;
 	game->map->coll_off_x = COLL_X_OFF * change;
 	game->map->coll_off_y = COLL_Y_OFF * change;
 	game->tile_size = TILE_SIZE * change;

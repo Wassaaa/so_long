@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/25 19:39:52 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 23:11:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 # define ROLL_CHANCE 5
-# define CHAR_SIZE 384
-# define CHAR_X_OFF -145
-# define CHAR_Y_OFF -250
+# define PLAYER_X_OFF -145
+# define PLAYER_Y_OFF -250
 # define COLL_X_OFF -60
 # define COLL_Y_OFF -100
+# define PLAYER_SIZE 384
 # define TILE_SIZE 100
 # define COLL_SIZE 200
 # define EXIT_SIZE 120
@@ -191,19 +191,29 @@ int					win_lose(t_game *game);
 
 // pixels
 int32_t				get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
-void				get_mirrored(mlx_image_t *dst, mlx_image_t *src);
-void				img_to_img(mlx_image_t *dst, mlx_image_t *src, int x,
-						int y);
-void				color_from_src(mlx_image_t *dst, mlx_image_t *src);
+void				get_mirrored(mlx_image_t *d, mlx_image_t *s);
+void				img_to_img(mlx_image_t *d, mlx_image_t *s, int x, int y);
+void				color_from_src(mlx_image_t *d, mlx_image_t *s);
 
 // draw stuff
 void				draw_map(t_game *game);
+void				draw_wall(t_game *game, t_map_element *el);
+void				draw_free(t_game *game, t_map_element *el);
+void				draw_coll(t_game *game, t_map_element *el);
+void				draw_exit(t_game *game, t_map_element *el);
+void				draw_enemy(t_game *game, t_map_element *el);
+void				draw_player(t_game *game, t_map_element *el);
+void				draw_gun_anim(t_game *game);
+void				draw_anims(mlx_t *mlx, t_entity *ent, int x, int y);
+void				build_anims(t_entity *base_entity, t_entity *ent);
+void				fix_depth(t_entity *ent, int *z);
 
-// char moves
+// moves
 void				next_move(t_game *game);
+void				do_idle(t_game *game);
 int					move_allowed(t_map_element *el);
 
-// enemy moves
+// entity moves
 void				move_it(t_game *game, t_entity *entity, int to);
 void				entity_move_to(t_game *game, t_entity *entity);
 void				entity_up(t_game *game, t_entity *entity);
@@ -218,9 +228,6 @@ void				img_left(t_entity *entity, float dt);
 
 // animation
 void				roll_animations(t_game *game);
-void				do_idle(t_game *game);
-
-// frames sync
 void				sync_anim(t_entity *enemy);
 
 // maps & textures

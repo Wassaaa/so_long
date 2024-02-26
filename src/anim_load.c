@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/25 18:20:15 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/26 22:38:05 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,10 @@ void	load_enemy(t_game *game)
 
 	enemy_fly = new_sprite("./textures/enemy/fly_", 6, 100, 0);
 	game->e->anims[A_RIGHT] = load_animation(game, enemy_fly);
+	game->e->anims[A_DOWN] = load_animation(game, enemy_fly);
 	enemy_fly.mirrored = 1;
 	game->e->anims[A_LEFT] = load_animation(game, enemy_fly);
+	game->e->anims[A_UP] = load_animation(game, enemy_fly);
 }
 
 void	load_gun(t_game *game)
