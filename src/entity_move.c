@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 23:40:58 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 00:11:31 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,11 @@ void	ent_up(t_game *game, t_entity *entity)
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
+		{
 			if (get_random() % 100 < ROLL_CHANCE)
 				entity->movement->anim = entity->anims[A_ROLL_L];
+			game->score++;
+		}
 		move_it(game, entity, UP);
 		entity->pos.y--;
 	}
@@ -120,8 +123,11 @@ void	ent_right(t_game *game, t_entity *entity)
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
+		{
 			if (get_random() % 100 < ROLL_CHANCE)
 				entity->movement->anim = entity->anims[A_ROLL_R];
+			game->score++;
+		}
 		move_it(game, entity, RIGHT);
 		entity->pos.x++;
 	}
@@ -140,8 +146,11 @@ void	ent_down(t_game *game, t_entity *entity)
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
+		{
 			if (get_random() % 100 < ROLL_CHANCE)
 				entity->movement->anim = entity->anims[A_ROLL_R];
+			game->score++;
+		}
 		move_it(game, entity, DOWN);
 		entity->pos.y++;
 	}
@@ -160,8 +169,11 @@ void	ent_left(t_game *game, t_entity *entity)
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
+		{
 			if (get_random() % 100 < ROLL_CHANCE)
 				entity->movement->anim = entity->anims[A_ROLL_L];
+			game->score++;
+		}
 		move_it(game, entity, LEFT);
 		entity->pos.x--;
 	}
