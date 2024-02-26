@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 23:41:01 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 00:04:31 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ void				handle_shoot(t_game *game);
 // helpers
 t_list				*ft_lstget(t_list *l, int n);
 t_list				*safe_lstnew(void *content);
+void				*safe_ft_calloc(size_t count, size_t size);
 void				error(void);
 void				null_content(void *content);
 void				clear_anim(t_anim **anim);

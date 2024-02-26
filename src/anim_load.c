@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 22:38:05 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 00:03:19 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ t_anim	*load_animation(t_game *game, t_sprite sprite)
 	int			i;
 	mlx_image_t	*new_img;
 
-	anim = ft_calloc(1, sizeof(t_anim));
-	if (!anim)
-		error();
+	anim = safe_ft_calloc(1, sizeof(t_anim));
 	anim->frame_speed = sprite.frame_speed;
 	anim->frame_count = sprite.frame_count;
 	i = 0;

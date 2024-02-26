@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 19:03:00 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 00:02:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	fill_elements(t_game *game, char *line, int y)
 	{
 		if (*line == '\n')
 			break ;
-		el = ft_calloc(1, sizeof(t_map_element));
+		el = safe_ft_calloc(1, sizeof(t_map_element));
 		el->type = get_el_type(*line);
 		el->images = get_el_imgs(game, *line);
 		el->x = x++;

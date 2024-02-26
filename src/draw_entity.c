@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 23:09:20 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 00:03:19 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,9 @@ static t_entity	*build_enemy(t_game *game)
 {
 	t_entity *enemy;
 
-	enemy = ft_calloc(1, sizeof(t_entity));
-	if (!enemy)
-		error();
+	enemy = safe_ft_calloc(1, sizeof(t_entity));
 	*enemy = *game->e;
-	enemy->movement = ft_calloc(1, sizeof(t_movement));
-	if (!enemy->movement)
-		error();
+	enemy->movement = safe_ft_calloc(1, sizeof(t_movement));
 	build_anims(game->e, enemy);
 	enemy->current = enemy->anims[A_RIGHT];
 	return (enemy);

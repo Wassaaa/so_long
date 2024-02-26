@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 23:11:49 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 00:03:20 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ void	build_anims(t_entity *base_entity, t_entity *ent)
 	{
 		if (base_entity->anims[i])
 		{
-			ent->anims[i] = ft_calloc(1, sizeof(t_anim));
-			if (!ent->anims[i])
-				error();
+			ent->anims[i] = safe_ft_calloc(1, sizeof(t_anim));
 			*ent->anims[i] = *base_entity->anims[i];
 			random_frame = get_random() % (ent->anims[i]->frame_count - 1);
 			ent->anims[i]->cur_f = random_frame;
