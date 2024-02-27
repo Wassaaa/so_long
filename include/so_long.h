@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 04:35:29 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 00:38:00 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_anim
 
 typedef struct s_map_element
 {
-	t_type			type;
+	int				type;
 	int				x;
 	int				y;
 	int				instance;
@@ -107,6 +107,8 @@ typedef struct s_map
 {
 	t_list			*elements;
 	int				colls;
+	int				players;
+	int				exits;
 	int				coll_off_x;
 	int				coll_off_y;
 	int				width;
@@ -179,6 +181,8 @@ typedef struct s_sprite
 typedef void		(*t_img_move)(t_entity *, float);
 typedef void		(*t_move)(t_game *game, t_entity *entity);
 
+void				map_valdiation(t_game *game, char *map_file);
+void	check_rectangle(t_game *game, char *map_file);
 // init
 t_game				**get_game(void);
 t_game				*init_game(void);
