@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/27 04:40:07 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/27 21:01:05 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS			=	ft_lstget.c\
 					entity_move.c\
 					draw_tiles.c\
 					draw_entity.c
-					
+
 B_SRCS			=	#
 
 
@@ -43,15 +43,15 @@ CC_STRICT		=	-Wall -Wextra -Werror
 OFAST			=	#-Ofast -flto
 OG				=	#-Og -flto
 CC_DEBUG		=	-g #-fsanitize=leak
-MATH			=	-lm
+MATH			=	#-lm
 HEADERS			=	-I $(LIBFT_INCLUDES) -I $(INCLUDES) -I $(MLX42_DIR)/include
 CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST) $(MATH)
 
 ################################################################################
 # MLX
 ################################################################################
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 MLX_DEBUG		= #-DDEBUG=1
 MLX42_DIR		= ./MLX42
 

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 01:30:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 21:45:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ size_t get_random(void)
 	int		fd;
 	size_t	buff;
 
+	buff = 0;
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd > -1)
 	{
@@ -186,10 +187,11 @@ void	my_loop(void *my_game)
 
 	game = (t_game *)my_game;
 	show_fps(game);
-	// if (win_lose(game))
-	// 	return ;
+	if (win_lose(game))
+		return ;
 	enemy_anim(game);
 	player_anim(game);
+	check_collision(game);
 	roll_animations(game);
 }
 
