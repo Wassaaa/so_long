@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/02/27 00:34:28 by aklein           ###   ########.fr        #
+#    Updated: 2024/02/27 04:40:07 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -147,14 +147,14 @@ CC_VG			=	$(CC) $(CC_STRICT) $(HEADERS)
 
 VG				=	valgrind
 VG_ARGS			=	#
-VG_FLAGS		=	--leak-check=full --show-leak-kinds=all --trace-children=yes
+VG_FLAGS		=	--leak-check=full --show-leak-kinds=all
 VG_LOG			=	valgrind_leaks.log
 VG_LOG_FLAGS	=	--log-file=$(VG_LOG) \
 					--leak-check=full \
 					--show-leak-kinds=all \
-					--trace-children=yes \
 					--track-origins=yes \
-					--verbose
+					--verbose\
+					--gen-suppressions=all
 
 LOG_VG_TARGET	=	$(VG) $(VG_LOG_FLAGS) ./$(NAME) $(VG_ARGS)
 

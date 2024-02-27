@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 00:09:19 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/27 04:35:29 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ typedef struct s_game
 	int				last_ammo;
 	int				z;
 	float			scale;
+	int				fd;
 }					t_game;
 
 typedef struct s_sprite
@@ -179,6 +180,7 @@ typedef void		(*t_img_move)(t_entity *, float);
 typedef void		(*t_move)(t_game *game, t_entity *entity);
 
 // init
+t_game				**get_game(void);
 t_game				*init_game(void);
 void				start_mlx(t_game *game);
 void				fix_sizes(t_game *game);

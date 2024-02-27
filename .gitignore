@@ -5,3 +5,4 @@ MLX42/build/
 so_long
 *.dSYM/
 .DS_Store
+valgrind_leaks.log
