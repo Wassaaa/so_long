@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 00:37:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 02:03:33 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	enemy_anim(t_game *game)
 	while (enemies)
 	{
 		enemy = (t_entity *)enemies->content;
-		if (!enemy->movement->active)
+		if (!enemy->movement->active && !win_lose(game))
 			keep_direction(game, enemy);
 		if (enemy->next)
 			handle_next_move(enemy);
@@ -113,9 +113,13 @@ void	player_anim(t_game *game)
 	player = game->p;
 	if (player->movement && !player->movement->active)
 	{
-		next_move(game);
-		if (!player->movement->active)
-			do_idle(game);
+		if (!win_lose(game))
+		{
+			next_move(game);
+			if (!player->movement->active)
+				do_idle(game);
+
+		}
 	}
 	if (player->next)
 	{
@@ -187,8 +191,6 @@ void	my_loop(void *my_game)
 
 	game = (t_game *)my_game;
 	show_fps(game);
-	if (win_lose(game))
-		return ;
 	enemy_anim(game);
 	player_anim(game);
 	check_collision(game);

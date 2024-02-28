@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 00:03:20 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 02:15:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,20 @@ void	draw_anims(mlx_t *mlx, t_entity *ent, int x, int y)
 	}
 }
 
+void	enemies_depth(t_game *game)
+{
+	t_list		*enemies;
+	t_entity	*enemy;
+
+	enemies = game->enemies;
+	while (enemies)
+	{
+		enemy = (t_entity *)enemies->content;
+		fix_depth(enemy, &game->z);
+		enemies = enemies->next;
+	}
+}
+
 void	draw_map(t_game *game)
 {
 	t_map_element	*el;
@@ -108,7 +122,7 @@ void	draw_map(t_game *game)
 			draw_exit(game, el);
 		tile = tile->next;
 	}
-	fix_depth(game->e, &game->z);
+	enemies_depth(game);
 	fix_depth(game->p, &game->z);
 	draw_gun_anim(game);
 }

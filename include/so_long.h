@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 00:38:00 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 01:53:59 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ typedef void		(*t_img_move)(t_entity *, float);
 typedef void		(*t_move)(t_game *game, t_entity *entity);
 
 void				map_valdiation(t_game *game, char *map_file);
-void	check_rectangle(t_game *game, char *map_file);
+void				check_rectangle(t_game *game, char *map_file);
 // init
 t_game				**get_game(void);
 t_game				*init_game(void);
