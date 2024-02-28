@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 00:03:19 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 18:24:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	draw_player(t_game *game, t_map_element *el)
 	int			y;
 
 	game->p->current = game->p->anims[A_IDLE_R];
-	game->p->pos.x = el->x;
-	game->p->pos.y = el->y;
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
 	player_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;

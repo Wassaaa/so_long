@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 00:36:45 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 19:08:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ void	fill_elements(t_game *game, char *line, int y)
 		el->type = get_el_type(*line);
 		if (el->type == -1)
 			error();
+		if (el->type == PLAYER)
+		{
+			game->p->pos.x = x;
+			game->p->pos.y = y;
+		}
 		el->images = get_el_imgs(game, *line);
 		el->x = x++;
 		el->y = y;
@@ -152,12 +157,42 @@ void	check_tile_counts(t_map *map)
 		error();
 }
 
+int	check_route(t_game *game, t_list *els, int index)
+{
+	static int		colls = 0;
+	static int		exit = 0;
+	t_map_element	*el;
+
+	el = (t_map_element *)ft_lstget(els, index)->content;
+	if (el->type == WALL)
+		return (0);
+	if (el->visited)
+		return (0);
+	if (el->type == COLL)
+		colls++;
+	if (el->type == EXIT)
+		exit++;
+	el->visited = 1;
+	check_route(game, els, index - game->map->width);
+	check_route(game, els, index + 1);
+	check_route(game, els, index + game->map->width);
+	check_route(game, els, index - 1);
+	if (exit == 1 && colls == game->map->colls)
+		return (1);
+	return (0);
+}
+
 void	map_valdiation(t_game *game, char *map_file)
 {
+	int	player_pos;
+
 	check_rectangle(game, map_file);
 	if (game->map->height < 3 || game->map->width < 5)
 		error();
 	read_map(game, map_file);
 	validate_tile_types(game->map);
 	check_tile_counts(game->map);
+	player_pos = (game->p->pos.y * game->map->width) + game->p->pos.x;
+	if (!check_route(game, game->map->elements, player_pos))
+		error();
 }

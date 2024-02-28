@@ -5,7 +5,7 @@ from queue import Queue
 def generate_map(width, height):
 	num_collectibles = max(1, (width * height) // 20)
 	num_enemies = max(1, (width * height) // 50)
-	
+
 	game_map = [['1' for _ in range(width)] for _ in range(height)]
 	for i in range(1, height-1):
 		for j in range(1, width-1):
@@ -15,7 +15,7 @@ def generate_map(width, height):
 
 	placed = place_special_tiles(game_map, num_collectibles, num_enemies)
 	if not placed:
-		return generate_map(width, height)  # Retry if placement fails
+		return generate_map(width, height)
 
 	return game_map
 
@@ -23,7 +23,7 @@ def add_internal_walls(game_map, num_walls):
 	height, width = len(game_map), len(game_map[0])
 	for _ in range(num_walls):
 		x, y = random.randint(1, height-2), random.randint(1, width-2)
-		if game_map[x][y] == '0':  # Ensure we don't overwrite special tiles
+		if game_map[x][y] == '0':
 			game_map[x][y] = '1'
 
 def place_special_tiles(game_map, num_collectibles, num_enemies):
@@ -31,16 +31,16 @@ def place_special_tiles(game_map, num_collectibles, num_enemies):
 	width = len(game_map[0])
 	free_spaces = [(i, j) for i in range(1, height-1) for j in range(1, width-1) if game_map[i][j] == '0']
 	random.shuffle(free_spaces)
-	
+
 	if len(free_spaces) < num_collectibles + 2:
 		return False
 
 	p_pos = free_spaces.pop()
 	game_map[p_pos[0]][p_pos[1]] = 'P'
-	
+
 	e_pos = free_spaces.pop()
 	game_map[e_pos[0]][e_pos[1]] = 'E'
-	
+
 	for _ in range(num_collectibles):
 		c_pos = free_spaces.pop()
 		game_map[c_pos[0]][c_pos[1]] = 'C'
@@ -48,21 +48,20 @@ def place_special_tiles(game_map, num_collectibles, num_enemies):
 	for _ in range(num_enemies):
 		c_pos = free_spaces.pop()
 		game_map[c_pos[0]][c_pos[1]] = 'X'
-	
+
 	if not is_accessible(game_map, p_pos):
 		return False
-	
+
 	return True
 
 def is_accessible(game_map, start_pos):
-	# BFS to check if all collectibles and the exit are accessible
 	height, width = len(game_map), len(game_map[0])
 	visited = [[False for _ in range(width)] for _ in range(height)]
 	queue = Queue()
 	queue.put(start_pos)
 	visited[start_pos[0]][start_pos[1]] = True
 	targets = {'C': 0, 'E': False}
-	
+
 	while not queue.empty():
 		x, y = queue.get()
 		for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
@@ -74,8 +73,7 @@ def is_accessible(game_map, start_pos):
 					targets['C'] += 1
 				elif game_map[nx][ny] == 'E':
 					targets['E'] = True
-	
-	# Check if all conditions met (at least one collectible and one exit found)
+
 	return targets['C'] >= 1 and targets['E']
 
 def save_map_to_file(game_map, filename="./maps/map.ber"):
@@ -91,10 +89,10 @@ if __name__ == "__main__":
 	if len(sys.argv) < 3:
 		print("Usage: script.py width height")
 		sys.exit(1)
-	
+
 	width = int(sys.argv[1])
 	height = int(sys.argv[2])
-	
+
 	game_map = generate_map(width, height)
 	save_map_to_file(game_map)
 	print(f"Map generated and saved to map.ber. Dimensions: {width}x{height}")

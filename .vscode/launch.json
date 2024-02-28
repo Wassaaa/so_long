@@ -64,6 +64,27 @@
 		  }
 		]
 	  },
+	  {
+		"name": "(gdb school) fixed args",
+		"type": "cppdbg",
+		"request": "launch",
+		"program": "${workspaceFolder}/so_long",
+		"args": [],
+		"stopAtEntry": false,
+		"cwd": "${workspaceFolder}",
+		"environment": [],
+		"externalConsole": false,
+		"MIMode": "gdb",
+		"miDebuggerPath": "/Users/aklein/.brew/bin/gdb",
+		"preLaunchTask": "make",
+		"setupCommands": [
+		  {
+			"description": "Enable pretty-printing for gdb",
+			"text": "-enable-pretty-printing",
+			"ignoreFailures": true
+		  }
+		]
+	  },
 	],
 	"inputs": [
 		{
