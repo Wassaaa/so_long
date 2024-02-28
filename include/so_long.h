@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 17:50:11 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 20:58:10 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # define COLL_C 1
 
 # define SPEED 500.0f
-# define MIN_SPEED 100.0f
+# define MIN_SPEED 50.0f
 
 typedef enum s_type
 {

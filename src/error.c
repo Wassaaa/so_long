@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:08:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 21:51:57 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/28 20:24:40 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	error(void)
 	ft_lstclear(&game->exit_imgs, NULL);
 	ft_lstclear(&game->coll_imgs, NULL);
 	mlx_terminate(game->mlx);
-	ft_printf("%s", mlx_strerror(mlx_errno));
 	free(game);
 	game = NULL;
 	exit(EXIT_FAILURE);
