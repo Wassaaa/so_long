@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 21:10:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 00:04:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+#define BPP sizeof(int32_t)
+
 # define WIDTH 1920
 # define HEIGHT 1080
 # define ROLL_CHANCE 5
@@ -30,6 +32,8 @@
 # define TILE_SIZE 100
 # define COLL_SIZE 200
 # define EXIT_SIZE 120
+# define UI_W 257
+# define UI_H 103
 
 # define WALL_C 3
 # define EXIT_C 1
@@ -158,9 +162,18 @@ typedef struct s_entity
 	t_anim			*next;
 }					t_entity;
 
+typedef struct s_ui
+{
+	mlx_image_t	*info_img;
+	char		*info_txt;
+	int			info_x;
+	int			info_y;
+}	t_ui;
+
 typedef struct s_game
 {
 	mlx_t			*mlx;
+	t_ui			*ui;
 	t_map			*map;
 	t_entity		*p;
 	t_entity		*e;

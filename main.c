@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 21:21:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 00:04:27 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,11 +178,89 @@ size_t get_random(void)
 	return (buff);
 }
 
+void	get_ui(t_game *game)
+{
+	mlx_image_t		*img;
+	mlx_texture_t	*tex;
+	int				x;
+	int				y;
+
+	x = game->tile_size / 10;
+	y = game->tile_size / 10;
+	game->ui->info_x = x + (UI_W / 2);
+	game->ui->info_y = y + (UI_H / 2) - 20;
+	tex = mlx_load_png("./textures/ui/banner.png");
+	if (!tex)
+		error(EXIT_FAILURE, E_MLX);
+	img = mlx_texture_to_image(game->mlx, tex);
+	if (!img)
+		error(EXIT_FAILURE, E_MLX);
+	if (!mlx_resize_image(img, UI_W, UI_H))
+		error(EXIT_FAILURE, E_MLX);
+	if (mlx_image_to_window(game->mlx, img, x, y) < 0)
+		error(EXIT_FAILURE, E_MLX);
+}
+
+void	draw_info(t_game *game)
+{
+	mlx_image_t	*img;
+	int			x;
+	int			y;
+
+	x = game->ui->info_x;
+	y = game->ui->info_y;
+	img = game->ui->info_img;
+	if (img)
+		mlx_delete_image(game->mlx, img);
+	img = mlx_put_string(game->mlx, game->ui->info_txt, x, y);
+	if (!img)
+		error(EXIT_FAILURE, E_MLX);
+	game->ui->info_img = img;
+	img = NULL;
+}
+
+void	info_str(t_game *game)
+{
+	char	*score;
+	char	*ammo;
+	char	*moves_part;
+	char	*nl_part;
+
+	score = ft_itoa(game->score);
+	game->ui->info_x += ft_strlen(score) / 2;
+	ammo = ft_itoa(game->ammo);
+	moves_part = ft_strjoin("Moves: ", score);
+	if (!moves_part)
+		error(EXIT_FAILURE, E_MALLOC);
+	nl_part = ft_strjoin(moves_part, "\nAmmo: ");
+	if (!nl_part)
+		error(EXIT_FAILURE, E_MALLOC);
+	game->ui->info_txt = ft_strjoin(nl_part, ammo);
+	free(moves_part);
+	free(nl_part);
+	free(score);
+	free(ammo);
+}
+
+void	game_info(t_game *game)
+{
+	static int		box = 0;
+
+	if (!box)
+	{
+		get_ui(game);
+		box = 1;
+	}
+	info_str(game);
+	draw_info(game);
+}
+
 void	my_loop(void *my_game)
 {
 	t_game		*game;
 
 	game = (t_game *)my_game;
+	game_info(game);
 	show_fps(game);
 	enemy_anim(game);
 	player_anim(game);

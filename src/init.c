@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 21:12:38 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/29 23:36:17 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	init_entities(t_game *game)
 	game->g = safe_ft_calloc(1, sizeof(t_entity));
 	game->g->movement = safe_ft_calloc(1, sizeof(t_movement));
 	game->e = safe_ft_calloc(1, sizeof(t_entity));
+	game->ui = safe_ft_calloc(1, sizeof(t_ui));
 }
 
 t_game **get_game(void)
