@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 19:07:30 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/29 21:21:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,27 +162,20 @@ void	check_collision(t_game *game)
 
 size_t get_random(void)
 {
-	int		fd;
-	size_t	buff;
+	int			fd;
+	static int	not_so_random = 0;
+	size_t		buff;
 
-	buff = 0;
+	not_so_random++;
+	buff = not_so_random;
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd > -1)
 	{
-		if (read(fd, &buff, sizeof(size_t)) < 0)
-		{
-			close(fd);
-			error();
-		}
-	}
-	else
-	{
+		read(fd, &buff, sizeof(size_t));
 		close(fd);
-		error();
 	}
-	close(fd);
 	ft_printf("\e[5;1H\e[Jrandom is: %u", buff);
-	return (buff);\
+	return (buff);
 }
 
 void	my_loop(void *my_game)

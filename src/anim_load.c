@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/27 00:03:19 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/29 20:57:43 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ char	*build_path(int i, char *path)
 	nr = ft_itoa(i);
 	path_start = ft_strjoin(path, nr);
 	if (!path_start)
-		error();
+		error(EXIT_FAILURE, E_MALLOC);
 	full_path = ft_strjoin(path_start, ".png");
 	if (!full_path)
-		error();
+		error(EXIT_FAILURE, E_MALLOC);
 	free(path_start);
 	free(nr);
 	return (full_path);
@@ -51,12 +51,12 @@ mlx_image_t	*get_img(t_game *game, char *path, int i, int mirr)
 	full_path = build_path(i, path);
 	texture = mlx_load_png(full_path);
 	if (!texture)
-		error();
+		error(EXIT_FAILURE, E_MLX);
 	new_img = mlx_texture_to_image(game->mlx, texture);
 	if (!new_img)
-		error();
+		error(EXIT_FAILURE, E_MLX);
 	if (!mlx_resize_image(new_img, game->char_size, game->char_size))
-		error();
+		error(EXIT_FAILURE, E_MLX);
 	mlx_delete_texture(texture);
 	free(full_path);
 	if (mirr)
@@ -217,17 +217,17 @@ void	load_tiles(t_game *game, t_list **type_lst, char *path, int img_count)
 		if (type_lst == &game->coll_imgs)
 		{
 			if (!mlx_resize_image(img, game->coll_size, game->coll_size))
-				error();
+				error(EXIT_FAILURE, E_MLX);
 		}
 		else if (type_lst == &game->exit_imgs)
 		{
 			if (!mlx_resize_image(img, game->exit_size, game->exit_size))
-				error();
+				error(EXIT_FAILURE, E_MLX);
 		}
 		else
 		{
 			if (!mlx_resize_image(img, game->tile_size, game->tile_size))
-				error();
+				error(EXIT_FAILURE, E_MLX);
 		}
 		list = safe_lstnew(img);
 		ft_lstadd_back(type_lst, list);

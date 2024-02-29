@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 20:58:10 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/29 21:10:13 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,20 @@
 # define COLL_C 1
 
 # define SPEED 500.0f
-# define MIN_SPEED 50.0f
+# define MIN_SPEED 10.0f
+
+# define E_MLX "_MLX_ERR"
+# define E_MALLOC "Memory allocation failed"
+# define E_MAP "MAP: Error"
+# define E_MAP_ROUTE "MAP: No valid route"
+# define E_MAP_WALL "MAP: not surrounded by walls"
+# define E_MAP_RECT "MAP: not a rectangle"
+# define E_MAP_EL "MAP: Wrong symbols in map"
+# define E_MAP_PLAYERS "MAP: too many/few Players"
+# define E_MAP_COLLS "MAP: Not enough Collectibles"
+# define E_MAP_EXITS "MAP: too many/few Exits"
+# define E_MAP_SIZE "MAP: too small"
+
 
 typedef enum s_type
 {
@@ -253,8 +266,7 @@ void				handle_shoot(t_game *game);
 t_list				*ft_lstget(t_list *l, int n);
 t_list				*safe_lstnew(void *content);
 void				*safe_ft_calloc(size_t count, size_t size);
-void				error(void);
-void				null_content(void *content);
+void				error(int ret, char *msg);
 void				clear_anim(t_anim **anim);
 size_t				get_random(void);
 

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 19:08:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/29 21:10:40 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	check_rectangle(t_game *game, char *map_file)
 	game->fd = open(map_file, O_RDONLY);
 	line = get_next_line(game->fd);
 	if (!line)
-		error();
+		error(EXIT_FAILURE, E_MAP);
 	game->map->width = ft_strlen(line) - 1;
 	while (line)
 	{
@@ -30,7 +30,7 @@ void	check_rectangle(t_game *game, char *map_file)
 		if (len != game->map->width)
 		{
 			free(line);
-			error();
+			error(EXIT_FAILURE, E_MAP_RECT);
 		}
 		free(line);
 		line = get_next_line(game->fd);
@@ -49,7 +49,7 @@ void	read_map(t_game *game, char *map_file)
 	game->fd = open(map_file, O_RDONLY);
 	line = get_next_line(game->fd);
 	if (!line)
-		error();
+		error(EXIT_FAILURE, E_MAP);
 	while (line != NULL)
 	{
 		fill_elements(game, line, y);
@@ -106,7 +106,7 @@ void	fill_elements(t_game *game, char *line, int y)
 		el = safe_ft_calloc(1, sizeof(t_map_element));
 		el->type = get_el_type(*line);
 		if (el->type == -1)
-			error();
+			error(EXIT_FAILURE, E_MAP_EL);
 		if (el->type == PLAYER)
 		{
 			game->p->pos.x = x;
@@ -136,13 +136,13 @@ void	validate_tile_types(t_map	*map)
 		if (el->type == EXIT)
 			map->exits++;
 		if (el->y == 0 && el->type != WALL)
-			error();
+			error(EXIT_FAILURE, E_MAP_WALL);
 		if (el->y == map->height && el->type != WALL)
-			error();
+			error(EXIT_FAILURE, E_MAP_WALL);
 		if (el->x == 0 && el->type != WALL)
-			error();
+			error(EXIT_FAILURE, E_MAP_WALL);
 		if (el->x == map->width && el->type != WALL)
-			error();
+			error(EXIT_FAILURE, E_MAP_WALL);
 		elements = elements->next;
 	}
 }
@@ -150,11 +150,11 @@ void	validate_tile_types(t_map	*map)
 void	check_tile_counts(t_map *map)
 {
 	if (map->players != 1)
-		error();
+		error(EXIT_FAILURE, E_MAP_PLAYERS);
 	if (map->colls < 1)
-		error();
+		error(EXIT_FAILURE, E_MAP_COLLS);
 	if (map->exits != 1)
-		error();
+		error(EXIT_FAILURE, E_MAP_EXITS);
 }
 
 int	check_route(t_game *game, t_list *els, int index)
@@ -188,11 +188,11 @@ void	map_valdiation(t_game *game, char *map_file)
 
 	check_rectangle(game, map_file);
 	if (game->map->height < 3 || game->map->width < 5)
-		error();
+		error(EXIT_FAILURE, E_MAP_SIZE);
 	read_map(game, map_file);
 	validate_tile_types(game->map);
 	check_tile_counts(game->map);
 	player_pos = (game->p->pos.y * game->map->width) + game->p->pos.x;
 	if (!check_route(game, game->map->elements, player_pos))
-		error();
+		error(EXIT_FAILURE, E_MAP_ROUTE);
 }

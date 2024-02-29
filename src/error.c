@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:08:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 20:24:40 by aklein           ###   ########.fr       */
+/*   Updated: 2024/02/29 21:11:49 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,19 @@ void	clear_enemies(void *content)
 	content = NULL;
 }
 
-void	error(void)
+void	err_msg(int ret, char *msg)
+{
+	if (ret == EXIT_FAILURE)
+	{
+		ft_printf("Error\n");
+		if (msg != E_MLX)
+			ft_printf("%s", msg);
+		else
+			ft_printf("%s", mlx_strerror(mlx_errno));
+	}
+}
+
+void	error(int ret, char *msg)
 {
 	t_game	*game;
 
@@ -110,5 +122,6 @@ void	error(void)
 	mlx_terminate(game->mlx);
 	free(game);
 	game = NULL;
-	exit(EXIT_FAILURE);
+	err_msg(ret, msg);
+	exit(ret);
 }
