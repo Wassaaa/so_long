@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:08:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 01:27:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 23:10:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void	clear_anim(t_anim **anim)
 
 void	clear_map(t_map **map)
 {
-	ft_lstclear(&(*map)->elements, free_content);
-	free(*map);
-	*map = NULL;
-	map = NULL;
+		ft_lstclear(&(*map)->elements, free_content);
+		free(*map);
+		*map = NULL;
+		map = NULL;
 }
 
 void	clear_enemies(void *content)
@@ -133,6 +133,7 @@ void	error(int ret, int msg)
 	if (game->fd >= 0)
 		close (game->fd);
 	clear_map(&game->map);
+	free_content(game->ui);
 	clear_ent(game->p);
 	clear_ent(game->g);
 	clear_ent(game->e);
@@ -141,7 +142,8 @@ void	error(int ret, int msg)
 	ft_lstclear(&game->free_imgs, NULL);
 	ft_lstclear(&game->exit_imgs, NULL);
 	ft_lstclear(&game->coll_imgs, NULL);
-	mlx_terminate(game->mlx);
+	if (game->mlx)
+		mlx_terminate(game->mlx);
 	free(game);
 	game = NULL;
 	err_msg(ret, msg);
