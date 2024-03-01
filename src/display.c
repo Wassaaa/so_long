@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:13:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 20:39:57 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 02:26:04 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ void	show_fps(t_game *game)
 		if (game->fps < 30)
 			game->fps = 60;
 		ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
-		ft_printf("\e[2;1HMoves: [%d]\n", game->score);
+		ft_printf("\e[2;1HMoves: [%d]\n", game->moves);
 		ft_printf("\e[3;1HCollectables: [%d]\n", game->map->colls);
 		i = 0;
 		fps = 0;
 	}
-	got_gun(game);
 }

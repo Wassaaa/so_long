@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 00:04:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 04:39:00 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #define BPP sizeof(int32_t)
 
 # define WIDTH 1920
-# define HEIGHT 1080
+# define HEIGHT 900
 # define ROLL_CHANCE 5
 # define PLAYER_X_OFF -145
 # define PLAYER_Y_OFF -250
@@ -41,22 +41,26 @@
 # define COLL_C 1
 
 # define SPEED 500.0f
-# define MIN_SPEED 10.0f
+# define MIN_SPEED 1.0f
 
-# define E_MLX "_MLX_ERR"
-# define E_MALLOC "Memory allocation failed"
-# define E_MAP "MAP: Error"
-# define E_MAP_ROUTE "MAP: No valid route"
-# define E_MAP_WALL "MAP: not surrounded by walls"
-# define E_MAP_RECT "MAP: not a rectangle"
-# define E_MAP_EL "MAP: Wrong symbols in map"
-# define E_MAP_PLAYERS "MAP: too many/few Players"
-# define E_MAP_COLLS "MAP: Not enough Collectibles"
-# define E_MAP_EXITS "MAP: too many/few Exits"
-# define E_MAP_SIZE "MAP: too small"
+typedef enum e_err
+{
+	E_MLX,
+	E_MALLOC,
+	E_MAP,
+	E_MAP_ROUTE,
+	E_MAP_WALL,
+	E_MAP_RECT,
+	E_MAP_EL,
+	E_MAP_PLAYERS,
+	E_MAP_COLLS,
+	E_MAP_EXITS,
+	E_MAP_SIZE,
+	E_MAX
 
+}	t_err;
 
-typedef enum s_type
+typedef enum e_type
 {
 	FREE,
 	WALL,
@@ -66,7 +70,7 @@ typedef enum s_type
 	PLAYER
 }					t_type;
 
-typedef enum s_direction
+typedef enum e_direction
 {
 	UP,
 	RIGHT,
@@ -74,7 +78,7 @@ typedef enum s_direction
 	LEFT
 }					t_direction;
 
-typedef enum s_anims
+typedef enum e_anims
 {
 	A_UP,
 	A_RIGHT,
@@ -164,10 +168,15 @@ typedef struct s_entity
 
 typedef struct s_ui
 {
-	mlx_image_t	*info_img;
-	char		*info_txt;
+	mlx_image_t	*moves;
+	int			moves_y;
+	mlx_image_t	*ammo;
+	int			ammo_y;
 	int			info_x;
 	int			info_y;
+	int			w;
+	int			h;
+	float		scale;
 }	t_ui;
 
 typedef struct s_game
@@ -183,7 +192,8 @@ typedef struct s_game
 	t_list			*wall_imgs;
 	t_list			*coll_imgs;
 	t_list			*exit_imgs;
-	int				score;
+	int				moves;
+	int				last_moves;
 	int				fps;
 	int				game_status;
 	int				char_size;
@@ -220,6 +230,8 @@ void				entity_speed(t_game *game);
 // display
 void				show_fps(t_game *game);
 int					win_lose(t_game *game);
+mlx_image_t			*info_str(t_game *game, char *begin, int value, int y_off);
+void				add_move(t_game *game);
 
 // pixels
 int32_t				get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
@@ -279,7 +291,7 @@ void				handle_shoot(t_game *game);
 t_list				*ft_lstget(t_list *l, int n);
 t_list				*safe_lstnew(void *content);
 void				*safe_ft_calloc(size_t count, size_t size);
-void				error(int ret, char *msg);
+void				error(int ret, int msg);
 void				clear_anim(t_anim **anim);
 size_t				get_random(void);
 

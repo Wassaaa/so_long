@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 21:10:40 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 03:37:22 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,9 +182,33 @@ int	check_route(t_game *game, t_list *els, int index)
 	return (0);
 }
 
+t_point	get_faulty_loc(t_game *game)
+{
+	t_list			*elements;
+	t_map_element	*el;
+	t_point			loc;
+
+	loc.x = 0;
+	loc.y = 0;
+	elements = game->map->elements;
+	while (elements)
+	{
+		el = (t_map_element*)elements->content;
+		if (el->type == COLL && !el->visited)
+		{
+			loc.x = el->x;
+			loc.y = el->y;
+			return (loc);
+		}
+		elements = elements->next;
+	}
+	return (loc);
+}
+
 void	map_valdiation(t_game *game, char *map_file)
 {
-	int	player_pos;
+	int		player_pos;
+	t_point	faulty_coll;
 
 	check_rectangle(game, map_file);
 	if (game->map->height < 3 || game->map->width < 5)
@@ -194,5 +218,10 @@ void	map_valdiation(t_game *game, char *map_file)
 	check_tile_counts(game->map);
 	player_pos = (game->p->pos.y * game->map->width) + game->p->pos.x;
 	if (!check_route(game, game->map->elements, player_pos))
+	{
+		faulty_coll = get_faulty_loc(game);
+		ft_printf("uncollecatble coll at [%d : %d]", faulty_coll.x, faulty_coll.y);
 		error(EXIT_FAILURE, E_MAP_ROUTE);
+	}
+	
 }

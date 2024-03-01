@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 00:04:27 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 04:44:50 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,27 @@ size_t get_random(void)
 	return (buff);
 }
 
+void	fix_ui_sizes(t_game *game)
+{
+	game->ui->w = UI_W;
+	game->ui->h = UI_H;
+	game->ui->scale = 1;
+	if (game->mlx->width < UI_W)
+	{
+		game->ui->scale = (float)game->mlx->width / (float)UI_W;
+		game->ui->w = game->mlx->width;
+		game->ui->h *= game->ui->scale;
+	}
+	if (game->mlx->height < UI_H)
+	{
+		game->ui->scale = (float)game->mlx->height / (float)UI_H;
+		game->ui->h = game->mlx->height;
+		game->ui->w *= game->ui->scale; 
+	}
+	game->ui->moves_y = 0;
+	game->ui->ammo_y = 20 * game->ui->scale;
+}
+
 void	get_ui(t_game *game)
 {
 	mlx_image_t		*img;
@@ -187,72 +208,59 @@ void	get_ui(t_game *game)
 
 	x = game->tile_size / 10;
 	y = game->tile_size / 10;
-	game->ui->info_x = x + (UI_W / 2);
-	game->ui->info_y = y + (UI_H / 2) - 20;
+	fix_ui_sizes(game);
+	game->ui->info_x = x + (game->ui->w / 2);
+	game->ui->info_y = y + (game->ui->h / 2) - (20 * game->ui->scale);
 	tex = mlx_load_png("./textures/ui/banner.png");
 	if (!tex)
 		error(EXIT_FAILURE, E_MLX);
 	img = mlx_texture_to_image(game->mlx, tex);
 	if (!img)
 		error(EXIT_FAILURE, E_MLX);
-	if (!mlx_resize_image(img, UI_W, UI_H))
+	if (!mlx_resize_image(img, game->ui->w, game->ui->h))
 		error(EXIT_FAILURE, E_MLX);
-	if (mlx_image_to_window(game->mlx, img, x, y) < 0)
+	if (mlx_image_to_window(game->mlx, img, x, y) == -1)
 		error(EXIT_FAILURE, E_MLX);
 }
 
-void	draw_info(t_game *game)
+mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
 {
+	char		*s_value;
+	char		*str;
 	mlx_image_t	*img;
-	int			x;
-	int			y;
+	t_point		loc;
 
-	x = game->ui->info_x;
-	y = game->ui->info_y;
-	img = game->ui->info_img;
-	if (img)
-		mlx_delete_image(game->mlx, img);
-	img = mlx_put_string(game->mlx, game->ui->info_txt, x, y);
-	if (!img)
+	s_value = ft_itoa(value);
+	if (!s_value)
+		error(EXIT_FAILURE, E_MALLOC);
+	str = ft_strjoin(begin, s_value);
+	if (!str)
+		error(EXIT_FAILURE, E_MALLOC);
+	loc.x = game->ui->info_x - (ft_strlen(str) * 5);
+	loc.y = game->ui->info_y + y_off;
+	img = mlx_put_string(game->mlx, str, loc.x, loc.y);
+	if (!mlx_resize_image(img, img->width * game->ui->scale, img->height * game->ui->scale))
 		error(EXIT_FAILURE, E_MLX);
-	game->ui->info_img = img;
-	img = NULL;
+	free(s_value);
+	free(str);
+	return (img);
 }
 
-void	info_str(t_game *game)
+void	add_move(t_game *game)
 {
-	char	*score;
-	char	*ammo;
-	char	*moves_part;
-	char	*nl_part;
-
-	score = ft_itoa(game->score);
-	game->ui->info_x += ft_strlen(score) / 2;
-	ammo = ft_itoa(game->ammo);
-	moves_part = ft_strjoin("Moves: ", score);
-	if (!moves_part)
-		error(EXIT_FAILURE, E_MALLOC);
-	nl_part = ft_strjoin(moves_part, "\nAmmo: ");
-	if (!nl_part)
-		error(EXIT_FAILURE, E_MALLOC);
-	game->ui->info_txt = ft_strjoin(nl_part, ammo);
-	free(moves_part);
-	free(nl_part);
-	free(score);
-	free(ammo);
+	game->moves++;
 }
 
 void	game_info(t_game *game)
 {
-	static int		box = 0;
+	static int	box = 0;
 
 	if (!box)
 	{
 		get_ui(game);
 		box = 1;
 	}
-	info_str(game);
-	draw_info(game);
+	got_gun(game);
 }
 
 void	my_loop(void *my_game)
@@ -260,7 +268,6 @@ void	my_loop(void *my_game)
 	t_game		*game;
 
 	game = (t_game *)my_game;
-	game_info(game);
 	show_fps(game);
 	enemy_anim(game);
 	player_anim(game);
@@ -281,6 +288,7 @@ int32_t	main(void)
 	get_animations(game);
 	draw_map(game);
 	entity_speed(game);
+	game_info(game);
 	mlx_loop_hook(game->mlx, my_loop, game);
 	mlx_loop(game->mlx);
 	mlx_terminate(game->mlx);
