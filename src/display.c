@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:13:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 20:28:39 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 22:48:56 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,28 @@
 
 int	win_lose(t_game *game)
 {
-	if (game->game_status == 1)
+	static int game_over = 0;
+
+	if (!game_over)
 	{
-		ft_printf("\e[4;1H\e[JVICTORY!");
-		if (!game->ui->moves)
-			game->ui->moves = info_str(game, "Moves: ", game->moves, game->ui->moves_y);
+		if (game->game_status == 1)
+		{
+			ft_printf("\e[4;1H\e[KVICTORY!");
+			if (!game->ui->moves)
+				game->ui->moves = info_str(game, "Moves: ", game->moves, game->ui->moves_y);
+			game_over = 1;
+		}
+		if (game->game_status == -1)
+		{
+			ft_printf("\e[4;1H\e[KYOU DIED");
+			if (!game->ui->moves)
+				game->ui->moves = info_str(game, "Moves: ", game->moves, game->ui->moves_y);
+			game_over = 1;
+		}
+		if (game->game_status != 0)
+			return (1);
 	}
-	if (game->game_status == -1)
-	{
-		ft_printf("\e[4;1H\e[JYOU DIED");
-		if (!game->ui->moves)
-			game->ui->moves = info_str(game, "Moves: ", game->moves, game->ui->moves_y);
-	}
-	if (game->game_status != 0)
+	else
 		return (1);
 	return (0);
 }
@@ -44,9 +53,7 @@ void	show_fps(t_game *game)
 		game->fps = fps;
 		if (game->fps < 30)
 			game->fps = 60;
-		ft_printf("\e[1;1H\e[2Jfps [%d]\n", fps);
-		ft_printf("\e[2;1HMoves: [%d]\n", game->moves);
-		ft_printf("\e[3;1HCollectables: [%d]\n", game->map->colls);
+		ft_printf("\e[1;1Hfps [%d]\e[K\n", fps);
 		i = 0;
 		fps = 0;
 	}

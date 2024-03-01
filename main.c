@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 20:30:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 22:11:06 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,6 @@ size_t get_random(void)
 		read(fd, &buff, sizeof(size_t));
 		close(fd);
 	}
-	ft_printf("\e[5;1H\e[Jrandom is: %u", buff);
 	return (buff);
 }
 
@@ -220,6 +219,8 @@ void	get_ui(t_game *game)
 	if (mlx_image_to_window(game->mlx, game->ui->bg, x, y) == -1)
 		error(EXIT_FAILURE, E_MLX);
 	game->ui->bg->enabled = false;
+	ft_printf("\e[2;1HMoves: [%d]\e[K\n", game->moves);
+	ft_printf("\e[3;1HCollectables: [%d]\e[K\n", game->map->colls);
 }
 
 mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
@@ -235,8 +236,8 @@ mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
 	str = ft_strjoin(begin, s_value);
 	if (!str)
 		error(EXIT_FAILURE, E_MALLOC);
-	loc.x = game->ui->info_x - (ft_strlen(str) * 5);
-	loc.y = game->ui->info_y + y_off;
+	loc.x = game->ui->info_x - ((ft_strlen(str) * 5 * game->ui->scale));
+	loc.y = game->ui->info_y + (y_off * game->ui->scale);
 	img = mlx_put_string(game->mlx, str, loc.x, loc.y);
 	if (!mlx_resize_image(img, img->width * game->ui->scale, img->height * game->ui->scale))
 		error(EXIT_FAILURE, E_MLX);
@@ -249,6 +250,7 @@ mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
 void	add_move(t_game *game)
 {
 	game->moves++;
+	ft_printf("\e[2;1HMoves: [%d]\e[K\n", game->moves);
 }
 
 void	game_info(t_game *game)

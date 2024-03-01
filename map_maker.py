@@ -5,6 +5,7 @@ from queue import Queue
 def generate_map(width, height):
 	num_collectibles = max(1, (width * height) // 20)
 	num_enemies = max(1, (width * height) // 50)
+	#num_enemies = 1
 
 	game_map = [['1' for _ in range(width)] for _ in range(height)]
 	for i in range(1, height-1):
@@ -49,12 +50,12 @@ def place_special_tiles(game_map, num_collectibles, num_enemies):
 		c_pos = free_spaces.pop()
 		game_map[c_pos[0]][c_pos[1]] = 'X'
 
-	if not is_accessible(game_map, p_pos):
+	if not is_accessible(game_map, p_pos, num_collectibles):
 		return False
 
 	return True
 
-def is_accessible(game_map, start_pos):
+def is_accessible(game_map, start_pos, num_collectibles):
 	height, width = len(game_map), len(game_map[0])
 	visited = [[False for _ in range(width)] for _ in range(height)]
 	queue = Queue()
@@ -74,7 +75,7 @@ def is_accessible(game_map, start_pos):
 				elif game_map[nx][ny] == 'E':
 					targets['E'] = True
 
-	return targets['C'] >= 1 and targets['E']
+	return targets['C'] == num_collectibles and targets['E']
 
 def save_map_to_file(game_map, filename="./maps/map.ber"):
     with open(filename, "w") as file:

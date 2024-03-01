@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 03:49:00 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 22:35:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	img_up(t_entity *entity, float dt)
 	y = (float)entity->base.y;
 	diff = y - entity->movement->tar.y;
 	move_step = entity->move_speed * dt;
-	if (move_step < 0.5f)
-		move_step = 0.5f;
+	if (move_step < 1.0f)
+		move_step = 1.0f;
 	if (fabs(diff) > move_step)
 		y -= move_step;
 	else
@@ -42,8 +42,8 @@ void	img_right(t_entity *entity, float dt)
 	x = (float)entity->base.x;
 	diff = entity->movement->tar.x - x;
 	move_step = entity->move_speed * dt;
-	if (move_step < 0.5f)
-		move_step = 0.5f;
+	if (move_step < 1.0f)
+		move_step = 1.0f;
 	if (fabs(diff) > move_step)
 		x += move_step;
 	else
@@ -63,8 +63,8 @@ void	img_down(t_entity *entity, float dt)
 	y = (float)entity->base.y;
 	diff = entity->movement->tar.y - y;
 	move_step = entity->move_speed * dt;
-	if (move_step < 0.5f)
-		move_step = 0.5f;
+	if (move_step < 1.0f)
+		move_step = 1.0f;
 	if (fabs(diff) > move_step)
 		y += move_step;
 	else
@@ -84,8 +84,8 @@ void	img_left(t_entity *entity, float dt)
 	x = (float)entity->base.x;
 	diff = x - entity->movement->tar.x;
 	move_step = entity->move_speed * dt;
-	if (move_step < 0.5f)
-		move_step = 0.5f;
+	if (move_step < 1.0f)
+		move_step = 1.0f;
 	if (fabs(diff) > move_step)
 		x -= move_step;
 	else

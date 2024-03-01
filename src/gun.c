@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 20:23:56 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 21:25:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	item_collection(t_game *game)
 void	gun_picked_up(t_game *game)
 {
 	game->map->colls--;
+	ft_printf("\e[3;1HCollectables: [%d]\e[K\n", game->map->colls);
 	game->ammo++;
 	got_gun(game);
 }
