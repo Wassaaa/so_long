@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 04:44:50 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 20:30:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,34 +193,33 @@ void	fix_ui_sizes(t_game *game)
 	{
 		game->ui->scale = (float)game->mlx->height / (float)UI_H;
 		game->ui->h = game->mlx->height;
-		game->ui->w *= game->ui->scale; 
+		game->ui->w *= game->ui->scale;
 	}
 	game->ui->moves_y = 0;
-	game->ui->ammo_y = 20 * game->ui->scale;
 }
 
 void	get_ui(t_game *game)
 {
-	mlx_image_t		*img;
 	mlx_texture_t	*tex;
 	int				x;
 	int				y;
 
-	x = game->tile_size / 10;
-	y = game->tile_size / 10;
 	fix_ui_sizes(game);
+	x = (game->mlx->width / 2) - (game->ui->w / 2);
+	y = game->tile_size / 10;
 	game->ui->info_x = x + (game->ui->w / 2);
 	game->ui->info_y = y + (game->ui->h / 2) - (20 * game->ui->scale);
 	tex = mlx_load_png("./textures/ui/banner.png");
 	if (!tex)
 		error(EXIT_FAILURE, E_MLX);
-	img = mlx_texture_to_image(game->mlx, tex);
-	if (!img)
+	game->ui->bg = mlx_texture_to_image(game->mlx, tex);
+	if (!game->ui->bg)
 		error(EXIT_FAILURE, E_MLX);
-	if (!mlx_resize_image(img, game->ui->w, game->ui->h))
+	if (!mlx_resize_image(game->ui->bg, game->ui->w, game->ui->h))
 		error(EXIT_FAILURE, E_MLX);
-	if (mlx_image_to_window(game->mlx, img, x, y) == -1)
+	if (mlx_image_to_window(game->mlx, game->ui->bg, x, y) == -1)
 		error(EXIT_FAILURE, E_MLX);
+	game->ui->bg->enabled = false;
 }
 
 mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
@@ -243,6 +242,7 @@ mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
 		error(EXIT_FAILURE, E_MLX);
 	free(s_value);
 	free(str);
+	game->ui->bg->enabled = true;
 	return (img);
 }
 

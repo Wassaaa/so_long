@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/01 04:22:30 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/01 20:12:39 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ B_SRCS			=	#
 ################################################################################
 # COMPILATION
 ################################################################################
-CC				=	gcc
+CC				=	cc
 CC_STRICT		=	-Wall -Wextra -Werror
 OFAST			=	#-Ofast -flto
 OG				=	#-Og -flto
@@ -49,9 +49,9 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST)
 ################################################################################
 # MLX
 ################################################################################
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
-MLX_DEBUG		= -DDEBUG=1
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX_DEBUG		= #-DDEBUG=1
 MLX42_DIR		= ./MLX42
 
 ################################################################################

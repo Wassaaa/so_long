@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 02:22:42 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 20:23:56 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,6 @@ void	got_gun(t_game *game)
 	else if(game->last_ammo < 1 && game->ammo >= 1)
 		image_toggle(game->g, true);
 	game->last_ammo = game->ammo;
-	if (game->ui->ammo)
-		mlx_delete_image(game->mlx, game->ui->ammo);
-	game->ui->ammo = info_str(game, "Ammo: ", game->ammo, game->ui->ammo_y);
 }
 
 void	image_toggle(t_entity *ent, bool onoff)

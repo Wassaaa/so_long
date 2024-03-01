@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 04:39:00 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/01 20:20:28 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,9 +169,8 @@ typedef struct s_entity
 typedef struct s_ui
 {
 	mlx_image_t	*moves;
+	mlx_image_t *bg;
 	int			moves_y;
-	mlx_image_t	*ammo;
-	int			ammo_y;
 	int			info_x;
 	int			info_y;
 	int			w;
