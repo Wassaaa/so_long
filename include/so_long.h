@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/04 09:09:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 17:22:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,16 @@
 
 # define SPEED 500.0f
 # define MIN_SPEED 60.0f
+
+typedef enum e_ui_nbs
+{
+	UNITS,
+	TENS,
+	HUND,
+	THOU,
+	T_THOU,
+	UI_MAX
+}					t_ui_nbs;
 
 typedef enum e_err
 {
@@ -177,10 +187,7 @@ typedef struct s_ui
 	int				h;
 	float			scale;
 	mlx_image_t		*numbers[10];
-	int				units;
-	int				tens;
-	int				hundreds;
-	int				thousands;
+	int				nb_parts[UI_MAX];
 }					t_ui;
 
 typedef struct s_game
@@ -233,6 +240,7 @@ void				entity_speed(t_game *game);
 
 // display
 void				generate_number_imgs(t_game *game);
+void				display_number(t_game *game, int nb, int x, int y);
 void				show_fps(t_game *game);
 int					win_lose(t_game *game);
 mlx_image_t			*info_str(t_game *game, char *begin, int value, int y_off);
