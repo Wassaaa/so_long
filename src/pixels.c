@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/19 01:56:14 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 01:54:22 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static int	get_rgba(int r, int g, int b, int a)
 
 int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 {
-	if (x > img->width || y > img->height)
+	if (x >= img->width || y >= img->height)
 		return (0xFF000000);
 	uint8_t	*start_location;
 	uint8_t *red;
 	uint8_t *green;
 	uint8_t *blue;
 	uint8_t *alpha;
-	int		color;
+	int32_t	color;
 
 	start_location = img->pixels + (y * img->width + x) * 4;
 	red = start_location;
@@ -66,7 +66,7 @@ void	get_mirrored(mlx_image_t *dst, mlx_image_t *src)
 		j = 0;
 		while (j < src->height)
 		{
-			color = get_pixel_color(src, src->width - i, j);
+			color = get_pixel_color(src, src->width - i - 1, j);
 			if (valid_px(dst, i, j))
 				mlx_put_pixel(dst, i, j, color);
 			j++;

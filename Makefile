@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/01 22:35:15 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/04 01:04:15 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,8 +49,8 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST)
 ################################################################################
 # MLX
 ################################################################################
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 MLX_DEBUG		= #-DDEBUG=1
 MLX42_DIR		= ./MLX42
 
@@ -146,13 +146,14 @@ CC_VG			=	$(CC) $(CC_STRICT) $(HEADERS)
 
 VG				=	valgrind
 VG_ARGS			=	#
-VG_FLAGS		=	--leak-check=full --show-leak-kinds=all
+VG_FLAGS		=	--leak-check=full --show-leak-kinds=all --suppressions=suppressions
 VG_LOG			=	valgrind_leaks.log
 VG_LOG_FLAGS	=	--log-file=$(VG_LOG) \
 					--leak-check=full \
 					--show-leak-kinds=all \
 					--track-origins=yes \
-					--verbose\
+					--verbose \
+					--suppressions=suppressions \
 					--gen-suppressions=all
 
 LOG_VG_TARGET	=	$(VG) $(VG_LOG_FLAGS) ./$(NAME) $(VG_ARGS)

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:08:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 23:10:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 01:59:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void	error(int ret, int msg)
 		mlx_terminate(game->mlx);
 	free(game);
 	game = NULL;
-	err_msg(ret, msg);
+	if (ret == EXIT_FAILURE)
+		err_msg(ret, msg);
 	exit(ret);
 }

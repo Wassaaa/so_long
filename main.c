@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 22:11:06 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 02:07:38 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ void	get_ui(t_game *game)
 	if (mlx_image_to_window(game->mlx, game->ui->bg, x, y) == -1)
 		error(EXIT_FAILURE, E_MLX);
 	game->ui->bg->enabled = false;
+	mlx_delete_texture(tex);
 	ft_printf("\e[2;1HMoves: [%d]\e[K\n", game->moves);
 	ft_printf("\e[3;1HCollectables: [%d]\e[K\n", game->map->colls);
 }
@@ -293,6 +294,6 @@ int32_t	main(void)
 	game_info(game);
 	mlx_loop_hook(game->mlx, my_loop, game);
 	mlx_loop(game->mlx);
-	mlx_terminate(game->mlx);
+	error(EXIT_SUCCESS, 0);
 	return (EXIT_SUCCESS);
 }
