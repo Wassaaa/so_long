@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/04 01:54:22 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 06:59:20 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ uint32_t alpha_blend(t_rgba src_color, t_rgba dst_color)
 
 	return (calculate_rgb_blend(src_color, dst_color));
 }
-
 
 void	img_to_img(mlx_image_t *dst, mlx_image_t *src, int x, int y)
 {
