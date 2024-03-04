@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/04 02:07:38 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 08:44:46 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,7 @@ int32_t	main(void)
 	draw_map(game);
 	entity_speed(game);
 	game_info(game);
+	generate_number_imgs(game);
 	mlx_loop_hook(game->mlx, my_loop, game);
 	mlx_loop(game->mlx);
 	error(EXIT_SUCCESS, 0);

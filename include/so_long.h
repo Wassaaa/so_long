@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 22:37:50 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/04 09:09:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-#define BPP sizeof(int32_t)
+# define BPP sizeof(int32_t)
 
 # define WIDTH 1920
 # define HEIGHT 900
@@ -58,7 +58,7 @@ typedef enum e_err
 	E_MAP_SIZE,
 	E_MAX
 
-}	t_err;
+}					t_err;
 
 typedef enum e_type
 {
@@ -168,15 +168,20 @@ typedef struct s_entity
 
 typedef struct s_ui
 {
-	mlx_image_t	*moves;
-	mlx_image_t *bg;
-	int			moves_y;
-	int			info_x;
-	int			info_y;
-	int			w;
-	int			h;
-	float		scale;
-}	t_ui;
+	mlx_image_t		*moves;
+	mlx_image_t		*bg;
+	int				moves_y;
+	int				info_x;
+	int				info_y;
+	int				w;
+	int				h;
+	float			scale;
+	mlx_image_t		*numbers[10];
+	int				units;
+	int				tens;
+	int				hundreds;
+	int				thousands;
+}					t_ui;
 
 typedef struct s_game
 {
@@ -227,6 +232,7 @@ void				fix_sizes(t_game *game);
 void				entity_speed(t_game *game);
 
 // display
+void				generate_number_imgs(t_game *game);
 void				show_fps(t_game *game);
 int					win_lose(t_game *game);
 mlx_image_t			*info_str(t_game *game, char *begin, int value, int y_off);
