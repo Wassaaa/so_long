@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 03:04:00 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 04:30:57 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 
 # define SPEED 500.0f
 # define MIN_SPEED 2.0f
+# define ENEMY_MOD 2.0f
 
 typedef enum e_ui_nbs
 {
@@ -50,6 +51,11 @@ typedef enum e_ui_nbs
 	HUND,
 	THOU,
 	T_THOU,
+	H_THOU,
+	MIL,
+	T_MIL,
+	H_MIL,
+	BIL,
 	UI_MAX
 }					t_ui_nbs;
 
@@ -205,9 +211,8 @@ typedef struct s_game
 	t_list			*wall_imgs;
 	t_list			*coll_imgs;
 	t_list			*exit_imgs;
-	int				moves;
+	unsigned int	moves;
 	int				last_moves;
-	int				fps;
 	int				game_status;
 	int				char_size;
 	int				tile_size;
@@ -242,7 +247,7 @@ void				entity_speed(t_game *game);
 
 // display
 void				generate_number_imgs(t_game *game);
-void				display_number(t_game *game, int nb, t_point loc);
+void				display_number(t_game *game, unsigned int nb, t_point loc);
 void				show_fps(t_game *game);
 int					win_lose(t_game *game);
 mlx_image_t			*info_str(t_game *game, char *str, int y_off);

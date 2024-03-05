@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:13:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 00:42:32 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 03:50:46 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ int	win_lose(t_game *game)
 		if (game->game_status == 1)
 		{
 			ft_printf("\e[4;1H\e[KVICTORY!");
+			game->game_status = 42;
 		}
 		if (game->game_status == -1)
 		{
 			ft_printf("\e[4;1H\e[KYOU DIED");
+			game->game_status = 42;
 		}
 		if (game->game_status != 0)
 			return (1);
@@ -44,9 +46,6 @@ void	show_fps(t_game *game)
 	fps++;
 	if (i >= 1)
 	{
-		game->fps = fps;
-		if (game->fps < 30)
-			game->fps = 60;
 		ft_printf("\e[1;1Hfps [%d]\e[K\n", fps);
 		i = 0;
 		fps = 0;

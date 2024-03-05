@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/26 22:03:13 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 04:30:30 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ void	entity_speed(t_game *game)
 	while (enemies)
 	{
 		enemy = (t_entity *)enemies->content;
-		enemy->move_speed = game->p->move_speed / 2.0f;
+		enemy->move_speed = game->p->move_speed * ENEMY_MOD;
+		if (enemy->move_speed < MIN_SPEED)
+			enemy->move_speed = MIN_SPEED;
 		enemies = enemies->next;
 	}
 }
