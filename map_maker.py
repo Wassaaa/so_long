@@ -75,6 +75,7 @@ def is_accessible(game_map, start_pos, num_collectibles):
 				elif game_map[nx][ny] == 'E':
 					targets['E'] = True
 
+	# return True
 	return targets['C'] == num_collectibles and targets['E']
 
 def save_map_to_file(game_map, filename="./maps/map.ber"):
