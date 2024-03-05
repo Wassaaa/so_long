@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 04:31:59 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 04:42:09 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,25 @@ void	add_move(t_game *game)
 	display_number(game, game->moves, game->ui->moves_loc);
 }
 
+void	scale_numbers(t_game *game)
+{
+	int		i;
+	int		width;
+	int		height;
+	float	sc;
+
+	i = 0;
+	sc = game->ui->sc;
+	while (i < 10)
+	{
+		width = game->ui->numbers[i]->width;
+		height = game->ui->numbers[i]->height;
+		if (!mlx_resize_image(game->ui->numbers[i], width * sc, height * sc))
+			error(EXIT_FAILURE, E_MLX);
+		i++;
+	}
+}
+
 void	game_info(t_game *game)
 {
 	static int	box = 0;
@@ -264,6 +283,7 @@ void	game_info(t_game *game)
 	}
 	game->ui->moves_loc.x = game->ui->moves->instances[0].x + game->ui->moves->width;
 	game->ui->moves_loc.y = game->ui->moves->instances[0].y;
+	scale_numbers(game);
 	got_gun(game);
 	display_number(game, game->moves, game->ui->moves_loc);
 }
