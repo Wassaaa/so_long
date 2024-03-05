@@ -1,127 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   anim_load.c                                        :+:      :+:    :+:   */
+/*   load_png.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 23:43:05 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 22:51:14 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 21:03:42 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-t_sprite	new_sprite(char *path, int f_cnt, int f_spd, int mirrored)
-{
-	t_sprite	sprite;
-
-	sprite.f_path = path;
-	sprite.frame_count = f_cnt;
-	sprite.frame_speed = f_spd;
-	sprite.mirrored = mirrored;
-	return (sprite);
-}
-
-char	*build_path(int i, char *path)
-{
-	char	*nr;
-	char	*path_start;
-	char	*full_path;
-
-	nr = ft_itoa(i);
-	path_start = ft_strjoin(path, nr);
-	if (!path_start)
-		error(EXIT_FAILURE, E_MALLOC);
-	full_path = ft_strjoin(path_start, ".png");
-	if (!full_path)
-		error(EXIT_FAILURE, E_MALLOC);
-	free(path_start);
-	free(nr);
-	return (full_path);
-}
-
-mlx_image_t	*get_img(t_game *game, char *path, int i, int mirr)
-{
-	char			*full_path;
-	mlx_texture_t	*texture;
-	mlx_image_t		*new_img;
-	mlx_image_t		*mirrored;
-
-	full_path = build_path(i, path);
-	texture = mlx_load_png(full_path);
-	if (!texture)
-		error(EXIT_FAILURE, E_MLX);
-	new_img = mlx_texture_to_image(game->mlx, texture);
-	if (!new_img)
-		error(EXIT_FAILURE, E_MLX);
-	if (!mlx_resize_image(new_img, game->char_size, game->char_size))
-		error(EXIT_FAILURE, E_MLX);
-	mlx_delete_texture(texture);
-	free(full_path);
-	if (mirr)
-	{
-		mirrored = mlx_new_image(game->mlx, new_img->width, new_img->height);
-		get_mirrored(mirrored, new_img);
-		mlx_delete_image(game->mlx, new_img);
-		return (mirrored);
-	}
-	return (new_img);
-}
-
-t_anim	*load_animation(t_game *game, t_sprite sprite)
-{
-	t_anim		*anim;
-	int			i;
-	mlx_image_t	*new_img;
-
-	anim = safe_ft_calloc(1, sizeof(t_anim));
-	anim->frame_speed = sprite.frame_speed;
-	anim->frame_count = sprite.frame_count;
-	i = 0;
-	while (i < sprite.frame_count)
-	{
-		new_img = get_img(game, sprite.f_path, i++, sprite.mirrored);
-		ft_lstadd_back(&anim->frames, safe_lstnew(new_img));
-	}
-	return (anim);
-}
-
-void	anim_to_anim(t_list *dest, t_list *src)
-{
-	mlx_image_t	*destination;
-	mlx_image_t	*source;
-
-	if (ft_lstsize(dest) != ft_lstsize(src))
-		return ;
-	while (dest)
-	{
-		destination = (mlx_image_t *)dest->content;
-		source = (mlx_image_t *)src->content;
-		img_to_img(destination, source, 0, 0);
-		dest = dest->next;
-		src = src->next;
-	}
-}
-
-void	color_anim(t_list *dest, t_list *src)
-{
-	mlx_image_t	*destination;
-	mlx_image_t	*source;
-
-	if (ft_lstsize(dest) != ft_lstsize(src))
-		return ;
-	while (dest)
-	{
-		destination = (mlx_image_t *)dest->content;
-		source = (mlx_image_t *)src->content;
-		color_from_src(destination, source);
-		dest = dest->next;
-		src = src->next;
-	}
-}
-
-void	load_enemy(t_game *game)
+static void	load_enemy(t_game *game)
 {
 	t_sprite	enemy_fly;
 
@@ -133,7 +24,7 @@ void	load_enemy(t_game *game)
 	game->e->anims[A_UP] = load_animation(game, enemy_fly);
 }
 
-void	load_gun(t_game *game)
+static void	load_gun(t_game *game)
 {
 	t_sprite	gun_idle;
 	t_sprite	gun_walk;
@@ -157,7 +48,7 @@ void	load_gun(t_game *game)
 	game->g->anims[A_ROLL_L]->full_cycle = true;
 }
 
-void	load_char_up(t_game *game)
+static void	load_char_up(t_game *game)
 {
 	t_sprite	hair;
 	t_sprite	head;
@@ -202,37 +93,6 @@ void	get_animations(t_game *game)
 	game->p->anims[A_ROLL_R]->full_cycle = true;
 	load_gun(game);
 	load_enemy(game);
-}
-
-void	load_tiles(t_game *game, t_list **type_lst, char *path, int img_count)
-{
-	t_list		*list;
-	mlx_image_t	*img;
-	int			i;
-
-	i = 0;
-	while (i < img_count)
-	{
-		img = get_img(game, path, i, 0);
-		if (type_lst == &game->coll_imgs)
-		{
-			if (!mlx_resize_image(img, game->coll_size, game->coll_size))
-				error(EXIT_FAILURE, E_MLX);
-		}
-		else if (type_lst == &game->exit_imgs)
-		{
-			if (!mlx_resize_image(img, game->exit_size, game->exit_size))
-				error(EXIT_FAILURE, E_MLX);
-		}
-		else
-		{
-			if (!mlx_resize_image(img, game->tile_size, game->tile_size))
-				error(EXIT_FAILURE, E_MLX);
-		}
-		list = safe_lstnew(img);
-		ft_lstadd_back(type_lst, list);
-		i++;
-	}
 }
 
 void	load_map_textures(t_game *game)

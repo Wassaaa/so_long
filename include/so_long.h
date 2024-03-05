@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 19:45:22 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 21:14:17 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 
 # define SPEED 500.0f
 # define MIN_SPEED 2.0f
-# define ENEMY_MOD 20.0f
+# define ENEMY_MOD 0.5f
 # define GOD_MODE 0
 
 typedef enum e_ui_nbs
@@ -295,11 +295,18 @@ void				img_left(t_entity *entity, float dt);
 void				roll_animations(t_game *game);
 void				sync_anim(t_entity *enemy);
 
-// maps & textures
+// map
 void				read_map(t_game *game, char *map_file);
 void				fill_elements(t_game *game, char *line, int y);
+
+//textures
 void				load_map_textures(t_game *game);
 void				get_animations(t_game *game);
+t_anim				*load_animation(t_game *game, t_sprite sprite);
+void				load_tiles(t_game *game, t_list **lst, char *pth, int len);
+t_sprite			new_sprite(char *path, int f_cnt, int f_spd, int mir);
+void				anim_to_anim(t_list *dest, t_list *src);
+void				color_anim(t_list *dest, t_list *src);
 
 // game elements
 void				got_gun(t_game *game);
