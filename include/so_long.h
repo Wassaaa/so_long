@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/04 17:22:02 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 03:04:00 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define COLL_C 1
 
 # define SPEED 500.0f
-# define MIN_SPEED 60.0f
+# define MIN_SPEED 2.0f
 
 typedef enum e_ui_nbs
 {
@@ -172,6 +172,7 @@ typedef struct s_entity
 	int				index;
 	t_movement		*movement;
 	float			move_speed;
+	float			move_step;
 	t_anim			*current;
 	t_anim			*next;
 }					t_entity;
@@ -179,13 +180,14 @@ typedef struct s_entity
 typedef struct s_ui
 {
 	mlx_image_t		*moves;
+	t_point			moves_loc;
 	mlx_image_t		*bg;
 	int				moves_y;
 	int				info_x;
 	int				info_y;
 	int				w;
 	int				h;
-	float			scale;
+	float			sc;
 	mlx_image_t		*numbers[10];
 	int				nb_parts[UI_MAX];
 }					t_ui;
@@ -240,10 +242,10 @@ void				entity_speed(t_game *game);
 
 // display
 void				generate_number_imgs(t_game *game);
-void				display_number(t_game *game, int nb, int x, int y);
+void				display_number(t_game *game, int nb, t_point loc);
 void				show_fps(t_game *game);
 int					win_lose(t_game *game);
-mlx_image_t			*info_str(t_game *game, char *begin, int value, int y_off);
+mlx_image_t			*info_str(t_game *game, char *str, int y_off);
 void				add_move(t_game *game);
 
 // pixels

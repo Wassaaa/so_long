@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/04 17:33:16 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 02:48:03 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,18 +181,18 @@ void	fix_ui_sizes(t_game *game)
 {
 	game->ui->w = UI_W;
 	game->ui->h = UI_H;
-	game->ui->scale = 1;
+	game->ui->sc = 1;
 	if (game->mlx->width < UI_W)
 	{
-		game->ui->scale = (float)game->mlx->width / (float)UI_W;
+		game->ui->sc = (float)game->mlx->width / (float)UI_W;
 		game->ui->w = game->mlx->width;
-		game->ui->h *= game->ui->scale;
+		game->ui->h *= game->ui->sc;
 	}
 	if (game->mlx->height < UI_H)
 	{
-		game->ui->scale = (float)game->mlx->height / (float)UI_H;
+		game->ui->sc = (float)game->mlx->height / (float)UI_H;
 		game->ui->h = game->mlx->height;
-		game->ui->w *= game->ui->scale;
+		game->ui->w *= game->ui->sc;
 	}
 	game->ui->moves_y = 0;
 }
@@ -207,7 +207,7 @@ void	get_ui(t_game *game)
 	x = (game->mlx->width / 2) - (game->ui->w / 2);
 	y = game->tile_size / 10;
 	game->ui->info_x = x + (game->ui->w / 2);
-	game->ui->info_y = y + (game->ui->h / 2) - (20 * game->ui->scale);
+	game->ui->info_y = y + (game->ui->h / 2) - (20 * game->ui->sc);
 	tex = mlx_load_png("./textures/ui/banner.png");
 	if (!tex)
 		error(EXIT_FAILURE, E_MLX);
@@ -224,27 +224,22 @@ void	get_ui(t_game *game)
 	ft_printf("\e[3;1HCollectables: [%d]\e[K\n", game->map->colls);
 }
 
-mlx_image_t	*info_str(t_game *game, char *begin, int value, int y_off)
+mlx_image_t	*info_str(t_game *game, char *str, int y_off)
 {
-	char		*s_value;
-	char		*str;
 	mlx_image_t	*img;
 	t_point		loc;
+	int			height;
+	int			width;
 
-	s_value = ft_itoa(value);
-	if (!s_value)
-		error(EXIT_FAILURE, E_MALLOC);
-	str = ft_strjoin(begin, s_value);
-	if (!str)
-		error(EXIT_FAILURE, E_MALLOC);
-	loc.x = game->ui->info_x - ((ft_strlen(str) * 5 * game->ui->scale));
-	loc.y = game->ui->info_y + (y_off * game->ui->scale);
+	loc.x = game->ui->info_x - ((ft_strlen(str) * 10 * game->ui->sc));
+	loc.y = game->ui->info_y + (y_off * game->ui->sc);
 	img = mlx_put_string(game->mlx, str, loc.x, loc.y);
-	if (!mlx_resize_image(img, img->width * game->ui->scale, img->height * game->ui->scale))
+	if (!img)
 		error(EXIT_FAILURE, E_MLX);
-	free(s_value);
-	free(str);
-	game->ui->bg->enabled = true;
+	height = img->height;
+	width = img->width;
+	if (!mlx_resize_image(img, width * game->ui->sc, height * game->ui->sc))
+		error(EXIT_FAILURE, E_MLX);
 	return (img);
 }
 
@@ -252,6 +247,7 @@ void	add_move(t_game *game)
 {
 	game->moves++;
 	ft_printf("\e[2;1HMoves: [%d]\e[K\n", game->moves);
+	display_number(game, game->moves, game->ui->moves_loc);
 }
 
 void	game_info(t_game *game)
@@ -260,10 +256,16 @@ void	game_info(t_game *game)
 
 	if (!box)
 	{
-		get_ui(game);
 		box = 1;
+		get_ui(game);
+		game->ui->bg->enabled = true;
+		game->ui->moves = info_str(game, "Moves:", 0);
+		generate_number_imgs(game);
 	}
+	game->ui->moves_loc.x = game->ui->moves->instances[0].x + game->ui->moves->width;
+	game->ui->moves_loc.y = game->ui->moves->instances[0].y;
 	got_gun(game);
+	display_number(game, game->moves, game->ui->moves_loc);
 }
 
 void	my_loop(void *my_game)
@@ -292,8 +294,6 @@ int32_t	main(void)
 	draw_map(game);
 	entity_speed(game);
 	game_info(game);
-	generate_number_imgs(game);
-	display_number(game, 52, game->ui->info_x, game->ui->info_y);
 	mlx_loop_hook(game->mlx, my_loop, game);
 	mlx_loop(game->mlx);
 	error(EXIT_SUCCESS, 0);

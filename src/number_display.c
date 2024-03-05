@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 07:12:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/04 17:31:51 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 02:46:59 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,21 @@ void	generate_number_imgs(t_game *game)
 	hide_numbers(game->ui);
 }
 
-void	display_number(t_game *game, int nb, int x, int y)
+void	display_number(t_game *game, int nb, t_point loc)
 {
 	size_t		digits[UI_MAX];
-	size_t		place;
+	int			place;
 	size_t		i;
 	mlx_image_t	*instance;
 
 	i = 0;
 	place = 0;
 	hide_numbers(game->ui);
+	if (nb == 0)
+	{
+		digits[0] = 0;
+		place++;
+	}
 	while (nb > 0)
 	{
 		digits[place++] = nb % 10;
@@ -87,8 +92,8 @@ void	display_number(t_game *game, int nb, int x, int y)
 	{
 		instance = game->ui->numbers[digits[i]];
 		instance->instances[UI_MAX - place].enabled = true;
-		instance->instances[UI_MAX - place].x = x + (10 * place);
-		instance->instances[UI_MAX - place].y = y;
+		instance->instances[UI_MAX - place].x = loc.x + (10 * place);
+		instance->instances[UI_MAX - place].y = loc.y;
 		place--;
 		i++;
 	}
