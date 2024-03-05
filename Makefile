@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/04 08:18:31 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/05 16:14:32 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,6 @@ SRCS			=	ft_lstget.c\
 					draw_tiles.c\
 					draw_entity.c\
 					number_display.c
-
-B_SRCS			=	#
-
 
 ################################################################################
 # COMPILATION
@@ -76,17 +73,6 @@ M_ARCHIVE		=	$(ARCHIVES)/so_long.a
 M_ARCHIVES		=	$(M_ARCHIVE) $(LIBFT)
 
 ################################################################################
-# BONUS
-################################################################################
-B_NAME			= 	checker
-B_DIR			=	./bonus
-B_OBJECTS		=	$(addprefix $(OBJ_DIR)/, $(B_SRCS:%.c=%.o))
-B_MAIN			=	./main_bonus.c
-B_HEADER		=	$(INCLUDES)/push_swap_bonus.h
-B_ARCHIVE		=	$(ARCHIVES)/checker.a
-B_ARCHIVES		=	$(B_ARCHIVE) $(LIBFT)
-
-################################################################################
 # RULES
 ################################################################################
 
@@ -109,19 +95,6 @@ $(M_ARCHIVE): $(OBJECTS)
 	ar rcs $(M_ARCHIVE) $(OBJECTS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(M_HEADER)
-	mkdir -p $(@D)
-	$(CC_FULL) -c $< -o $@
-
-bonus: $(B_NAME)
-
-$(B_NAME): $(LIBFT) $(B_ARCHIVE) $(B_MAIN)
-	$(CC_FULL) $(B_MAIN) $(B_ARCHIVES) -o $(B_NAME)
-
-$(B_ARCHIVE): $(B_OBJECTS)
-	mkdir -p $(@D)
-	ar rcs $(B_ARCHIVE) $(B_OBJECTS)
-
-$(OBJ_DIR)/%.o: $(B_DIR)/%.c
 	mkdir -p $(@D)
 	$(CC_FULL) -c $< -o $@
 
@@ -209,4 +182,4 @@ RC = \033[0m
 ################################################################################
 # PHONY
 ################################################################################
-.PHONY: all re clean fclean bonus libmlx libft_force
+.PHONY: all re clean fclean libmlx libft_force
