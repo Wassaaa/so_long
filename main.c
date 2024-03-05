@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 04:42:09 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 04:48:44 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,7 +296,8 @@ void	my_loop(void *my_game)
 	show_fps(game);
 	enemy_anim(game);
 	player_anim(game);
-	check_collision(game);
+	if (!GOD_MODE)
+		check_collision(game);
 	roll_animations(game);
 }
 

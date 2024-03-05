@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 04:30:57 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/05 04:54:21 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@
 
 # define SPEED 500.0f
 # define MIN_SPEED 2.0f
-# define ENEMY_MOD 2.0f
+# define ENEMY_MOD 20.0f
+# define GOD_MODE 1
 
 typedef enum e_ui_nbs
 {
