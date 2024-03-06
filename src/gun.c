@@ -6,33 +6,14 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 02:48:22 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 01:31:48 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void	item_collection(t_game *game)
-{
-	int			coll_inst;
-	t_entity	*player;
 
-	player = game->p;
-	if (player->facing->type == COLL)
-	{
-		gun_picked_up(game);
-		coll_inst = player->facing->instance;
-		player->facing->img->instances[coll_inst].enabled = false;
-		player->facing->type = FREE;
-	}
-	else if (player->facing->type == EXIT)
-	{
-		if (game->map->colls == 0)
-			game->game_status = 1;
-	}
-}
-
-void	gun_picked_up(t_game *game)
+static void	gun_picked_up(t_game *game)
 {
 	game->map->colls--;
 	ft_printf("\e[3;1HCollectables: [%d]\e[K\n", game->map->colls);
@@ -40,16 +21,7 @@ void	gun_picked_up(t_game *game)
 	got_gun(game);
 }
 
-void	got_gun(t_game *game)
-{
-	if (game->ammo < 1 && game->last_ammo >= 1)
-		image_toggle(game->g, false);
-	else if(game->last_ammo < 1 && game->ammo >= 1)
-		image_toggle(game->g, true);
-	game->last_ammo = game->ammo;
-}
-
-void	image_toggle(t_entity *ent, bool onoff)
+static void	image_toggle(t_entity *ent, bool onoff)
 {
 	t_list		*frames;
 	mlx_image_t *img;
@@ -67,6 +39,15 @@ void	image_toggle(t_entity *ent, bool onoff)
 		}
 		i++;
 	}
+}
+
+void	got_gun(t_game *game)
+{
+	if (game->ammo < 1 && game->last_ammo >= 1)
+		image_toggle(game->g, false);
+	else if(game->last_ammo < 1 && game->ammo >= 1)
+		image_toggle(game->g, true);
+	game->last_ammo = game->ammo;
 }
 
 void	handle_shoot(t_game *game)
@@ -91,3 +72,22 @@ void	handle_shoot(t_game *game)
 	}
 }
 
+void	item_collection(t_game *game)
+{
+	int			coll_inst;
+	t_entity	*player;
+
+	player = game->p;
+	if (player->facing->type == COLL)
+	{
+		gun_picked_up(game);
+		coll_inst = player->facing->instance;
+		player->facing->img->instances[coll_inst].enabled = false;
+		player->facing->type = FREE;
+	}
+	else if (player->facing->type == EXIT)
+	{
+		if (game->map->colls == 0)
+			game->game_status = 1;
+	}
+}

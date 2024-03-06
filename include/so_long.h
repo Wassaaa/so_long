@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 00:43:14 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 01:33:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,26 +276,21 @@ void				draw_anims(mlx_t *mlx, t_entity *ent, int x, int y);
 void				build_anims(t_entity *base_entity, t_entity *ent);
 void				fix_depth(t_entity *ent, int *z);
 
-// moves
-void				next_move(t_game *game);
-void				do_idle(t_game *game);
-int					move_allowed(t_map_element *el);
-
 // entity moves
-void				move_it(t_game *game, t_entity *entity, int to);
-void				entity_move_to(t_game *game, t_entity *entity);
+void				move_enemy(t_game *game);
+void				move_player(t_game *game);
+void				move_image(t_entity *entity, float dt);
 void				ent_up(t_game *game, t_entity *entity);
 void				ent_right(t_game *game, t_entity *entity);
 void				ent_down(t_game *game, t_entity *entity);
 void				ent_left(t_game *game, t_entity *entity);
-
-void				img_up(t_entity *entity, float dt);
-void				img_right(t_entity *entity, float dt);
-void				img_down(t_entity *entity, float dt);
-void				img_left(t_entity *entity, float dt);
+int					move_allowed(t_map_element *el);
+void				add_move(t_game *game);
 
 // animation
 void				roll_animations(t_game *game);
+void				anim_off(t_anim *anim);
+void				movement_animation(t_entity *entity);
 void				sync_anim(t_entity *enemy);
 
 // map
@@ -313,17 +308,17 @@ void				color_anim(t_list *dest, t_list *src);
 
 // game elements
 void				got_gun(t_game *game);
-void				gun_picked_up(t_game *game);
 void				item_collection(t_game *game);
-void				image_toggle(t_entity *ent, bool onoff);
 void				handle_shoot(t_game *game);
 
 // helpers
 t_list				*ft_lstget(t_list *l, int n);
 t_list				*safe_lstnew(void *content);
 void				*safe_ft_calloc(size_t count, size_t size);
+size_t				get_random(void);
+
+//error
 void				error(int ret, int msg);
 void				clear_anim(t_anim **anim);
-size_t				get_random(void);
 
 #endif

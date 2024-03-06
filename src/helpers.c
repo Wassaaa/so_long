@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:14:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 20:57:05 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 01:20:32 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,21 @@ t_list *safe_lstnew(void *content)
 	if (!frame)
 		error(EXIT_FAILURE, E_MALLOC);
 	return (frame);
+}
+
+size_t get_random(void)
+{
+	int			fd;
+	static int	not_so_random = 0;
+	size_t		buff;
+
+	not_so_random++;
+	buff = not_so_random;
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd > -1)
+	{
+		read(fd, &buff, sizeof(size_t));
+		close(fd);
+	}
+	return (buff);
 }

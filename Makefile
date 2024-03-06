@@ -6,20 +6,19 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/07 00:45:56 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/07 01:26:44 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 INCLUDES		=	./include
 
 SRCS			=	\
-					animate.c\
+					anim.c\
+					anim_utils.c\
 					display.c\
-					do_anim.c\
 					draw_entity.c\
 					draw_tiles.c\
 					draw.c\
-					entity_move.c\
 					error.c\
 					frame_sync.c\
 					ft_lstget.c\
@@ -31,8 +30,11 @@ SRCS			=	\
 					load_png.c\
 					load_utils.c\
 					map.c\
+					move_enemy.c\
 					move_helpers.c\
-					move_it.c\
+					move_image.c\
+					move_player.c\
+					move.c\
 					number_display.c\
 					pixels.c\
 					pixels_alpha_blend.c\
