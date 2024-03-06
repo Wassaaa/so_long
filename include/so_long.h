@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 21:14:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 00:43:14 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ typedef enum e_anims
 	A_COUNT
 }					t_anims;
 
-typedef struct t_anims
+typedef struct s_rgba
 {
 	uint32_t		color;
 	uint8_t			r;
@@ -166,7 +166,6 @@ typedef struct s_movement
 	int				to;
 	t_point			tar;
 	t_anim			*anim;
-	t_map_element	*el;
 }					t_movement;
 
 typedef struct s_entity
@@ -247,15 +246,19 @@ void				fix_sizes(t_game *game);
 void				entity_speed(t_game *game);
 
 // display
+void				game_ui(t_game *game);
+void				fix_ui_sizes(t_game *game);
 void				generate_number_imgs(t_game *game);
 void				display_number(t_game *game, unsigned int nb, t_point loc);
 void				show_fps(t_game *game);
 int					win_lose(t_game *game);
-mlx_image_t			*info_str(t_game *game, char *str, int y_off);
 void				add_move(t_game *game);
 
 // pixels
-int32_t				get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y);
+int					not_tp(uint32_t color);
+int					valid_px(mlx_image_t *img, uint32_t x, uint32_t y);
+int32_t				get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+uint32_t			alpha_blend(t_rgba src_color, t_rgba dst_color);
 void				get_mirrored(mlx_image_t *d, mlx_image_t *s);
 void				img_to_img(mlx_image_t *d, mlx_image_t *s, int x, int y);
 void				color_from_src(mlx_image_t *d, mlx_image_t *s);
@@ -299,7 +302,7 @@ void				sync_anim(t_entity *enemy);
 void				read_map(t_game *game, char *map_file);
 void				fill_elements(t_game *game, char *line, int y);
 
-//textures
+// textures
 void				load_map_textures(t_game *game);
 void				get_animations(t_game *game);
 t_anim				*load_animation(t_game *game, t_sprite sprite);

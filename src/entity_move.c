@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 23:11:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 03:46:27 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 00:22:10 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,5 +199,4 @@ void	move_it(t_game *game, t_entity *entity, int to)
 	tar.y = (entity->facing->y * game->tile_size) + entity->off.y;
 	entity->movement->tar = tar;
 	entity->movement->to = to;
-	entity->movement->el = entity->facing;
 }

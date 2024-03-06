@@ -6,13 +6,13 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 07:12:09 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 04:26:01 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 00:03:45 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-void	hide_numbers(t_ui *ui)
+static void	hide_numbers(t_ui *ui)
 {
 	size_t		i;
 	size_t		j;
@@ -28,7 +28,7 @@ void	hide_numbers(t_ui *ui)
 	}
 }
 
-void	draw_digits(t_game *game, int nb_i)
+static void	draw_digits(t_game *game, int nb_i)
 {
 	int	new_nr;
 	int	i;
@@ -46,10 +46,10 @@ void	draw_digits(t_game *game, int nb_i)
 
 void	generate_number_imgs(t_game *game)
 {
-	int			i;
-	char		*nr;
-	int			x;
-	int			y;
+	int		i;
+	char	*nr;
+	int		x;
+	int		y;
 
 	x = game->ui->info_x;
 	y = game->ui->info_y;

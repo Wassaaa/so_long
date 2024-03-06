@@ -6,34 +6,38 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/05 21:13:44 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/07 00:45:56 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 INCLUDES		=	./include
 
-SRCS			=	ft_lstget.c\
+SRCS			=	\
+					animate.c\
+					display.c\
+					do_anim.c\
+					draw_entity.c\
+					draw_tiles.c\
+					draw.c\
+					entity_move.c\
+					error.c\
+					frame_sync.c\
+					ft_lstget.c\
+					game_ui.c\
+					gun.c\
+					helpers.c\
+					img_edit.c\
+					init.c\
 					load_png.c\
 					load_utils.c\
-					img_edit.c\
-					error.c\
-					pixels.c\
 					map.c\
-					move_it.c\
-					frame_sync.c\
-					animate.c\
-					init.c\
-					helpers.c\
-					draw.c\
-					sizes.c\
 					move_helpers.c\
-					do_anim.c\
-					display.c\
-					gun.c\
-					entity_move.c\
-					draw_tiles.c\
-					draw_entity.c\
-					number_display.c
+					move_it.c\
+					number_display.c\
+					pixels.c\
+					pixels_alpha_blend.c\
+					pixels_utils.c\
+					sizes.c\
 
 ################################################################################
 # COMPILATION
@@ -49,8 +53,8 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST)
 ################################################################################
 # MLX
 ################################################################################
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 MLX_DEBUG		= #-DDEBUG=1
 MLX42_DIR		= ./MLX42
 
