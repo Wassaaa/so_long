@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "(lldb) fixed args",
 			"program": "${workspaceFolder}/so_long",
-			"args": [],
+			"args": ["./maps/map.ber"],
 			"cwd": "${workspaceFolder}",
 			"preLaunchTask": "make",
 		},
@@ -91,7 +91,7 @@
 		  "id": "args",
 		  "type":"promptString",
 		  "description": "args",
-		  "default": "",
+		  "default": "maps/map.ber",
 		},
 	  ]
 

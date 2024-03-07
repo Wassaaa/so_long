@@ -6,11 +6,9 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/07 19:35:57 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/07 20:40:12 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-INCLUDES		=	./include
 
 SRCS			=	\
 					anim.c\
@@ -73,6 +71,7 @@ LIBFT_INCLUDES	=	./libft/include
 # MANDATORY
 ################################################################################
 NAME			=	so_long
+INCLUDES		=	./include
 SRC_DIR			=	./src
 OBJECTS			=	$(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
 OBJ_DIR			=	./obj
