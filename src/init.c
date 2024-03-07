@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/29 23:36:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:08:16 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	init_entities(t_game *game)
 	game->ui = safe_ft_calloc(1, sizeof(t_ui));
 }
 
-t_game **get_game(void)
+t_game	**get_game(void)
 {
 	static t_game	*game;
 	static int		initialized = 0;

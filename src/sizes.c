@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 00:10:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:05:23 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	entity_speed(t_game *game)
 {
-	float	scale;
+	float		scale;
 	t_list		*enemies;
 	t_entity	*enemy;
 
@@ -53,7 +53,7 @@ void	fix_sizes(t_game *game)
 {
 	int		limiter;
 	int		width;
-	int 	height;
+	int		height;
 	float	change;
 
 	width = game->map->width;

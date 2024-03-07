@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:13:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 03:50:46 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:00:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	win_lose(t_game *game)
 {
-	static int game_over = 0;
+	static int	game_over = 0;
 
 	if (!game_over)
 	{
@@ -40,7 +40,6 @@ void	show_fps(t_game *game)
 {
 	static int		fps = 1;
 	static double	i = 0;
-
 
 	i += game->mlx->delta_time;
 	fps++;

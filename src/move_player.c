@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 01:26:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:07:39 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	move_player(t_game *game)
 			next_move(game);
 			if (!player->movement->active)
 				do_idle(game);
-
 		}
 	}
 	if (player->next)

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:14:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 01:20:32 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:11:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	*safe_ft_calloc(size_t count, size_t size)
 	return (my_calloc);
 }
 
-t_list *safe_lstnew(void *content)
+t_list	*safe_lstnew(void *content)
 {
-	t_list *frame;
+	t_list	*frame;
 
 	frame = ft_lstnew(content);
 	if (!frame)
@@ -32,7 +32,7 @@ t_list *safe_lstnew(void *content)
 	return (frame);
 }
 
-size_t get_random(void)
+size_t	get_random(void)
 {
 	int			fd;
 	static int	not_so_random = 0;

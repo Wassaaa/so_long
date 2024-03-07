@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 01:20:41 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 18:58:53 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	check_collision(t_game *game)
 {
-	t_entity		*enemy;
+	t_entity	*enemy;
 	t_list		*enemies;
 
 	enemies = game->enemies;
@@ -23,7 +23,8 @@ void	check_collision(t_game *game)
 		enemy = (t_entity *)enemies->content;
 		if (enemy)
 		{
-			if (enemy->pos.x == game->p->pos.x && enemy->pos.y == game->p->pos.y)
+			if (enemy->pos.x == game->p->pos.x
+				&& enemy->pos.y == game->p->pos.y)
 				game->game_status = -1;
 		}
 		enemies = enemies->next;
@@ -32,7 +33,7 @@ void	check_collision(t_game *game)
 
 void	my_loop(void *my_game)
 {
-	t_game		*game;
+	t_game	*game;
 
 	game = (t_game *)my_game;
 	show_fps(game);
@@ -45,7 +46,7 @@ void	my_loop(void *my_game)
 
 int32_t	main(void)
 {
-	t_game		*game;
+	t_game	*game;
 
 	game = init_game();
 	check_rectangle(game, "./maps/map.ber");

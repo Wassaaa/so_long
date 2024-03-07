@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 23:54:25 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 00:10:21 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:11:12 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	scale_numbers(t_game *game)
 
 void	game_ui(t_game *game)
 {
-	static int box = 0;
+	static int	box = 0;
 
 	if (!box)
 	{

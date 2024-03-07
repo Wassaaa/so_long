@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 01:33:02 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:13:04 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ typedef struct s_entity
 	t_point			off;
 	t_point			pos;
 	t_map_element	*facing;
-	int				index;
 	t_movement		*movement;
 	float			move_speed;
 	float			move_step;

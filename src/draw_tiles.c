@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:05:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 01:56:47 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:09:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	draw_wall(t_game *game, t_map_element *el)
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
 	wall_bg = ft_lstget(game->free_imgs, FREE_C - 1)->content;
-	wall_img = ft_lstget(game->wall_imgs, get_random() % ft_lstsize(el->images))->content;
+	wall_img = ft_lstget(game->wall_imgs, get_random()
+			% ft_lstsize(el->images))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, wall_bg, x, y);
 	el->instance = mlx_image_to_window(game->mlx, wall_img, x, y);
 	el->img = wall_img;
@@ -38,7 +39,6 @@ void	draw_free(t_game *game, t_map_element *el)
 
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
-
 	free_img = ft_lstget(el->images, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, free_img, x, y);
 	el->instance = 0;
@@ -75,7 +75,8 @@ void	draw_exit(t_game *game, t_map_element *el)
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
 	exit_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
-	exit_img = ft_lstget(game->exit_imgs, get_random() % ft_lstsize(el->images))->content;
+	exit_img = ft_lstget(game->exit_imgs, get_random()
+			% ft_lstsize(el->images))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, exit_bg, x, y);
 	el->instance = mlx_image_to_window(game->mlx, exit_img, x, y);
 	el->img = exit_img;

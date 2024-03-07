@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 00:16:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 00:43:05 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:07:20 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static int32_t	get_pixel_color(mlx_image_t *img, uint32_t x, uint32_t y)
 {
-	if (!valid_px(img, x, y))
-		return (0xFF000000);
 	uint8_t	*start;
 	int32_t	color;
 
+	if (!valid_px(img, x, y))
+		return (0xFF000000);
 	start = img->pixels + (y * img->width + x) * 4;
 	color = get_rgba(*(start), *(start + 1), *(start + 2), *(start + 3));
 	return (color);

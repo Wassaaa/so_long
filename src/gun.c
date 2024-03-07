@@ -6,12 +6,11 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 01:31:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:04:20 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
-
 
 static void	gun_picked_up(t_game *game)
 {
@@ -24,7 +23,7 @@ static void	gun_picked_up(t_game *game)
 static void	image_toggle(t_entity *ent, bool onoff)
 {
 	t_list		*frames;
-	mlx_image_t *img;
+	mlx_image_t	*img;
 	int			i;
 
 	i = 0;
@@ -45,7 +44,7 @@ void	got_gun(t_game *game)
 {
 	if (game->ammo < 1 && game->last_ammo >= 1)
 		image_toggle(game->g, false);
-	else if(game->last_ammo < 1 && game->ammo >= 1)
+	else if (game->last_ammo < 1 && game->ammo >= 1)
 		image_toggle(game->g, true);
 	game->last_ammo = game->ammo;
 }
@@ -59,7 +58,6 @@ void	handle_shoot(t_game *game)
 	h = game->map->height - 1;
 	w = game->map->width - 1;
 	el = game->p->facing;
-
 	if (el->type == WALL && game->ammo > 0)
 	{
 		if (el->x != 0 && el->y != 0 && el->y != h && el->x != w)

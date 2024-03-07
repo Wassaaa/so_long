@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 18:24:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:13:22 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_entity	*build_enemy(t_game *game)
 {
-	t_entity *enemy;
+	t_entity	*enemy;
 
 	enemy = safe_ft_calloc(1, sizeof(t_entity));
 	*enemy = *game->e;
@@ -26,12 +26,11 @@ static t_entity	*build_enemy(t_game *game)
 
 void	draw_enemy(t_game *game, t_map_element *el)
 {
-	mlx_image_t 	*enemy_bg;
-	mlx_image_t		*base_img;
-	t_entity		*enemy;
-	int				x;
-	int				y;
-	static int		index = 0;
+	mlx_image_t	*enemy_bg;
+	mlx_image_t	*base_img;
+	t_entity	*enemy;
+	int			x;
+	int			y;
 
 	enemy = build_enemy(game);
 	enemy->pos.x = el->x;
@@ -46,13 +45,12 @@ void	draw_enemy(t_game *game, t_map_element *el)
 	draw_anims(game->mlx, enemy, x, y);
 	base_img = (mlx_image_t *)(enemy->anims[A_RIGHT]->frames->content);
 	enemy->base = base_img->instances[enemy->anims[A_RIGHT]->instance];
-	enemy->index = index++;
 	ft_lstadd_back(&game->enemies, safe_lstnew(enemy));
 }
 
 void	draw_player(t_game *game, t_map_element *el)
 {
-	mlx_image_t *player_bg;
+	mlx_image_t	*p_bg;
 	mlx_image_t	*base;
 	int			x;
 	int			y;
@@ -60,19 +58,18 @@ void	draw_player(t_game *game, t_map_element *el)
 	game->p->current = game->p->anims[A_IDLE_R];
 	x = el->x * game->tile_size;
 	y = el->y * game->tile_size;
-	player_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
-	el->bg_instance = mlx_image_to_window(game->mlx, player_bg, x, y);
-	mlx_set_instance_depth(&player_bg->instances[el->bg_instance], FREE);
+	p_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
+	el->bg_instance = mlx_image_to_window(game->mlx, p_bg, x, y);
+	mlx_set_instance_depth(&p_bg->instances[el->bg_instance], FREE);
 	x += game->p->off.x;
 	y += game->p->off.y;
 	draw_anims(game->mlx, game->p, x, y);
 	base = (mlx_image_t *)(game->p->anims[A_RIGHT]->frames->content);
 	game->p->base = base->instances[game->p->anims[A_RIGHT]->instance];
 }
+
 void	draw_gun_anim(t_game *game)
 {
-	int				x;
-	int				y;
 	t_list			*temp;
 	mlx_instance_t	*instance;
 	mlx_instance_t	p_instance;
@@ -80,9 +77,7 @@ void	draw_gun_anim(t_game *game)
 	mlx_image_t		*p_img;
 
 	game->g->current = game->g->anims[A_IDLE_R];
-	x = game->p->pos.x;
-	y = game->p->pos.y;
-	draw_anims(game->mlx, game->g, x, y);
+	draw_anims(game->mlx, game->g, game->p->pos.x, game->p->pos.y);
 	fix_depth(game->g, &game->z);
 	temp = game->g->anims[A_UP]->frames;
 	while (temp)

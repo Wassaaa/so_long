@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:46:24 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/23 21:41:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:11:32 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	sync_entity(t_anim *current, int x, int y)
 {
-	t_list *frames;
-	mlx_image_t *img;
+	t_list		*frames;
+	mlx_image_t	*img;
 
 	frames = current->frames;
 	while (frames)
@@ -29,8 +29,8 @@ void	sync_entity(t_anim *current, int x, int y)
 
 void	sync_anim(t_entity *entity)
 {
-	int		x;
-	int		y;
+	int	x;
+	int	y;
 
 	x = entity->base.x;
 	y = entity->base.y;

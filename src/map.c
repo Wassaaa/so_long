@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/01 03:37:22 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:07:54 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,5 +223,5 @@ void	map_valdiation(t_game *game, char *map_file)
 		ft_printf("uncollecatble coll at [%d : %d]", faulty_coll.x, faulty_coll.y);
 		error(EXIT_FAILURE, E_MAP_ROUTE);
 	}
-	
+
 }

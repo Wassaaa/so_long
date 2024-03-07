@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:10:51 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 00:41:31 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:06:39 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	not_tp(uint32_t color)
 	return (1);
 }
 
-int valid_px(mlx_image_t* img, uint32_t x, uint32_t y)
+int	valid_px(mlx_image_t *img, uint32_t x, uint32_t y)
 {
 	return (x < img->width && y < img->height);
 }
