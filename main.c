@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 18:58:53 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:23:44 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int32_t	main(void)
 	t_game	*game;
 
 	game = init_game();
-	check_rectangle(game, "./maps/map.ber");
+	map_info(game, "./maps/map.ber");
 	fix_sizes(game);
 	start_mlx(game);
 	load_map_textures(game);

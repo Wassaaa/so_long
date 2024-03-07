@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:13:04 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/07 19:37:17 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,8 +235,6 @@ typedef struct s_sprite
 typedef void		(*t_img_move)(t_entity *, float);
 typedef void		(*t_move)(t_game *game, t_entity *entity);
 
-void				map_valdiation(t_game *game, char *map_file);
-void				check_rectangle(t_game *game, char *map_file);
 // init
 t_game				**get_game(void);
 t_game				*init_game(void);
@@ -293,8 +291,9 @@ void				movement_animation(t_entity *entity);
 void				sync_anim(t_entity *enemy);
 
 // map
+void				map_info(t_game *game, char *map_file);
 void				read_map(t_game *game, char *map_file);
-void				fill_elements(t_game *game, char *line, int y);
+void				map_valdiation(t_game *game, char *map_file);
 
 // textures
 void				load_map_textures(t_game *game);
@@ -316,8 +315,10 @@ t_list				*safe_lstnew(void *content);
 void				*safe_ft_calloc(size_t count, size_t size);
 size_t				get_random(void);
 
-//error
+// error
 void				error(int ret, int msg);
+void				err_msg(int ret, int msg);
+void				free_content(void *content);
 void				clear_anim(t_anim **anim);
 
 #endif
