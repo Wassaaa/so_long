@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 06:05:18 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 06:29:08 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	draw_enemy(t_game *game, t_map_element *el)
 	base_img = (mlx_image_t *)(enemy->anims[A_RIGHT]->frames->content);
 	enemy->base = base_img->instances[enemy->anims[A_RIGHT]->instance];
 	ft_lstadd_back(&game->enemies, safe_lstnew(enemy));
+	el->type = FREE;
 }
 
 void	draw_player(t_game *game, t_map_element *el)
@@ -71,6 +72,7 @@ void	draw_player(t_game *game, t_map_element *el)
 	draw_anims(game->mlx, game->p, x, y);
 	base = (mlx_image_t *)(game->p->anims[A_RIGHT]->frames->content);
 	game->p->base = base->instances[game->p->anims[A_RIGHT]->instance];
+	el->type = FREE;
 }
 
 void	draw_gun_anim(t_game *game)
