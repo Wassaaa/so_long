@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 23:54:25 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:11:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 05:34:38 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,13 @@ static mlx_image_t	*info_str(t_game *game, char *str, int y_off)
 	img = mlx_put_string(game->mlx, str, loc.x, loc.y);
 	if (!img)
 		error(EXIT_FAILURE, E_MLX);
-	height = img->height;
-	width = img->width;
-	if (!mlx_resize_image(img, width * game->ui->sc, height * game->ui->sc))
+	height = img->height * game->ui->sc;
+	if (height < 1)
+		height = 1;
+	width = img->width * game->ui->sc;
+	if (width < 1)
+		width = 1;
+	if (!mlx_resize_image(img, width, height))
 		error(EXIT_FAILURE, E_MLX);
 	return (img);
 }
@@ -69,9 +73,13 @@ static void	scale_numbers(t_game *game)
 	sc = game->ui->sc;
 	while (i < 10)
 	{
-		width = game->ui->numbers[i]->width;
-		height = game->ui->numbers[i]->height;
-		if (!mlx_resize_image(game->ui->numbers[i], width * sc, height * sc))
+		width = game->ui->numbers[i]->width * sc;
+		if (width < 1)
+			width = 1;
+		height = game->ui->numbers[i]->height * sc;
+		if (height < 1)
+			height = 1;
+		if (!mlx_resize_image(game->ui->numbers[i], width, height))
 			error(EXIT_FAILURE, E_MLX);
 		i++;
 	}

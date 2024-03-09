@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:29:16 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 01:59:28 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 05:59:30 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static char	*e_message(int err_v)
 		error[E_MAP_COLLS] = "MAP: Not enough Collectibles";
 		error[E_MAP_EXITS] = "MAP: too many/few Exits";
 		error[E_MAP_SIZE] = "MAP: too small";
+		error[E_MAP_SIZE_TILE] = "MAP: Map scales tile size to < 1px";
+		error[E_MAP_SIZE_BIG] = "MAP: Map too big";
 		init = true;
 	}
 	return (error[err_v]);

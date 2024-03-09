@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 04:00:17 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 06:05:18 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	draw_player(t_game *game, t_map_element *el)
 	el->bg_instance = mlx_image_to_window(game->mlx, p_bg, x, y);
 	if (el->bg_instance == -1)
 		error(EXIT_FAILURE, E_MLX);
+	game->p->current_el = el;
 	mlx_set_instance_depth(&p_bg->instances[el->bg_instance], FREE);
 	x += game->p->off.x;
 	y += game->p->off.y;

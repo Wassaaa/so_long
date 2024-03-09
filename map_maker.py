@@ -2,7 +2,7 @@ import random
 import sys
 from queue import Queue
 
-def generate_map(width, height):
+def generate_map(width, height, walls):
 	num_collectibles = max(1, (width * height) // 20)
 	num_enemies = max(1, (width * height) // 50)
 	#num_enemies = 1
@@ -12,11 +12,11 @@ def generate_map(width, height):
 		for j in range(1, width-1):
 			game_map[i][j] = '0'
 
-	add_internal_walls(game_map, int((width * height) * 0.2))
+	add_internal_walls(game_map, walls)
 
 	placed = place_special_tiles(game_map, num_collectibles, num_enemies)
 	if not placed:
-		return generate_map(width, height)
+		return generate_map(width, height, walls - 1)
 
 	return game_map
 
@@ -57,35 +57,39 @@ def place_special_tiles(game_map, num_collectibles, num_enemies):
 
 def is_accessible(game_map, start_pos, num_collectibles):
 	height, width = len(game_map), len(game_map[0])
-	visited = [[False for _ in range(width)] for _ in range(height)]
+	visited = set()
 	queue = Queue()
 	queue.put(start_pos)
-	visited[start_pos[0]][start_pos[1]] = True
-	targets = {'C': 0, 'E': False}
+	visited.add(start_pos)
+	collected = 0
+	exit_found = False
 
-	while not queue.empty():
+	while not queue.empty() and not (collected == num_collectibles and exit_found):
 		x, y = queue.get()
 		for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
 			nx, ny = x + dx, y + dy
-			if 0 <= nx < height and 0 <= ny < width and not visited[nx][ny] and game_map[nx][ny] != '1':
-				visited[nx][ny] = True
+			if 0 <= nx < height and 0 <= ny < width and (nx, ny) not in visited and game_map[nx][ny] != '1':
+				visited.add((nx, ny))
 				queue.put((nx, ny))
 				if game_map[nx][ny] == 'C':
-					targets['C'] += 1
+					collected += 1
+					if collected == num_collectibles and exit_found:
+						return True
 				elif game_map[nx][ny] == 'E':
-					targets['E'] = True
+					exit_found = True
+					if collected == num_collectibles and exit_found:
+						return True
 
-	# return True
-	return targets['C'] == num_collectibles and targets['E']
+	return collected == num_collectibles and exit_found
 
 def save_map_to_file(game_map, filename="./maps/map.ber"):
-    with open(filename, "w") as file:
-        height = len(game_map)
-        for i, row in enumerate(game_map):
-            if i < height - 1:
-                file.write(''.join(row) + '\n')
-            else:
-                file.write(''.join(row))
+	with open(filename, "w") as file:
+		height = len(game_map)
+		for i, row in enumerate(game_map):
+			if i < height - 1:
+				file.write(''.join(row) + '\n')
+			else:
+				file.write(''.join(row))
 
 if __name__ == "__main__":
 	if len(sys.argv) < 3:
@@ -95,6 +99,6 @@ if __name__ == "__main__":
 	width = int(sys.argv[1])
 	height = int(sys.argv[2])
 
-	game_map = generate_map(width, height)
+	game_map = generate_map(width, height, int((width * height) * 0.1))
 	save_map_to_file(game_map)
 	print(f"Map generated and saved to map.ber. Dimensions: {width}x{height}")

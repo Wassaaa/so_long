@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:14:00 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:11:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 04:35:32 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,17 @@ size_t	get_random(void)
 	int			fd;
 	static int	not_so_random = 0;
 	size_t		buff;
+	size_t		bytes_read;
 
 	not_so_random++;
-	buff = not_so_random;
+	bytes_read = sizeof(size_t);
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd > -1)
 	{
-		read(fd, &buff, sizeof(size_t));
+		bytes_read = read(fd, &buff, sizeof(size_t));
 		close(fd);
 	}
-	return (buff);
+	if (bytes_read == sizeof(size_t))
+		return (buff);
+	return (not_so_random);
 }
