@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 22:12:02 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:04:20 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 03:08:24 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	handle_shoot(t_game *game)
 			el->img->instances[el->instance].enabled = false;
 			el->type = FREE;
 			game->ammo--;
+			game->rocks++;
 			got_gun(game);
 		}
 	}

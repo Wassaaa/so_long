@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:07:53 by aklein            #+#    #+#             */
-/*   Updated: 2024/02/28 02:15:26 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 04:01:19 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	draw_anims(mlx_t *mlx, t_entity *ent, int x, int y)
 		{
 			img = (mlx_image_t *)frames->content;
 			ent->anims[i]->instance = mlx_image_to_window(mlx, img, x, y);
+			if (ent->anims[i]->instance == -1)
+				error(EXIT_FAILURE, E_MLX);
 			img->instances[ent->anims[i]->instance].enabled = false;
 			frames = frames->next;
 		}

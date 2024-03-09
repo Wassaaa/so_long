@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/09 02:24:21 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/09 03:52:34 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,7 +127,7 @@ re: fclean all
 CC_VG			=	$(CC) $(CC_STRICT) $(HEADERS)
 
 VG				=	valgrind
-VG_ARGS			=	#
+VG_ARGS			=	maps/map.ber
 VG_FLAGS		=	--leak-check=full --show-leak-kinds=all --suppressions=suppressions
 VG_LOG			=	valgrind_leaks.log
 VG_LOG_FLAGS	=	--log-file=$(VG_LOG) \

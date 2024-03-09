@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:51:56 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 02:25:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 03:46:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	ent_up(t_game *game, t_entity *entity)
 		entity->movement->active = false;
 	}
 	entity->next = entity->movement->anim;
+	dest = (entity->pos.y * game->map->width) + entity->pos.x;
+	entity->current_el = ft_lstget(game->map->elements, dest)->content;
 }
 
 void	ent_right(t_game *game, t_entity *entity)
@@ -70,6 +72,8 @@ void	ent_right(t_game *game, t_entity *entity)
 	else
 		entity->movement->active = false;
 	entity->next = entity->movement->anim;
+	dest = (entity->pos.y * game->map->width) + entity->pos.x;
+	entity->current_el = ft_lstget(game->map->elements, dest)->content;
 }
 
 void	ent_down(t_game *game, t_entity *entity)
@@ -94,6 +98,8 @@ void	ent_down(t_game *game, t_entity *entity)
 	else
 		entity->movement->active = false;
 	entity->next = entity->movement->anim;
+	dest = (entity->pos.y * game->map->width) + entity->pos.x;
+	entity->current_el = ft_lstget(game->map->elements, dest)->content;
 }
 
 void	ent_left(t_game *game, t_entity *entity)
@@ -118,4 +124,6 @@ void	ent_left(t_game *game, t_entity *entity)
 	else
 		entity->movement->active = false;
 	entity->next = entity->movement->anim;
+	dest = (entity->pos.y * game->map->width) + entity->pos.x;
+	entity->current_el = ft_lstget(game->map->elements, dest)->content;
 }

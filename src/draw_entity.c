@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:36 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:13:22 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 04:00:17 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	draw_enemy(t_game *game, t_map_element *el)
 	y = el->y * game->tile_size;
 	enemy_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, enemy_bg, x, y);
+	if (el->bg_instance == -1)
+		error(EXIT_FAILURE, E_MLX);
 	mlx_set_instance_depth(&enemy_bg->instances[el->bg_instance], FREE);
 	x += enemy->off.x;
 	y += enemy->off.y;
@@ -60,6 +62,8 @@ void	draw_player(t_game *game, t_map_element *el)
 	y = el->y * game->tile_size;
 	p_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, p_bg, x, y);
+	if (el->bg_instance == -1)
+		error(EXIT_FAILURE, E_MLX);
 	mlx_set_instance_depth(&p_bg->instances[el->bg_instance], FREE);
 	x += game->p->off.x;
 	y += game->p->off.y;

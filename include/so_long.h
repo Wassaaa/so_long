@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 02:04:44 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 02:59:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 
 # define BPP sizeof(int32_t)
 
-# define WIDTH 1920
-# define HEIGHT 900
+# define WIDTH 1600
+# define HEIGHT 800
 # define ROLL_CHANCE 5
 # define PLAYER_X_OFF -145
 # define PLAYER_Y_OFF -250

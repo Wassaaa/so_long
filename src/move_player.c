@@ -6,16 +6,32 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:07:39 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 04:06:11 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
+static void	build_wall(t_game *game)
+{
+	t_map_element	*el;
+
+	el = game->p->current_el;
+	if (el->type == FREE && game->rocks > 0)
+	{
+		el->images = game->wall_imgs;
+		draw_wall(game, el);
+		game->rocks--;
+		el->type = WALL;
+	}
+}
+
 static void	next_move(t_game *game)
 {
 	if (mlx_is_key_down(game->mlx, MLX_KEY_SPACE))
 		handle_shoot(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL))
+		build_wall(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
 		ent_right(game, game->p);
 	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))

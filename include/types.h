@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 02:02:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 02:47:43 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 03:43:04 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ typedef struct s_entity
 	t_point			off;
 	t_point			pos;
 	t_map_element	*facing;
+	t_map_element	*current_el;
 	t_movement		*movement;
 	float			move_speed;
 	float			move_step;
@@ -188,6 +189,7 @@ typedef struct s_game
 	int				exit_size;
 	int				ammo;
 	int				last_ammo;
+	int				rocks;
 	int				z;
 	float			scale;
 	int				fd;
