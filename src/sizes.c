@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:05:23 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 02:40:55 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	scale_sizes(t_game *game, float change)
 	game->p->off.y = PLAYER_Y_OFF * change;
 	game->e->off.x = PLAYER_X_OFF * change;
 	game->e->off.y = PLAYER_Y_OFF * change;
-	game->map->coll_off_x = COLL_X_OFF * change;
-	game->map->coll_off_y = COLL_Y_OFF * change;
+	game->map->coll_off.x = COLL_X_OFF * change;
+	game->map->coll_off.y = COLL_Y_OFF * change;
 	game->tile_size = TILE_SIZE * change;
 	game->coll_size = COLL_SIZE * change;
 	game->exit_size = EXIT_SIZE * change;

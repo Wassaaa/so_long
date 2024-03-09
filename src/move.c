@@ -6,13 +6,13 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:51:56 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 01:02:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 02:25:07 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <so_long.h>
 
-static void	start_movement(t_game *game, t_entity *entity, int to)
+static void	start_movement(t_game *game, t_entity *entity)
 {
 	t_point	tar;
 
@@ -20,7 +20,6 @@ static void	start_movement(t_game *game, t_entity *entity, int to)
 	tar.x = (entity->facing->x * game->tile_size) + entity->off.x;
 	tar.y = (entity->facing->y * game->tile_size) + entity->off.y;
 	entity->movement->tar = tar;
-	entity->movement->to = to;
 }
 
 void	ent_up(t_game *game, t_entity *entity)
@@ -30,6 +29,7 @@ void	ent_up(t_game *game, t_entity *entity)
 	dest = ((entity->pos.y - 1) * game->map->width) + entity->pos.x;
 	entity->facing = ft_lstget(game->map->elements, dest)->content;
 	entity->movement->anim = entity->anims[A_UP];
+	entity->movement->to = UP;
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
@@ -38,7 +38,7 @@ void	ent_up(t_game *game, t_entity *entity)
 				entity->movement->anim = entity->anims[A_ROLL_L];
 			add_move(game);
 		}
-		start_movement(game, entity, UP);
+		start_movement(game, entity);
 		entity->pos.y--;
 	}
 	else
@@ -55,6 +55,7 @@ void	ent_right(t_game *game, t_entity *entity)
 	dest = (entity->pos.y * game->map->width) + entity->pos.x + 1;
 	entity->facing = ft_lstget(game->map->elements, dest)->content;
 	entity->movement->anim = entity->anims[A_RIGHT];
+	entity->movement->to = RIGHT;
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
@@ -63,7 +64,7 @@ void	ent_right(t_game *game, t_entity *entity)
 				entity->movement->anim = entity->anims[A_ROLL_R];
 			add_move(game);
 		}
-		start_movement(game, entity, RIGHT);
+		start_movement(game, entity);
 		entity->pos.x++;
 	}
 	else
@@ -78,6 +79,7 @@ void	ent_down(t_game *game, t_entity *entity)
 	dest = ((entity->pos.y + 1) * game->map->width) + entity->pos.x;
 	entity->facing = ft_lstget(game->map->elements, dest)->content;
 	entity->movement->anim = entity->anims[A_DOWN];
+	entity->movement->to = DOWN;
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
@@ -86,7 +88,7 @@ void	ent_down(t_game *game, t_entity *entity)
 				entity->movement->anim = entity->anims[A_ROLL_R];
 			add_move(game);
 		}
-		start_movement(game, entity, DOWN);
+		start_movement(game, entity);
 		entity->pos.y++;
 	}
 	else
@@ -101,6 +103,7 @@ void	ent_left(t_game *game, t_entity *entity)
 	dest = (entity->pos.y * game->map->width) + entity->pos.x - 1;
 	entity->facing = ft_lstget(game->map->elements, dest)->content;
 	entity->movement->anim = entity->anims[A_LEFT];
+	entity->movement->to = LEFT;
 	if (move_allowed(entity->facing))
 	{
 		if (entity == game->p)
@@ -109,7 +112,7 @@ void	ent_left(t_game *game, t_entity *entity)
 				entity->movement->anim = entity->anims[A_ROLL_L];
 			add_move(game);
 		}
-		start_movement(game, entity, LEFT);
+		start_movement(game, entity);
 		entity->pos.x--;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 21:19:08 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 22:20:12 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 01:59:39 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*map_file(int argc, char **argv)
 		error(EXIT_FAILURE, E_MAP);
 	len = ft_strlen(argv[1]);
 	if (len < 4 || ft_strncmp(argv[1] + len - 4, ".ber", 4))
-		error(EXIT_FAILURE, E_MAP);
+		error(EXIT_FAILURE, E_MAP_BER);
 	return (argv[1]);
 }
 

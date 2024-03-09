@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:05:38 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:09:07 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 02:41:16 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	draw_coll(t_game *game, t_map_element *el)
 	coll_bg = ft_lstget(game->free_imgs, get_random() % (FREE_C - 1))->content;
 	coll_img = ft_lstget(game->coll_imgs, 0)->content;
 	el->bg_instance = mlx_image_to_window(game->mlx, coll_bg, x, y);
-	x += game->map->coll_off_x;
-	y += game->map->coll_off_y;
+	x += game->map->coll_off.x;
+	y += game->map->coll_off.y;
 	el->instance = mlx_image_to_window(game->mlx, coll_img, x, y);
 	el->img = coll_img;
 	mlx_set_instance_depth(&coll_bg->instances[el->bg_instance], FREE);

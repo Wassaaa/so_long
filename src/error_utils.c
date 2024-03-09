@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:29:16 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:36:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 01:59:28 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static char	*e_message(int err_v)
 	{
 		error[E_MALLOC] = "Memory allocation failed";
 		error[E_MAP] = "MAP: Error";
+		error[E_MAP_BER] = "MAP: '.ber' extension required";
 		error[E_MAP_ROUTE] = "MAP: No valid route";
 		error[E_MAP_WALL] = "MAP: not surrounded by walls";
 		error[E_MAP_RECT] = "MAP: not a rectangle";

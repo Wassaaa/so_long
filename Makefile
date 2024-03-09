@@ -6,12 +6,11 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/03/07 20:40:12 by aklein           ###   ########.fr        #
+#    Updated: 2024/03/09 02:24:21 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			=	\
-					anim.c\
+SRCS			=	anim.c\
 					anim_utils.c\
 					display.c\
 					draw_entity.c\
@@ -55,8 +54,8 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST)
 ################################################################################
 # MLX
 ################################################################################
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
 MLX_DEBUG		= #-DDEBUG=1
 MLX42_DIR		= ./MLX42
 
