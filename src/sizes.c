@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 06:10:51 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 07:58:31 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	entity_speed(t_game *game)
 
 void	scale_sizes(t_game *game, float change)
 {
+	if (change < MAX_SCALE)
+		error(EXIT_FAILURE, E_MAP_SCALE);
 	game->char_size = PLAYER_SIZE * change;
 	game->p->off.x = PLAYER_X_OFF * change;
 	game->p->off.y = PLAYER_Y_OFF * change;
@@ -52,20 +54,23 @@ void	scale_sizes(t_game *game, float change)
 void	fix_sizes(t_game *game)
 {
 	int		limiter;
-	int		width;
-	int		height;
+	int		max_size;
 	float	change;
 
-	width = game->map->width;
-	height = game->map->height;
-	if (width * height > MAX_MAP_SIZE)
+	if (game->map->width * game->map->height > MAX_MAP_SIZE)
 		error(EXIT_FAILURE, E_MAP_SIZE_BIG);
-	if (width > height)
-		limiter = width;
+	if (game->map->width > game->map->height)
+	{
+		limiter = game->map->width;
+		max_size = WIDTH;
+	}
 	else
-		limiter = height;
-	if (limiter * TILE_SIZE > WIDTH)
-		game->tile_size = WIDTH / limiter;
+	{
+		limiter = game->map->height;
+		max_size = HEIGHT;
+	}
+	if (limiter * TILE_SIZE > max_size)
+		game->tile_size = max_size / limiter;
 	else
 		game->tile_size = TILE_SIZE;
 	change = (float)game->tile_size / (float)TILE_SIZE;

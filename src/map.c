@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/07 19:26:34 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 07:33:08 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	map_valdiation(t_game *game, char *map_file)
 {
 	int	player_pos;
 
-	if (game->map->height < 3 || game->map->width < 5)
+	if (game->map->height * game->map->width < 15)
 		error(EXIT_FAILURE, E_MAP_SIZE);
 	read_map(game, map_file);
 	validate_tile_types(game->map);

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:29:16 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 05:59:30 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 07:57:32 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*e_message(int err_v)
 		error[E_MAP_COLLS] = "MAP: Not enough Collectibles";
 		error[E_MAP_EXITS] = "MAP: too many/few Exits";
 		error[E_MAP_SIZE] = "MAP: too small";
-		error[E_MAP_SIZE_TILE] = "MAP: Map scales tile size to < 1px";
+		error[E_MAP_SCALE] = "MAP: Map scale is weird bro";
 		error[E_MAP_SIZE_BIG] = "MAP: Map too big";
 		init = true;
 	}
@@ -43,9 +43,9 @@ void	err_msg(int ret, int msg)
 	{
 		ft_printf("Error\n");
 		if (msg != E_MLX)
-			ft_printf("%s", e_message(msg));
+			ft_printf("%s\n", e_message(msg));
 		else
-			ft_printf("%s", mlx_strerror(mlx_errno));
+			ft_printf("%s\n", mlx_strerror(mlx_errno));
 	}
 }
 

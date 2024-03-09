@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 04:12:18 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 06:06:11 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 07:57:15 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	start_mlx(t_game *game)
 	width = game->map->width * game->tile_size;
 	height = game->map->height * game->tile_size;
 	if (width < 1 || height < 1)
-		error(EXIT_FAILURE, E_MAP_SIZE_TILE);
+		error(EXIT_FAILURE, E_MAP_SCALE);
 	game->mlx = mlx_init(width, height, "Animated Gun-game", true);
 	if (!game->mlx)
 		error(EXIT_FAILURE, E_MLX);

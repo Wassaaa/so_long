@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 06:10:46 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 08:01:31 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 
 # define BPP sizeof(int32_t)
 
-# define WIDTH 1600
-# define HEIGHT 800
-# define MAX_MAP_SIZE 60000
+# define WIDTH 1920
+# define HEIGHT 1080
+# define MAX_MAP_SIZE 6000
+# define MAX_SCALE 0.075f
+
 # define ROLL_CHANCE 5
 # define PLAYER_X_OFF -145
 # define PLAYER_Y_OFF -250
