@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:47:27 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 07:58:31 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/09 08:05:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	fix_sizes(t_game *game)
 	int		max_size;
 	float	change;
 
-	if (game->map->width * game->map->height > MAX_MAP_SIZE)
-		error(EXIT_FAILURE, E_MAP_SIZE_BIG);
 	if (game->map->width > game->map->height)
 	{
 		limiter = game->map->width;
