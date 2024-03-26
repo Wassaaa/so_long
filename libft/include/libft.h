@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 16:20:57 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/05 15:35:48 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/26 18:30:34 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # ifdef __linux__
 #  include <stdint.h>
 # endif
+
 typedef struct s_list
 {
 	void			*content;

@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 18:38:13 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 08:29:16 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/26 18:29:26 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@
 # include <types.h>
 # include <unistd.h>
 
-# define BPP sizeof(int32_t)
+# define BPP 4
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define MAX_MAP_SIZE 6000
 # define MAX_SCALE 0.1f
 
 # define ROLL_CHANCE 5

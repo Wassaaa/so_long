@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 02:02:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 08:07:45 by aklein           ###   ########.fr       */
+/*   Updated: 2024/03/26 18:29:44 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef enum e_err
 	E_MAP_SIZE,
 	E_MAP_SCALE,
 	E_MAX
-
 }					t_err;
 
 typedef enum e_type
