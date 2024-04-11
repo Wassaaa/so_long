@@ -102,4 +102,4 @@ if __name__ == "__main__":
 
 	game_map = generate_map(width, height, int((width * height) * 0.1))
 	save_map_to_file(game_map, filename)
-	print(f"Map generated and saved to map.ber. Dimensions: {width}x{height}")
+	print(f"Map generated and saved to {filename}. Dimensions: {width}x{height}")
