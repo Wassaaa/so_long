@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/04/11 16:35:14 by aklein           ###   ########.fr        #
+#    Updated: 2024/04/11 17:53:15 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,18 +45,14 @@ SRCS			=	anim.c\
 ################################################################################
 CC				=	cc
 CC_STRICT		=	-Wall -Wextra -Werror
-OFAST			=	#-Ofast -flto
-OG				=	#-Og -flto
-CC_DEBUG		=	-g #-fsanitize=leak
+CC_DEBUG		=	#-g -fsanitize=leak
 HEADERS			=	-I $(LIBFT_INCLUDES) -I $(INCLUDES) -I $(MLX42_DIR)/include
-CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG) $(OG) $(OFAST)
+CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
 
 ################################################################################
 # MLX
 ################################################################################
-#MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
-MLX_DEBUG		= #-DDEBUG=1
 MLX42_DIR		= ./MLX42
 
 ################################################################################
@@ -120,6 +116,12 @@ re: fclean all
 ################################################################################
 # TESTING
 ################################################################################
+map:
+					curl https://raw.githubusercontent.com/Wassaaa/so_long/main/map_maker.py?v=1 -o map.py
+					@width=$(word 2, $(MAKECMDGOALS)); \
+					height=$(word 3, $(MAKECMDGOALS)); \
+					filename=$(word 4, $(MAKECMDGOALS)); \
+					python3 map.py $$width $$height $$filename
 
 ################################################################################
 # VALGRIND
