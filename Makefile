@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/04/11 18:06:01 by aklein           ###   ########.fr        #
+#    Updated: 2024/04/11 18:32:33 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRCS			=	anim.c\
 ################################################################################
 CC				=	cc
 CC_STRICT		=	-Wall -Wextra -Werror
-CC_DEBUG		=	-g #-fsanitize=leak
+CC_DEBUG		=	#-g
 HEADERS			=	-I $(LIBFT_INCLUDES) -I $(INCLUDES) -I $(MLX42_DIR)/include
 CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
 
