@@ -6,7 +6,7 @@
 #    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/04/11 18:06:01 by aklein           ###   ########.fr        #
+#    Updated: 2024/04/11 18:43:55 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,11 +117,12 @@ re: fclean all
 # TESTING
 ################################################################################
 map:
-					curl https://raw.githubusercontent.com/Wassaaa/so_long/main/map_maker.py?v=1 -o map.py
+					@curl -s https://raw.githubusercontent.com/Wassaaa/so_long/main/map_maker.py?v=1 -o map.py
 					@width=$(word 2, $(MAKECMDGOALS)); \
 					height=$(word 3, $(MAKECMDGOALS)); \
 					filename=$(word 4, $(MAKECMDGOALS)); \
 					python3 map.py $$width $$height $$filename
+					@rm -f map.py
 
 ################################################################################
 # VALGRIND
@@ -192,4 +193,4 @@ RC = \033[0m
 ################################################################################
 # PHONY
 ################################################################################
-.PHONY: all re clean fclean libmlx libft_force
+.PHONY: all re clean fclean libmlx libft_force map
