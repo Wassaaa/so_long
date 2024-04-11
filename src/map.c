@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 21:54:44 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 07:33:08 by aklein           ###   ########.fr       */
+/*   Updated: 2024/04/11 18:07:27 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ static void	validate_tile_types(t_map *map)
 			map->exits++;
 		if (el->y == 0 && el->type != WALL)
 			error(EXIT_FAILURE, E_MAP_WALL);
-		if (el->y == map->height && el->type != WALL)
+		if (el->y == map->height - 1 && el->type != WALL)
 			error(EXIT_FAILURE, E_MAP_WALL);
 		if (el->x == 0 && el->type != WALL)
 			error(EXIT_FAILURE, E_MAP_WALL);
-		if (el->x == map->width && el->type != WALL)
+		if (el->x == map->width - 1 && el->type != WALL)
 			error(EXIT_FAILURE, E_MAP_WALL);
 		elements = elements->next;
 	}
