@@ -6,7 +6,7 @@
 /*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:29:16 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 08:07:36 by aklein           ###   ########.fr       */
+/*   Updated: 2024/04/11 16:43:02 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*e_message(int err_v)
 		error[E_MAP_COLLS] = "MAP: Not enough Collectibles";
 		error[E_MAP_EXITS] = "MAP: too many/few Exits";
 		error[E_MAP_SIZE] = "MAP: too small";
-		error[E_MAP_SCALE] = "MAP: Map scaling will be too small";
+		error[E_MAP_SCALE] = "MAP: Map too big, limited by scale";
 		init = true;
 	}
 	return (error[err_v]);
