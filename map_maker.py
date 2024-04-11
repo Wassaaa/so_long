@@ -82,7 +82,7 @@ def is_accessible(game_map, start_pos, num_collectibles):
 
 	return collected == num_collectibles and exit_found
 
-def save_map_to_file(game_map, filename="./maps/map.ber"):
+def save_map_to_file(game_map, filename):
 	with open(filename, "w") as file:
 		height = len(game_map)
 		for i, row in enumerate(game_map):
@@ -92,13 +92,14 @@ def save_map_to_file(game_map, filename="./maps/map.ber"):
 				file.write(''.join(row))
 
 if __name__ == "__main__":
-	if len(sys.argv) < 3:
-		print("Usage: script.py width height")
+	if len(sys.argv) < 4:
+		print("Usage: script.py width height filename")
 		sys.exit(1)
 
 	width = int(sys.argv[1])
 	height = int(sys.argv[2])
+	filename = "./maps/" + sys.argv[3]
 
 	game_map = generate_map(width, height, int((width * height) * 0.1))
-	save_map_to_file(game_map)
+	save_map_to_file(game_map, filename)
 	print(f"Map generated and saved to map.ber. Dimensions: {width}x{height}")
