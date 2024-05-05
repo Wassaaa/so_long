@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: aklein <aklein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:26:41 by aklein            #+#    #+#             */
-/*   Updated: 2024/03/09 06:29:24 by aklein           ###   ########.fr       */
+/*   Updated: 2024/05/04 23:17:56 by aklein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static void	next_move(t_game *game)
 		handle_shoot(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL))
 		build_wall(game);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D) || mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
 		ent_right(game, game->p);
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_S)|| mlx_is_key_down(game->mlx, MLX_KEY_DOWN))
 		ent_down(game, game->p);
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_A)|| mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
 		ent_left(game, game->p);
-	else if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+	else if (mlx_is_key_down(game->mlx, MLX_KEY_W)|| mlx_is_key_down(game->mlx, MLX_KEY_UP))
 		ent_up(game, game->p);
 }
 

@@ -7,6 +7,9 @@
 		  "${workspaceFolder}/libft",
 		  "${workspaceFolder}/libft/include",
 		  "${workspaceFolder}/MLX42/include",
+		  "/home/aklein/so_long/include",
+		  "/home/aklein/so_long/libft/include",
+		  "/home/aklein/so_long/MLX42/include"
 		],
 		"defines": [],
 		"compilerPath": "/usr/bin/gcc",

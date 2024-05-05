@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aklein <aklein@student.hive.fi>            +#+  +:+       +#+         #
+#    By: aklein <aklein@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/11 05:08:26 by aklein            #+#    #+#              #
-#    Updated: 2024/04/11 18:43:55 by aklein           ###   ########.fr        #
+#    Updated: 2024/05/04 23:12:14 by aklein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,8 @@ CC_FULL			=	$(CC) $(CC_STRICT) $(HEADERS) $(CC_DEBUG)
 ################################################################################
 # MLX
 ################################################################################
-MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+#MLX42			= $(MLX42_DIR)/build/libmlx42.a -Iinclude -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/"
+MLX42			= $(MLX42_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 MLX42_DIR		= ./MLX42
 
 ################################################################################
